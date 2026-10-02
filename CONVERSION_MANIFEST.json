@@ -1,22 +1,22 @@
 {
   "source_commands": 11,
   "converted_skills": [
-    "git-commit",
-    "grill-to-implementation",
-    "grill-to-plan",
-    "implement-orchestrator",
-    "improve-code",
-    "improve-comments",
-    "improve-spacing",
-    "plan-to-spec",
-    "review-changes",
-    "spec-to-tickets",
-    "update-skills-list"
+    "my-git-commit",
+    "my-grill-to-implementation",
+    "my-grill-to-plan",
+    "my-implement-orchestrator",
+    "my-improve-code",
+    "my-improve-comments",
+    "my-improve-spacing",
+    "my-plan-to-spec",
+    "my-review-changes",
+    "my-spec-to-tickets",
+    "my-update-skills-list"
   ],
   "manual_only_frontmatter": {
     "slash": true,
     "metadata.opencode/autoinvoke": "false",
     "metadata.opencode/slash": "true"
   },
-  "existing_skill_preserved": "software-design-doc"
+  "existing_skill_preserved": "my-software-design-doc"
 }

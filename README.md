@@ -8,18 +8,18 @@ The repository is intentionally structured so every skill is self-contained and 
 
 | Skill | Version | Purpose | Invocation |
 |---|---:|---|---|
-| `software-design-doc` | `1.0.0` | Create or review software design documentation with interactive requirements discovery and delegated codebase exploration. | automatic/on-demand |
-| `git-commit` | `1.0.0` | Git commit ALL changes in files. Never amends. | explicit `/git-commit` only |
-| `grill-to-implementation` | `1.0.0` | Grill a change, persist decisions and execution state, then implement and independently review it without creating a SPEC or tickets. | explicit `/grill-to-implementation` only |
-| `grill-to-plan` | `1.0.0` | Interview the user and inspect the repository to produce a complete implementation plan in chat while continuously persisting grilling state. | explicit `/grill-to-plan` only |
-| `implement-orchestrator` | `1.0.0` | Implement approved tracker tickets one at a time with independent review, bounded fixes, task-scoped commits and tracker finalization. | explicit `/implement-orchestrator` only |
-| `improve-code` | `1.0.0` | Improve comments/documentation and logical spacing with batched develop subagents, without changing behavior. | explicit `/improve-code` only |
-| `improve-comments` | `1.0.0` | Improve code comments and documentation with batched develop subagents. | explicit `/improve-comments` only |
-| `improve-spacing` | `1.0.0` | Improve logical blank-line spacing with batched develop subagents. | explicit `/improve-spacing` only |
-| `plan-to-spec` | `1.0.0` | Turn a completed grilling state and resolved plan into a reviewed, implementation-ready SPEC and publish it through the configured tracker. | explicit `/plan-to-spec` only |
-| `review-changes` | `1.0.0` | Review a specified set of modified files, or the current working-tree changes, using one independent read-only review subagent. | explicit `/review-changes` only |
-| `spec-to-tickets` | `1.0.0` | Decompose an approved SPEC into concise implementation tickets, review only the tickets, and publish them through the configured tracker. | explicit `/spec-to-tickets` only |
-| `update-skills-list` | `1.0.0` | Read all SKILL.md files from user and project skill directories and regenerate ./.opencode/skills.json. | explicit `/update-skills-list` only |
+| `my-software-design-doc` | `1.0.0` | Create or review software design documentation with interactive requirements discovery and delegated codebase exploration. | automatic/on-demand |
+| `my-git-commit` | `1.0.0` | Git commit ALL changes in files. Never amends. | explicit `/my-git-commit` only |
+| `my-grill-to-implementation` | `1.0.0` | Grill a change, persist decisions and execution state, then implement and independently review it without creating a SPEC or tickets. | explicit `/my-grill-to-implementation` only |
+| `my-grill-to-plan` | `1.0.0` | Interview the user and inspect the repository to produce a complete implementation plan in chat while continuously persisting grilling state. | explicit `/my-grill-to-plan` only |
+| `my-implement-orchestrator` | `1.0.0` | Implement approved tracker tickets one at a time with independent review, bounded fixes, task-scoped commits and tracker finalization. | explicit `/my-implement-orchestrator` only |
+| `my-improve-code` | `1.0.0` | Improve comments/documentation and logical spacing with batched develop subagents, without changing behavior. | explicit `/my-improve-code` only |
+| `my-improve-comments` | `1.0.0` | Improve code comments and documentation with batched develop subagents. | explicit `/my-improve-comments` only |
+| `my-improve-spacing` | `1.0.0` | Improve logical blank-line spacing with batched develop subagents. | explicit `/my-improve-spacing` only |
+| `my-plan-to-spec` | `1.0.0` | Turn a completed grilling state and resolved plan into a reviewed, implementation-ready SPEC and publish it through the configured tracker. | explicit `/my-plan-to-spec` only |
+| `my-review-changes` | `1.0.0` | Review a specified set of modified files, or the current working-tree changes, using one independent read-only review subagent. | explicit `/my-review-changes` only |
+| `my-spec-to-tickets` | `1.0.0` | Decompose an approved SPEC into concise implementation tickets, review only the tickets, and publish them through the configured tracker. | explicit `/my-spec-to-tickets` only |
+| `my-update-skills-list` | `1.0.0` | Read all SKILL.md files from user and project skill directories and regenerate ./.opencode/skills.json. | explicit `/my-update-skills-list` only |
 
 The skills converted from `software-commands` are **manual-only on OpenCode V2**: each has `slash: true` and `metadata.opencode/autoinvoke: "false"`, so it remains callable with `/...` without being advertised to the model for automatic selection.
 ## Repository structure
@@ -31,15 +31,15 @@ software-engineering-skills/
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
 └── skills/
-    ├── software-design-doc/
+    ├── my-software-design-doc/
     │   ├── SKILL.md
     │   ├── README.md
     │   ├── VERSION
     │   ├── CHANGELOG.md
     │   └── references/
-    ├── git-commit/
+    ├── my-git-commit/
     │   └── ...
-    ├── grill-to-implementation/
+    ├── my-grill-to-implementation/
     │   └── ...
     └── <other-skill>/
         ├── SKILL.md
@@ -62,7 +62,7 @@ Install one skill for OpenCode:
 
 ```bash
 npx skills add OWNER/REPOSITORY \
-  --skill software-design-doc \
+  --skill my-software-design-doc \
   --agent opencode
 ```
 
@@ -70,7 +70,7 @@ Install it globally:
 
 ```bash
 npx skills add OWNER/REPOSITORY \
-  --skill software-design-doc \
+  --skill my-software-design-doc \
   --agent opencode \
   --global
 ```
@@ -110,7 +110,7 @@ Recommended increments:
 For public releases, skill-specific tags are recommended:
 
 ```text
-software-design-doc-v1.0.0
+my-software-design-doc-v1.0.0
 code-review-v1.2.0
 ```
 
