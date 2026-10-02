@@ -29,6 +29,19 @@ metadata:
 ---
 ```
 
+## OpenCode V2 explicit-only skills
+
+For a skill that must be callable only through an explicit slash command and must not be advertised to the model for automatic invocation, use:
+
+```yaml
+slash: true
+metadata:
+  opencode/autoinvoke: "false"
+  opencode/slash: "true"
+```
+
+Keep `opencode/*` metadata values as strings for Agent Skills metadata compatibility. The top-level `slash: true` is the native OpenCode V2 field; `metadata.opencode/slash` makes the OpenCode-specific intent explicit and takes precedence.
+
 ## Versioning
 
 Skills use Semantic Versioning independently.
