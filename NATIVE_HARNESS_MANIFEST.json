@@ -1,0 +1,87 @@
+{
+  "version": "2.2.0",
+  "canonical_skills": 11,
+  "manual_workflows": 10,
+  "semantic_skills": [
+    "my-software-design-doc"
+  ],
+  "runtime_state": {
+    "root": "./.agents/tmp/",
+    "grill": "./.agents/tmp/grill/<plan-slug>.md",
+    "implementation": "./.agents/tmp/implementation/<work-slug>.md"
+  },
+  "skill_routing": "native harness discovery; no generated registry",
+  "profiles": {
+    "opencode": {
+      "root": "dist/opencode/.opencode",
+      "native_features": [
+        "skill slash visibility",
+        "metadata.opencode/autoinvoke",
+        "metadata.opencode/slash",
+        "V2 subagent tool",
+        "V2 permissions",
+        "built-in explore plus custom develop/review agents"
+      ]
+    },
+    "codex": {
+      "root": "dist/codex",
+      "native_features": [
+        ".agents/skills",
+        "agents/openai.yaml",
+        "policy.allow_implicit_invocation",
+        ".codex/agents/*.toml",
+        "sandbox_mode"
+      ]
+    },
+    "claude-code": {
+      "root": "dist/claude-code/.claude",
+      "native_features": [
+        "disable-model-invocation",
+        "user-invocable",
+        "argument-hint",
+        "context: fork",
+        "agent",
+        "background",
+        ".claude/agents/*.md",
+        "permissionMode"
+      ]
+    },
+    "antigravity": {
+      "root": "dist/antigravity/.agents",
+      "native_features": [
+        ".agents/workflows slash commands",
+        ".agents/skills semantic skills",
+        ".agents/agents.md personas",
+        ".agents/rules persistent runtime rules"
+      ]
+    },
+    "shared": {
+      "root": "dist/shared/.agents/skills",
+      "native_features": [
+        "Agent Skills specification compliant frontmatter",
+        "OpenCode namespaced metadata",
+        "Codex agents/openai.yaml sidecars",
+        "multi-harness role mapping"
+      ],
+      "notes": "Used by --layout agents and automatically when Codex + Antigravity share the project .agents/skills path."
+    }
+  },
+  "installer": {
+    "entrypoint": "bin/software-skills.js",
+    "repository": "https://github.com/cceglia/software-skills",
+    "interactive_prompts": [
+      "harness selection",
+      "skill layout (.agents or harness-native)"
+    ],
+    "cli_options": [
+      "--harness",
+      "--layout",
+      "--target",
+      "--force",
+      "--dry-run",
+      "--git-exclude",
+      "--help",
+      "--version"
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+interface:
+  display_name: "Improve Code"
+  short_description: "Improve comments and spacing without behavior changes"
+  default_prompt: "Use $my-improve-code to improve comments and logical spacing without changing behavior."
+policy:
+  products:
+    - CODEX
+  allow_implicit_invocation: false

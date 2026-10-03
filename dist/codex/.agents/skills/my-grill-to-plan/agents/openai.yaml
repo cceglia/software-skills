@@ -1,0 +1,8 @@
+interface:
+  display_name: "Grill to Plan"
+  short_description: "Interview decisions and produce a plan"
+  default_prompt: "Use $my-grill-to-plan to grill this request and produce a complete implementation plan."
+policy:
+  products:
+    - CODEX
+  allow_implicit_invocation: false

@@ -1,69 +1,45 @@
 # Contributing
 
-## Skill layout
+## Source of truth
 
-Add each skill under:
+Edit `source/skills/<skill-name>/`; never hand-edit `dist/`. Regenerate with `python3 scripts/build.py`.
+
+Canonical `SKILL.md` files stay harness-neutral. Harness-specific frontmatter, sidecars, agents, workflows, and rules belong in `scripts/build.py`.
+
+## Runtime invariants
+
+Ephemeral state is limited to:
 
 ```text
-skills/<skill-name>/
+./.agents/tmp/grill/
+./.agents/tmp/implementation/
 ```
 
-The directory should contain its own `SKILL.md` and any resources needed by that skill.
+There is no skill registry. Workflows select skills through the active harness's native discovery; delegated workers must load the exact selected skills and block when a required skill is unavailable.
 
-Do not place skill-specific references in a shared root directory unless multiple skills intentionally depend on the same stable asset.
+Never stage, commit, or review `./.agents/tmp/`. Do not ignore `.agents/` globally.
 
-## Frontmatter
+## Skill style
 
-Use Agent Skills-compatible frontmatter. Keep custom fields inside `metadata`.
+Keep `SKILL.md` concise and single-source-of-truth:
 
-Example:
+- state each invariant once;
+- prefer short workflow steps over repeated prose;
+- keep harness mapping out of canonical bodies;
+- reference supporting files instead of duplicating long guidance;
+- preserve exact output schemas only when callers depend on them.
 
-```yaml
----
-name: example-skill
-description: Explain what the skill does and when the agent should use it.
-license: MIT
-compatibility: Describe environment requirements only when relevant.
-metadata:
-  version: "1.0.0"
----
+## Versioning and validation
+
+Keep repository-wide versions synchronized for adapter/contract changes. Update the skill `VERSION` and changelog when semantics change.
+
+Run:
+
+```bash
+python3 scripts/build.py
+python3 scripts/validate.py
+npm test
+npm pack --dry-run
 ```
 
-## OpenCode V2 explicit-only skills
-
-For a skill that must be callable only through an explicit slash command and must not be advertised to the model for automatic invocation, use:
-
-```yaml
-slash: true
-metadata:
-  opencode/autoinvoke: "false"
-  opencode/slash: "true"
-```
-
-Keep `opencode/*` metadata values as strings for Agent Skills metadata compatibility. The top-level `slash: true` is the native OpenCode V2 field; `metadata.opencode/slash` makes the OpenCode-specific intent explicit and takes precedence.
-
-## Versioning
-
-Skills use Semantic Versioning independently.
-
-When changing a skill:
-
-1. Update `metadata.version` in `SKILL.md`.
-2. Update the skill's `VERSION` file with exactly the same version.
-3. Add an entry to the skill's `CHANGELOG.md`.
-4. Update the version shown in the root `README.md` skill table.
-5. Optionally create a Git tag such as `<skill-name>-v1.2.0`.
-
-Do not bump unrelated skills.
-
-## Validation checklist
-
-Before publishing a skill:
-
-- directory name and `name` field match
-- `description` explains both behavior and activation conditions
-- `metadata.version` and `VERSION` match
-- referenced files exist
-- no user-specific secrets, local paths, or credentials are present
-- the skill remains self-contained
-- the changelog has been updated
+Validation must confirm native invocation behavior, isolated review where required, no obsolete registry/runtime paths, and no canonical/generated skill over 250 lines.

@@ -1,0 +1,6 @@
+name = "explore"
+description = "Explore worker for software-skills workflows."
+sandbox_mode = "read-only"
+developer_instructions = """
+Explore only the delegated repository scope. Read AGENTS.md first, return concise evidence, never edit or mutate repository state, and do not spawn agents unless explicitly requested.
+"""

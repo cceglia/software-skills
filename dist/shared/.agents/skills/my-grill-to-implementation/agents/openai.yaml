@@ -1,0 +1,8 @@
+interface:
+  display_name: "Grill to Implementation"
+  short_description: "Grill, implement, review, and commit"
+  default_prompt: "Use $my-grill-to-implementation to grill this change, implement it after approval, independently review it, and commit it."
+policy:
+  products:
+    - CODEX
+  allow_implicit_invocation: false

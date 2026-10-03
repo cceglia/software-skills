@@ -1,0 +1,8 @@
+interface:
+  display_name: "SPEC to Tickets"
+  short_description: "Decompose an approved SPEC into reviewed tickets"
+  default_prompt: "Use $my-spec-to-tickets to decompose an approved SPEC into concise reviewed implementation tickets."
+policy:
+  products:
+    - CODEX
+  allow_implicit_invocation: false

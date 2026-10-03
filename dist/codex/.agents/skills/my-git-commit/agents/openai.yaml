@@ -1,0 +1,8 @@
+interface:
+  display_name: "Git Commit All Changes"
+  short_description: "Commit project changes except .agents/tmp"
+  default_prompt: "Use $my-git-commit to commit all project changes except .agents/tmp, without amending."
+policy:
+  products:
+    - CODEX
+  allow_implicit_invocation: false

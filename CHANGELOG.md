@@ -1,19 +1,20 @@
-# Repository Changelog
+# Changelog
 
-This file tracks repository-level changes. Individual skill changes are documented in each skill's own `CHANGELOG.md`.
+## 2.2.0 — 2026-10-03
 
-## 2026-10-02
+- Removed `my-update-skills-list` and the generated `skills.json` registry.
+- Switched implementation workflows to native harness skill discovery with explicit worker load verification.
+- Moved all ephemeral workflow state under `./.agents/tmp/`.
+- Changed the installer Git-exclude rule to `/.agents/tmp/`.
+- Reduced canonical skill size and removed duplicated workflow instructions.
+- Kept harness-native invocation metadata, agents, workflows, rules, and Codex sidecars.
 
-- Added 11 OpenCode V2 skills converted from `software-commands`.
-- Converted skills are explicit-only: slash-enabled and hidden from model auto-invocation.
-- Preserved the existing `my-software-design-doc` skill unchanged.
+## 2.1.0 — 2026-10-03
 
-## 2026-09-15
+- Added the custom zero-dependency Node.js installer with interactive harness/layout selection.
+- Added non-interactive `--harness`, `--layout`, `--target`, `--force`, `--dry-run`, and `--git-exclude` options.
+- Added the shared `.agents/skills` profile and Codex + Antigravity collision handling.
 
-- Created the multi-skill repository structure.
-- Added `my-software-design-doc` version `1.0.0`.
-- Established independent Semantic Versioning for skills.
+## 2.0.0 — 2026-10-03
 
-## 2026-10-02 - my- namespace
-
-- Renamed every packaged skill to the `my-{name}` namespace, including folder names, frontmatter names, slash references, cross-skill references, README entries, and conversion manifest entries.
+- Introduced one canonical workflow source plus native OpenCode V2, Codex, Claude Code, and Antigravity adapters.

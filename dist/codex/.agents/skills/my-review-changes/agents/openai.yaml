@@ -1,0 +1,8 @@
+interface:
+  display_name: "Review Changes"
+  short_description: "Independently review modified files"
+  default_prompt: "Use $my-review-changes to independently review requested files or current working-tree changes."
+policy:
+  products:
+    - CODEX
+  allow_implicit_invocation: false

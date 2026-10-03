@@ -1,0 +1,33 @@
+{
+  "name": "software-skills",
+  "version": "2.2.0",
+  "description": "Native multi-harness software engineering skills installer for Codex, Claude Code, OpenCode V2, and Antigravity.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cceglia/software-skills.git"
+  },
+  "homepage": "https://github.com/cceglia/software-skills#readme",
+  "bin": {
+    "software-skills": "./bin/software-skills.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "bin/",
+    "dist/",
+    "source/",
+    "README.md",
+    "INSTALLER.md",
+    "LICENSE",
+    "NATIVE_HARNESS_MANIFEST.json",
+    "HARNESS_REFERENCES.md",
+    "MIGRATION_NOTES.md",
+    "VALIDATION_REPORT.md"
+  ],
+  "scripts": {
+    "test": "node scripts/test-installer.js",
+    "validate": "python3 scripts/validate.py"
+  }
+}
