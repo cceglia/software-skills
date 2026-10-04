@@ -1,8 +1,0 @@
-interface:
-  display_name: "Plan to SPEC"
-  short_description: "Turn a grilled plan into a reviewed SPEC"
-  default_prompt: "Use $my-plan-to-spec to turn completed grilling state into a reviewed implementation-ready SPEC."
-policy:
-  products:
-    - CODEX
-  allow_implicit_invocation: false

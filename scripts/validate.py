@@ -9,16 +9,15 @@ import tomllib
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "source" / "skills"
 DIST = ROOT / "dist"
-VERSION = "2.2.0"
+VERSION = "2.5.1"
 EXPECTED = {
     "my-git-commit",
     "my-grill-to-implementation",
-    "my-grill-to-plan",
+    "my-grill-to-spec",
     "my-implement-orchestrator",
     "my-improve-code",
     "my-improve-comments",
     "my-improve-spacing",
-    "my-plan-to-spec",
     "my-review-changes",
     "my-software-design-doc",
     "my-spec-to-tickets",
@@ -114,17 +113,29 @@ def validate_source() -> None:
     for name in EXPECTED:
         if read(SRC / name / "VERSION").strip() != VERSION:
             fail(f"source VERSION mismatch for {name}")
-    text = "\n".join(p.read_text(encoding="utf-8") for p in SRC.rglob("*.md"))
-    for forbidden in ("my-update-skills-list", "skills.json", "./.tmp/", ".opencode/grill", ".opencode/implementation", "subagent_type"):
+    text = "\n".join(p.read_text(encoding="utf-8") for p in SRC.glob("*/SKILL.md"))
+    for forbidden in ("my-update-skills-list", "skills.json", "./.tmp/", ".opencode/grill", ".opencode/implementation", "subagent_type", "my-grill-to-plan", "my-plan-to-spec"):
         if forbidden in text:
             fail(f"obsolete token remains in canonical source: {forbidden}")
-    for token in ("./.agents/tmp/grill/", "./.agents/tmp/implementation/"):
-        if token not in text:
-            fail(f"canonical source missing runtime path {token}")
+    if "./.agents/tmp/implementation/" not in text:
+        fail("canonical source missing runtime path ./.agents/tmp/implementation/")
+    grill = read(SRC / "my-grill-to-spec" / "SKILL.md")
+    for token in ("grill-with-docs", "to-spec", "./.agents/tmp/grill/", "Next action"):
+        if token not in grill:
+            fail(f"my-grill-to-spec missing resume/Matt integration invariant: {token}")
+    light = read(SRC / "my-grill-to-implementation" / "SKILL.md")
+    for token in ("grill-with-docs", "`tdd`", "`explore`", "`develop`", "`review`", "./.agents/tmp/implementation/", "Next action"):
+        if token not in light:
+            fail(f"my-grill-to-implementation missing light-flow invariant: {token}")
+    tickets = read(SRC / "my-spec-to-tickets" / "SKILL.md")
+    if "to-tickets" not in tickets:
+        fail("my-spec-to-tickets must delegate to Matt Pocock to-tickets")
     orchestrator = read(SRC / "my-implement-orchestrator" / "SKILL.md")
-    for token in ("native skill discovery", "SKILLS_LOADED", "SKILLS_NOT_LOADED"):
+    for token in ("`tdd`", "`code-review`", "develop(tdd)", "new `code-review`", "MAX_REVIEW_CYCLES"):
         if token not in orchestrator:
-            fail(f"orchestrator missing native skill-loading invariant: {token}")
+            fail(f"orchestrator missing TDD/review-loop invariant: {token}")
+    if "develop/fix: `implement`" in orchestrator:
+        fail("orchestrator must not depend on user-only Matt implement")
 
 
 def validate_opencode() -> None:
@@ -218,10 +229,30 @@ def validate_shared() -> None:
             fail(f"shared Codex sidecar policy mismatch for {name}")
 
 
+def validate_agents_md() -> None:
+    text = read(ROOT / "AGENTS.md")
+    for token in (
+        "source/skills/",
+        "./.agents/tmp/",
+        "my-grill-to-spec",
+        "my-grill-to-implementation",
+        "my-spec-to-tickets",
+        "my-implement-orchestrator",
+        "develop(tdd) -> code-review",
+        "my-update-skills-list",
+        "my-plan-to-spec",
+        "native skill discovery",
+        "scripts/build.py",
+        "scripts/validate.py",
+    ):
+        if token not in text:
+            fail(f"AGENTS.md missing maintenance invariant: {token}")
+
+
 def validate_global() -> None:
     files = [p for p in DIST.rglob("*") if p.is_file() and p.suffix in {".md", ".yaml", ".toml"}]
     text = "\n".join(p.read_text(encoding="utf-8") for p in files)
-    for forbidden in ("my-update-skills-list", "skills.json", "./.tmp/", ".opencode/grill", ".opencode/implementation", "subagent_type"):
+    for forbidden in ("my-update-skills-list", "skills.json", "./.tmp/", ".opencode/grill", ".opencode/implementation", "subagent_type", "my-grill-to-plan", "my-plan-to-spec"):
         if forbidden in text:
             fail(f"obsolete token remains in generated profiles: {forbidden}")
     if "./.agents/tmp/" not in text:
@@ -235,6 +266,7 @@ def main() -> int:
     validate_claude()
     validate_antigravity()
     validate_shared()
+    validate_agents_md()
     validate_global()
     if errors:
         print(f"FAILED: {len(errors)} validation error(s)", file=sys.stderr)
@@ -244,7 +276,7 @@ def main() -> int:
     print("OK: canonical source, four native profiles, and shared .agents profile validated")
     print(f"- canonical skills: {len(EXPECTED)}")
     print(f"- explicit workflows: {len(MANUAL)}")
-    print("- runtime state: ./.agents/tmp/grill and ./.agents/tmp/implementation")
+    print("- runtime state: resumable ledgers under ./.agents/tmp/grill and ./.agents/tmp/implementation")
     print("- skill routing: native harness discovery; no skills.json registry")
     return 0
 

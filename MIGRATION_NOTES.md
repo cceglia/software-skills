@@ -1,47 +1,15 @@
-# Migration notes — 2.2
+# Migration notes
 
-## Runtime state
+## 2.5.0
 
-Ephemeral workflow state now lives only under:
+- `my-grill-to-spec` keeps only a resumable decision ledger in `./.agents/tmp/grill/`; Matt Pocock's `to-spec` remains the sole owner of canonical SPEC synthesis and tracker destination.
+- `my-grill-to-spec` uses a fresh reviewer only after the canonical SPEC exists and stops after SPEC approval.
+- `my-grill-to-implementation` keeps the light `explore -> develop -> fresh review` flow and requires Matt's `tdd` in develop/fix passes.
+- `my-implement-orchestrator` now composes Matt's `tdd` and `code-review`, not user-only `implement` / `implement-spec`, and requires a new code review after every fix before commit.
+- `my-spec-to-tickets` remains a thin wrapper around `to-tickets`; canonical tickets live in the configured tracker.
 
-```text
-./.agents/tmp/grill/<plan-slug>.md
-./.agents/tmp/implementation/<work-slug>.md
-```
+## Canonical artifacts
 
-`my-update-skills-list` and `skills.json` were removed. Skill selection now uses the active harness's native discovery, and delegated workers must actually load every selected skill or return `BLOCKED`.
+`setup-matt-pocock-skills` configures the issue tracker in `docs/agents/issue-tracker.md`. `to-spec` and `to-tickets` decide where canonical artifacts live. In local-markdown mode Matt uses `.scratch/<feature>/spec.md` and `.scratch/<feature>/issues/<NN>-<slug>.md`.
 
-The installer can add this local Git exclude rule:
-
-```text
-/.agents/tmp/
-```
-
-It does not ignore `.agents/` as a whole because skills, Antigravity workflows/rules, and other project configuration may be intentionally versioned there.
-
-## Native harness adapters
-
-- **OpenCode V2:** `.opencode/skills`, native invocation metadata, built-in `explore`, bundled `develop`/`review` subagents.
-- **Codex:** `.agents/skills`, `agents/openai.yaml`, and `.codex/agents/*.toml`.
-- **Claude Code:** `.claude/skills`, native invocation fields, and `.claude/agents/*`; `my-review-changes` uses a forked `review` agent.
-- **Antigravity:** explicit workflows in `.agents/workflows/`, semantic design-doc skill in `.agents/skills/`, plus `.agents/agents.md` and `.agents/rules/`.
-
-The canonical source remains harness-neutral; `scripts/build.py` generates native projections.
-
-## Installer
-
-Interactive:
-
-```bash
-npx --yes github:cceglia/software-skills
-```
-
-Non-interactive example:
-
-```bash
-npx --yes github:cceglia/software-skills \
-  --harness all \
-  --layout native
-```
-
-See `README.md` for all parameters and examples.
+`./.agents/tmp/` is only ephemeral/resumable workflow state and should stay out of commits.

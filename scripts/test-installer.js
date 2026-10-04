@@ -56,7 +56,7 @@ function exists(root, rel) {
   assert(exists(target, '.agents/skills/my-git-commit/SKILL.md'));
   assert(exists(target, '.agents/skills/my-software-design-doc/agents/openai.yaml'));
   assert(exists(target, '.codex/agents/develop.toml'));
-  assert(exists(target, '.agents/workflows/my-grill-to-plan.md'));
+  assert(exists(target, '.agents/workflows/my-grill-to-spec.md'));
   assert(out.includes('Codex and Antigravity share .agents/skills'));
 }
 

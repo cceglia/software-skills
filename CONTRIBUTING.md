@@ -8,30 +8,22 @@ Canonical `SKILL.md` files stay harness-neutral. Harness-specific frontmatter, s
 
 ## Runtime invariants
 
-Ephemeral state is limited to:
+Only resumable state belongs under:
 
 ```text
 ./.agents/tmp/grill/
 ./.agents/tmp/implementation/
 ```
 
-There is no skill registry. Workflows select skills through the active harness's native discovery; delegated workers must load the exact selected skills and block when a required skill is unavailable.
+Canonical SPECs and tickets are owned by Matt Pocock's configured issue tracker through `to-spec` / `to-tickets`; never duplicate them under `.agents/tmp`.
 
-Never stage, commit, or review `./.agents/tmp/`. Do not ignore `.agents/` globally.
+There is no skill registry. Use native harness discovery. Never stage, commit, or review `./.agents/tmp/`; do not ignore `.agents/` globally.
 
 ## Skill style
 
-Keep `SKILL.md` concise and single-source-of-truth:
+Keep `SKILL.md` concise and single-source-of-truth: state each invariant once, delegate upstream behavior instead of restating it, keep harness mapping out of canonical bodies, and preserve exact schemas only when callers depend on them.
 
-- state each invariant once;
-- prefer short workflow steps over repeated prose;
-- keep harness mapping out of canonical bodies;
-- reference supporting files instead of duplicating long guidance;
-- preserve exact output schemas only when callers depend on them.
-
-## Versioning and validation
-
-Keep repository-wide versions synchronized for adapter/contract changes. Update the skill `VERSION` and changelog when semantics change.
+## Validation
 
 Run:
 
@@ -41,5 +33,3 @@ python3 scripts/validate.py
 npm test
 npm pack --dry-run
 ```
-
-Validation must confirm native invocation behavior, isolated review where required, no obsolete registry/runtime paths, and no canonical/generated skill over 250 lines.

@@ -1,5 +1,9 @@
 # Changelog — my-improve-comments
 
+## 2.3.0 — 2026-10-03
+
+- Package version synchronized with the grill-to-SPEC workflow update; no skill-specific behavior change.
+
 ## 2.2.0 — 2026-10-03
 
 - Removed the generated skill registry and switched routing to native harness skill discovery.

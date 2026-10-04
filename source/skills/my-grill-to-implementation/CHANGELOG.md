@@ -1,5 +1,19 @@
 # Changelog — my-grill-to-implementation
 
+## 2.5.0 — 2026-10-03
+
+- Develop now explicitly loads Matt Pocock's `tdd` at pre-agreed seams.
+- Preserved the `explore -> develop -> fresh review -> fix/review` light workflow and resumable ledger.
+
+## 2.4.0 — 2026-10-03
+
+- Development now explicitly runs `explore -> develop -> review`.
+- Strengthened fresh-session resume checkpoints and `Next action`.
+
+## 2.3.0 — 2026-10-03
+
+- Package version synchronized with the grill-to-SPEC workflow update; no skill-specific behavior change.
+
 ## 2.2.0 — 2026-10-03
 
 - Removed the generated skill registry and switched routing to native harness skill discovery.

@@ -4,7 +4,7 @@ description: Improve comments/documentation and logical spacing without changing
 license: MIT
 compatibility: Codex with native Agent Skills sidecars and project agents.
 metadata:
-  version: "2.2.0"
+  version: "2.5.1"
 ---
 
 # my-improve-code
@@ -17,7 +17,7 @@ Treat command/skill arguments plus immediately relevant conversation context as 
 
 ## Harness roles
 
-Use project agents in `.codex/agents/`: `explore`, `develop`, and `review`.
+Use project agents in `.codex/agents/`: `explore`, `develop`.
 
 Improve comments/documentation and logical blank-line spacing in the invocation scope; empty scope means the repository. Exclude generated, vendored/third-party, build-artifact, and non-manually-maintained files.
 

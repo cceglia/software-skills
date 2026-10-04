@@ -4,7 +4,7 @@ description: Explicit-only workflow. Improve comments and documentation without 
 license: MIT
 compatibility: Shared Agent Skills profile for Codex, Claude Code, OpenCode V2, and Antigravity; native support files install separately.
 metadata:
-  version: "2.2.0"
+  version: "2.5.1"
   opencode/autoinvoke: "false"
   opencode/slash: "true"
 ---
@@ -19,7 +19,7 @@ Treat command/skill arguments plus immediately relevant conversation context as 
 
 ## Harness roles
 
-Use the active harness's installed `explore`, `develop`, and `review` support roles.
+Use the active harness's installed support roles: `explore`, `develop`.
 
 Improve comments/documentation in the invocation scope; empty scope means the repository. Exclude generated, vendored/third-party, build-artifact, and non-manually-maintained files.
 

@@ -4,7 +4,7 @@ description: Improve logical blank-line spacing without changing behavior or com
 license: MIT
 compatibility: Canonical multi-harness source; use scripts/build.py to generate native profiles.
 metadata:
-  version: "2.2.0"
+  version: "2.5.1"
 ---
 
 # my-improve-spacing

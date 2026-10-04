@@ -7,17 +7,16 @@ import shutil
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "source" / "skills"
 DIST = ROOT / "dist"
-VERSION = "2.2.0"
+VERSION = "2.5.1"
 
 MANUAL = {
     "my-git-commit",
     "my-grill-to-implementation",
-    "my-grill-to-plan",
+    "my-grill-to-spec",
     "my-implement-orchestrator",
     "my-improve-code",
     "my-improve-comments",
     "my-improve-spacing",
-    "my-plan-to-spec",
     "my-review-changes",
     "my-spec-to-tickets",
 }
@@ -25,26 +24,24 @@ MANUAL = {
 DISPLAY = {
     "my-software-design-doc": ("Software Design Doc", "Create or review software design documents", "Use $my-software-design-doc to create or review a software design document."),
     "my-git-commit": ("Git Commit All Changes", "Commit project changes except .agents/tmp", "Use $my-git-commit to commit all project changes except .agents/tmp, without amending."),
-    "my-grill-to-implementation": ("Grill to Implementation", "Grill, implement, review, and commit", "Use $my-grill-to-implementation to grill this change, implement it after approval, independently review it, and commit it."),
-    "my-grill-to-plan": ("Grill to Plan", "Interview decisions and produce a plan", "Use $my-grill-to-plan to grill this request and produce a complete implementation plan."),
-    "my-implement-orchestrator": ("Implementation Orchestrator", "Implement approved tickets with review cycles", "Use $my-implement-orchestrator to implement approved work items with native skill discovery and independent review."),
+    "my-grill-to-implementation": ("Grill to Implementation", "Light grill-to-code workflow with resumable ledger", "Use $my-grill-to-implementation to grill this change, then explore, develop with tdd, independently review, fix as needed, and commit it using the resumable ledger."),
+    "my-grill-to-spec": ("Grill to SPEC", "Grill into a resumable ledger and publish with to-spec", "Use $my-grill-to-spec to run Matt Pocock's grill-with-docs, maintain a resumable working SPEC ledger, and publish the canonical SPEC with to-spec."),
+    "my-implement-orchestrator": ("Implementation Orchestrator", "Implement tickets with repeated TDD and code-review gates", "Use $my-implement-orchestrator to implement approved tickets with develop/TDD, repeated Matt Pocock code-review gates, scoped commits, and tracker finalization."),
     "my-improve-code": ("Improve Code", "Improve comments and spacing without behavior changes", "Use $my-improve-code to improve comments and logical spacing without changing behavior."),
     "my-improve-comments": ("Improve Comments", "Improve code comments and documentation safely", "Use $my-improve-comments to improve comments and documentation without changing behavior."),
     "my-improve-spacing": ("Improve Spacing", "Improve logical blank-line spacing safely", "Use $my-improve-spacing to improve logical spacing without changing behavior."),
-    "my-plan-to-spec": ("Plan to SPEC", "Turn a grilled plan into a reviewed SPEC", "Use $my-plan-to-spec to turn completed grilling state into a reviewed implementation-ready SPEC."),
     "my-review-changes": ("Review Changes", "Independently review modified files", "Use $my-review-changes to independently review requested files or current working-tree changes."),
-    "my-spec-to-tickets": ("SPEC to Tickets", "Decompose an approved SPEC into reviewed tickets", "Use $my-spec-to-tickets to decompose an approved SPEC into concise reviewed implementation tickets."),
+    "my-spec-to-tickets": ("SPEC to Tickets", "Publish implementation tickets with to-tickets", "Use $my-spec-to-tickets to turn an approved SPEC into implementation tickets through Matt Pocock's to-tickets."),
 }
 
 ARG_HINT = {
     "my-git-commit": "[optional context]",
     "my-grill-to-implementation": "[change request | .agents/tmp/implementation state]",
-    "my-grill-to-plan": "[change request]",
+    "my-grill-to-spec": "[change request | .agents/tmp/grill ledger]",
     "my-implement-orchestrator": "[work item source]",
     "my-improve-code": "[scope]",
     "my-improve-comments": "[scope]",
     "my-improve-spacing": "[scope]",
-    "my-plan-to-spec": "[.agents/tmp/grill/<plan>.md]",
     "my-review-changes": "[files | directory | glob]",
     "my-spec-to-tickets": "[approved SPEC]",
 }
@@ -96,21 +93,36 @@ def invocation_block(name: str, harness: str) -> str:
     return f"## Invocation\n\n{line}\n\n{args}"
 
 
-def mapping_block(harness: str) -> str:
-    return {
-        "opencode": "## Harness roles\n\nUse OpenCode V2 child sessions: built-in `explore` plus bundled `develop` and `review`.",
-        "codex": "## Harness roles\n\nUse project agents in `.codex/agents/`: `explore`, `develop`, and `review`.",
-        "claude": "## Harness roles\n\nUse project agents in `.claude/agents/`: `explore`, `develop`, and `review`.",
-        "antigravity": "## Harness roles\n\nUse `.agents/agents.md`: `@explore`, `@develop`, and `@review`.",
-        "shared": "## Harness roles\n\nUse the active harness's installed `explore`, `develop`, and `review` support roles.",
+def mapping_block(harness: str, name: str) -> str:
+    roles = {
+        "my-grill-to-implementation": ("explore", "develop", "review"),
+        "my-grill-to-spec": ("review",),
+        "my-implement-orchestrator": ("develop",),
+        "my-improve-code": ("explore", "develop"),
+        "my-improve-comments": ("explore", "develop"),
+        "my-improve-spacing": ("explore", "develop"),
+        "my-review-changes": ("review",),
+    }.get(name, ())
+    if not roles:
+        return ""
+    joined = ", ".join(f"`{r}`" for r in roles)
+    prefix = {
+        "opencode": "Use OpenCode V2 child-session roles",
+        "codex": "Use project agents in `.codex/agents/`",
+        "claude": "Use project agents in `.claude/agents/`",
+        "antigravity": "Use roles from `.agents/agents.md`",
+        "shared": "Use the active harness's installed support roles",
     }[harness]
+    return f"## Harness roles\n\n{prefix}: {joined}."
 
 
 def adapt_body(name: str, body: str, harness: str) -> str:
     if name in MANUAL:
         block = invocation_block(name, harness)
         if name != "my-git-commit":
-            block += "\n\n" + mapping_block(harness)
+            roles = mapping_block(harness, name)
+            if roles:
+                block += "\n\n" + roles
         body = insert_after_h1(body, block)
 
     if name == "my-software-design-doc":
@@ -125,7 +137,7 @@ def adapt_body(name: str, body: str, harness: str) -> str:
 
     if name == "my-review-changes" and harness == "claude":
         body = body.replace(
-            mapping_block("claude"),
+            mapping_block("claude", name),
             "## Harness role\n\nClaude Code frontmatter already runs this workflow in the bundled `review` subagent; do not delegate again.",
             1,
         )
@@ -344,8 +356,8 @@ Fresh independent read-only review. Load every requested review skill, never edi
     (rroot / "software-skills-runtime.md").write_text('''# Software Skills Runtime Rules
 
 - `./.agents/tmp/` is ephemeral runtime state; never stage, commit, or review it.
-- Grill state: `./.agents/tmp/grill/`.
-- Direct implementation state: `./.agents/tmp/implementation/`.
+- Full-path grill ledger: `./.agents/tmp/grill/`.
+- Direct implementation ledger: `./.agents/tmp/implementation/`.
 - Explicit workflows live in `.agents/workflows/`; `my-software-design-doc` remains a semantic skill.
 - Use `.agents/agents.md` when a workflow requests `@explore`, `@develop`, or `@review`.
 ''', encoding="utf-8")

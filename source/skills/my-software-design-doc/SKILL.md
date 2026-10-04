@@ -4,7 +4,7 @@ description: Create or review software design documents, discovering repository 
 license: MIT
 compatibility: Canonical multi-harness source; use scripts/build.py to generate native profiles.
 metadata:
-  version: "2.2.0"
+  version: "2.5.1"
 ---
 
 # Software Design Documentation

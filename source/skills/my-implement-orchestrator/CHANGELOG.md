@@ -1,5 +1,15 @@
 # Changelog — my-implement-orchestrator
 
+## 2.5.0 — 2026-10-03
+
+- Replaced the invalid dependency on user-only `implement` with Matt Pocock's model-invokable `tdd`.
+- Replaced the custom ticket review stage with Matt Pocock's `code-review`.
+- Added a mandatory `develop -> code-review -> fix -> new code-review` loop; no commit is allowed after fixes until a subsequent clean review.
+
+## 2.3.0 — 2026-10-03
+
+- Package version synchronized with the grill-to-SPEC workflow update; no skill-specific behavior change.
+
 ## 2.2.0 — 2026-10-03
 
 - Removed the generated skill registry and switched routing to native harness skill discovery.

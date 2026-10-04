@@ -264,7 +264,7 @@ npx --yes github:cceglia/software-skills#main
 Tag:
 
 ```bash
-npx --yes github:cceglia/software-skills#v2.2.0
+npx --yes github:cceglia/software-skills#v2.5.0
 ```
 
 Commit SHA:
@@ -376,24 +376,86 @@ Codex and Antigravity both use `.agents/skills` as their documented project-leve
 
 This prevents two different generated `SKILL.md` files from overwriting each other.
 
-## Runtime state
+## Matt Pocock dependency
 
-All harnesses use:
+These workflows compose Matt Pocock's skills instead of duplicating them. Install Matt's set in the harness you use:
 
-```text
-./.agents/tmp/grill/<plan-slug>.md
-./.agents/tmp/implementation/<work-slug>.md
+```bash
+npx skills add mattpocock/skills
 ```
 
-The workflows use `./.agents/tmp/` only for resumable runtime state and never include it in commits or code reviews. Skill selection uses each harness's native discovery; there is no generated skill registry.
+Run `setup-matt-pocock-skills` once per repository so `docs/agents/issue-tracker.md` identifies the canonical tracker. `to-spec` and `to-tickets` own their output locations. With Matt's local-markdown tracker, the SPEC is `.scratch/<feature>/spec.md` and tickets are `.scratch/<feature>/issues/<NN>-<slug>.md`; with GitHub/GitLab/Linear or another configured tracker, they are native tracker issues. `./.agents/tmp/` contains only resumable workflow ledgers.
 
-By default the installer tries to add this rule to the repository-local Git exclude:
+### Full path
+
+```text
+my-grill-to-spec
+  -> grill-with-docs
+  -> .agents/tmp/grill/<slug>.md        (resumable decision ledger)
+  -> to-spec
+  -> canonical SPEC in configured tracker
+  -> fresh independent SPEC review
+  -> STOP
+
+my-spec-to-tickets
+  -> to-tickets
+  -> canonical tickets in configured tracker
+  -> STOP
+
+my-implement-orchestrator
+  -> develop + tdd
+  -> code-review
+  -> (develop fix + tdd -> new code-review)*
+  -> scoped commit + tracker finalization
+```
+
+`my-grill-to-spec` never delegates SPEC authorship to a subagent: `to-spec` owns synthesis and publishing. A fresh `review` role is used only after the canonical SPEC exists, and the workflow stops after approval.
+
+Matt's `implement` and `implement-spec` are user-invoked upstream skills (`disable-model-invocation: true`), so `my-implement-orchestrator` does not pretend to call them. It composes the model-invokable primitives they rely on: `tdd` for develop/fix passes and `code-review` for every acceptance gate. Every fix must be followed by a new code review before commit.
+
+### Light path
+
+```text
+my-grill-to-implementation
+  -> grill-with-docs
+  -> .agents/tmp/implementation/<slug>.md
+  -> explore
+  -> develop + tdd
+  -> fresh review
+  -> (develop fix -> fresh review)*
+  -> one scoped commit
+```
+
+`my-grill-to-plan` and `my-plan-to-spec` no longer exist. `my-spec-to-tickets` remains intentionally thin around Matt's `to-tickets`.
+
+## Runtime state and resume
+
+All generated workflow state lives under:
+
+```text
+./.agents/tmp/
+├── grill/<slug>.md
+└── implementation/<slug>.md
+```
+
+Both ledgers survive context exhaustion. Reinvoke the same workflow with the ledger path:
+
+```text
+/my-grill-to-spec ./.agents/tmp/grill/<slug>.md
+/my-grill-to-implementation ./.agents/tmp/implementation/<slug>.md
+```
+
+Each workflow checkpoints material decisions and phase/subagent boundaries and records `Next action`. A fresh session reads the ledger first and reconciles external state before resuming side-effecting work.
+
+Skill selection during development uses each harness's native discovery; there is no generated skill registry. Workflows never include `./.agents/tmp/` in commits or code reviews.
+
+By default the installer adds this repository-local Git exclude rule when possible:
 
 ```text
 /.agents/tmp/
 ```
 
-It uses `.git/info/exclude` rather than changing the project's `.gitignore`.
+It edits `.git/info/exclude`, not the project's versioned `.gitignore`.
 
 ## Existing files and `--force`
 

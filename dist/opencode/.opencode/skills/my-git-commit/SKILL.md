@@ -5,7 +5,7 @@ license: MIT
 compatibility: OpenCode V2; explicit slash invocation only.
 slash: true
 metadata:
-  version: "2.2.0"
+  version: "2.5.1"
   opencode/autoinvoke: false
   opencode/slash: true
 ---

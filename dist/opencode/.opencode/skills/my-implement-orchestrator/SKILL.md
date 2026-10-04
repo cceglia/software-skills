@@ -1,11 +1,11 @@
 ---
 name: my-implement-orchestrator
-description: Implement approved tracker tickets one at a time with native skill discovery, independent review, task-scoped commits, and tracker finalization.
+description: Implement approved tracker tickets with develop/TDD, repeated Matt Pocock code-review gates, scoped commits, and tracker finalization.
 license: MIT
 compatibility: OpenCode V2; explicit slash invocation only.
 slash: true
 metadata:
-  version: "2.2.0"
+  version: "2.5.1"
   opencode/autoinvoke: false
   opencode/slash: true
 ---
@@ -20,73 +20,32 @@ Treat command/skill arguments plus immediately relevant conversation context as 
 
 ## Harness roles
 
-Use OpenCode V2 child sessions: built-in `explore` plus bundled `develop` and `review`.
+Use OpenCode V2 child-session roles: `develop`.
 
-Implement approved work items from the invocation input. Never invent missing requirements.
+Implement approved tracker work without inventing requirements. Require Matt Pocock's `tdd` and `code-review`; if missing, return `BLOCKED`. Matt's `implement` and `implement-spec` are user-only upstream skills, so this orchestrator composes their model-invokable primitives instead.
 
-## Setup
-
-Read repository instructions and `docs/agents/issue-tracker.md`; if tracker configuration is unusable, ask the user to run `setup-matt-pocock-skills`. Use configured triage-label strings only.
-
-Use exactly one active subagent. The orchestrator resolves work, selects skills, tracks reports, commits, and finalizes tracker items; it does not implement or review application code itself.
-
-Before implementation, ask for a positive integer `MAX_REVIEW_CYCLES` and keep it fixed for the run.
+Read repository instructions and `docs/agents/issue-tracker.md`. Before implementation, obtain a positive integer `MAX_REVIEW_CYCLES` and keep it fixed.
 
 Per ticket:
 
 ```text
-develop → review → (develop fix → review)* → commit → tracker finalization
+develop(tdd) → code-review → (develop fix(tdd) → code-review)* → commit → tracker finalization
 ```
 
-Do not start the next ticket before finalization of the current one is attempted.
+Process ready tickets one at a time in dependency order; a ticket's referenced SPEC is normative for requirements, decisions, acceptance criteria, and agreed test seams.
 
-## 1. Resolve tickets
+## Develop
 
-Use the configured tracker workflow. For each ticket, resolve the authoritative SPEC and dependencies. Block when the SPEC/reference is missing or dependencies are unresolved/cyclic.
+Run a fresh harness-native `develop` role with ticket/SPEC pointers and relevant repository context. Require it to load `tdd` plus the smallest sufficient discovered skills, use only pre-agreed test seams, preserve unrelated changes, validate its work, report loaded/missing skills and changed files, and never commit or rewrite git history. Missing required skills or a newly exposed product/domain decision blocks the ticket.
 
-The ticket defines implementation scope; the referenced SPEC defines normative requirements, decisions, ACs, and tests. Process ready tickets one at a time in dependency order.
+## Review loop
 
-## 2. Select skills
+After every develop/fix pass, invoke Matt's `code-review` against the ticket's fixed starting revision and the authoritative SPEC/ticket context. Treat blocking Standards or Spec findings as `CHANGES_REQUIRED`; a blocked review is `BLOCKED`; otherwise the cycle is approved.
 
-Use the **active harness's native skill discovery**. For each develop/fix/review stage, choose the smallest sufficient set from ticket/SPEC scope, repository instructions, language/framework, affected files/tests, and relevant domain/security/performance concerns.
+On `CHANGES_REQUIRED`, persist only the blocking findings, run a fresh `develop` fix pass, validate, then run a **new `code-review`**. Repeat until approved or `MAX_REVIEW_CYCLES` is exhausted. Never commit after fixes without a clean subsequent review.
 
-Mandatory skills:
+## Commit and finalize
 
-- develop/fix: `implement`;
-- review: `code-review`.
+After approval, create exactly one task-scoped commit containing only ticket-related changes and excluding `./.agents/tmp/`. Preserve unrelated work and block if the boundary cannot be isolated safely. Then finalize/update the ticket through the configured tracker; do not report completion if finalization fails.
 
-Do not invent skill names or load unrelated workflow/delegation skills. Pass the exact selected names to the target worker. The worker must load every listed skill before acting and report `SKILLS_LOADED` / `SKILLS_NOT_LOADED`; any missing required skill blocks that stage.
-
-## 3. Develop and review
-
-Run one fresh `develop` role with ticket/SPEC scope, covered SPEC IDs, selected skills, repository context, and any review findings. Require it to preserve unrelated changes, validate its work, report changed files/results/blockers, and never commit or mutate git history.
-
-After each develop/fix, run one fresh independent read-only `review` role against the ticket, SPEC, authored changes, validation evidence, prior findings, cycle number, and selected review skills.
-
-Require:
-
-```text
-VERDICT: APPROVED | CHANGES_REQUIRED | BLOCKED
-SUMMARY: ...
-SKILLS_LOADED: ...
-SKILLS_NOT_LOADED: ...
-BLOCKING_CODE_FINDINGS: id, severity, location, problem, required change, evidence
-NON_BLOCKING_CODE_NOTES: ...
-CODE_VALIDATION: ...
-REVIEWED_CODE_FILES: ...
-APPROVED_CODE_FILES: ...
-```
-
-For `CHANGES_REQUIRED`, recalculate fix skills and run a new develop→review cycle while cycles remain. Block on reviewer `BLOCKED`, exhausted cycles, or the same blocking finding surviving two fixes. Never commit without `APPROVED`.
-
-## 4. Commit and finalize
-
-After approval, inspect the complete working tree. Create exactly one task-scoped commit containing all and only ticket-related changes; always exclude `./.agents/tmp/` and preserve unrelated work. Block if the task boundary cannot be isolated safely. Do not use automatic closing keywords.
-
-Immediately finalize/update the ticket through the configured tracker. If finalization fails, record it and do not report the ticket as completed.
-
-## Report
-
-Report tracker, `MAX_REVIEW_CYCLES`, resolved tickets/SPECs, selected and loaded skills, review cycles, validations/findings, approved files, commit hash/subject, tracker-finalization result, and blockers.
-
-A ticket is `completed` only when independently approved, task changes are committed without unrelated files, and required tracker finalization succeeds.
+Report ticket/SPEC references, review cycles, validation, commit, tracker result, and blockers.

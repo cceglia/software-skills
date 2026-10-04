@@ -1,26 +1,20 @@
-# Validation report — 2.2.0
+# Validation report — 2.5.1
 
-Validated on 2026-10-03.
+Validated on 2026-10-04.
 
-Commands:
+## Passed
 
-```bash
-python3 scripts/build.py
-python3 scripts/validate.py
-npm test
-npm pack --dry-run
-```
+- root `AGENTS.md` is present and contains the required maintenance invariants;
+- 10 canonical skills; 9 explicit workflows;
+- OpenCode V2, Codex, Claude Code, Antigravity, and shared `.agents` profiles build successfully;
+- `my-grill-to-implementation` maps `explore`, `develop`, and `review` and requires Matt Pocock's `tdd` for develop/fix passes;
+- `my-grill-to-spec` keeps only a resumable ledger under `.agents/tmp`, delegates canonical SPEC ownership to `to-spec`, uses a fresh post-publish reviewer, and stops before tickets;
+- `my-spec-to-tickets` remains a thin `to-tickets` wrapper;
+- `my-implement-orchestrator` requires `tdd` + `code-review` and enforces `develop -> review -> fix -> new review` before commit;
+- no generated `skills.json`; runtime state stays under `./.agents/tmp/`;
+- installer tests passed;
+- `npm pack --dry-run` includes `AGENTS.md`, the generated native profiles, and hidden harness directories.
 
-Expected result: 11 canonical skills, 10 explicit workflows, four native harness profiles, and one shared `.agents/skills` profile.
+## Upstream invocation constraint
 
-Validated invariants:
-
-- `my-update-skills-list` is absent from source and generated distributions;
-- no generated `skills.json` registry exists;
-- skill routing uses native harness discovery and workers report loaded/missing skills;
-- runtime state is limited to `./.agents/tmp/grill/` and `./.agents/tmp/implementation/`;
-- commits/reviews exclude `./.agents/tmp/`;
-- OpenCode, Codex, Claude Code, and Antigravity native integration files are generated;
-- shared `.agents/skills` remains standards-compliant;
-- canonical/generated skill files remain under 250 lines;
-- installer collision/overwrite behavior and `/.agents/tmp/` Git exclude are tested.
+Matt Pocock currently marks `grill-with-docs`, `to-spec`, `to-tickets`, `implement`, and `implement-spec` as user-invoked. Strict harnesses may therefore reject nested invocation of those user-only skills from another skill. This repository does not patch third-party skill invocation policy. `my-implement-orchestrator` avoids that problem by composing Matt's model-invokable `tdd` and `code-review` primitives.

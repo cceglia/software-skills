@@ -13,7 +13,7 @@ Treat command/skill arguments plus immediately relevant conversation context as 
 
 ## Harness roles
 
-Use `.agents/agents.md`: `@explore`, `@develop`, and `@review`.
+Use roles from `.agents/agents.md`: `review`.
 
 Resolve scope from the invocation input. Explicit paths/globs/directories limit the review; empty input means staged, unstaged, and untracked working-tree changes.
 

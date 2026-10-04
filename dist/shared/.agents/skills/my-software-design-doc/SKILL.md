@@ -4,7 +4,7 @@ description: Create or review software design documents, discovering repository 
 license: MIT
 compatibility: Shared Agent Skills profile for Codex, Claude Code, OpenCode V2, and Antigravity; native support files install separately.
 metadata:
-  version: "2.2.0"
+  version: "2.5.1"
 ---
 
 # Software Design Documentation

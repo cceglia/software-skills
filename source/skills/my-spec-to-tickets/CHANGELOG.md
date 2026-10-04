@@ -1,5 +1,17 @@
 # Changelog — my-spec-to-tickets
 
+## 2.5.0 — 2026-10-03
+
+- Clarified that `to-tickets` owns ticket decomposition and tracker destination and that this wrapper stops before implementation.
+
+## 2.4.0 — 2026-10-03
+
+- Replaced local ticket decomposition logic with a thin delegation to Matt Pocock's `to-tickets`.
+
+## 2.3.0 — 2026-10-03
+
+- Package version synchronized with the grill-to-SPEC workflow update; no skill-specific behavior change.
+
 ## 2.2.0 — 2026-10-03
 
 - Removed the generated skill registry and switched routing to native harness skill discovery.

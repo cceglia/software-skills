@@ -4,7 +4,7 @@ description: Explicit-only workflow. Commit all project changes except ephemeral
 license: MIT
 compatibility: Shared Agent Skills profile for Codex, Claude Code, OpenCode V2, and Antigravity; native support files install separately.
 metadata:
-  version: "2.2.0"
+  version: "2.5.1"
   opencode/autoinvoke: "false"
   opencode/slash: "true"
 ---

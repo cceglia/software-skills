@@ -7,7 +7,7 @@ disable-model-invocation: true
 user-invocable: true
 argument-hint: "[optional context]"
 metadata:
-  version: "2.2.0"
+  version: "2.5.1"
 ---
 
 # my-git-commit

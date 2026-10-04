@@ -1,14 +1,14 @@
 {
-  "version": "2.2.0",
-  "canonical_skills": 11,
-  "manual_workflows": 10,
+  "version": "2.5.0",
+  "canonical_skills": 10,
+  "manual_workflows": 9,
   "semantic_skills": [
     "my-software-design-doc"
   ],
   "runtime_state": {
     "root": "./.agents/tmp/",
-    "grill": "./.agents/tmp/grill/<plan-slug>.md",
-    "implementation": "./.agents/tmp/implementation/<work-slug>.md"
+    "grill": "./.agents/tmp/grill/<slug>.md",
+    "implementation": "./.agents/tmp/implementation/<slug>.md"
   },
   "skill_routing": "native harness discovery; no generated registry",
   "profiles": {
@@ -82,6 +82,27 @@
       "--git-exclude",
       "--help",
       "--version"
+    ]
+  },
+  "external_dependencies": {
+    "my-grill-to-spec": [
+      "mattpocock/skills:grill-with-docs",
+      "mattpocock/skills:grilling",
+      "mattpocock/skills:domain-modeling",
+      "mattpocock/skills:to-spec"
+    ],
+    "my-grill-to-implementation": [
+      "mattpocock/skills:grill-with-docs",
+      "mattpocock/skills:grilling",
+      "mattpocock/skills:domain-modeling",
+      "mattpocock/skills:tdd"
+    ],
+    "my-spec-to-tickets": [
+      "mattpocock/skills:to-tickets"
+    ],
+    "my-implement-orchestrator": [
+      "mattpocock/skills:tdd",
+      "mattpocock/skills:code-review"
     ]
   }
 }

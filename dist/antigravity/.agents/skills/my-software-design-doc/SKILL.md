@@ -4,7 +4,7 @@ description: Create or review software design documents, discovering repository 
 license: MIT
 compatibility: Google Antigravity / Antigravity IDE; semantic on-demand skill.
 metadata:
-  version: "2.2.0"
+  version: "2.5.1"
 ---
 
 # Software Design Documentation

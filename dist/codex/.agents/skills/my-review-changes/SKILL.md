@@ -4,7 +4,7 @@ description: Independently review specified modified files or the current workin
 license: MIT
 compatibility: Codex with native Agent Skills sidecars and project agents.
 metadata:
-  version: "2.2.0"
+  version: "2.5.1"
 ---
 
 # my-review-changes
@@ -17,7 +17,7 @@ Treat command/skill arguments plus immediately relevant conversation context as 
 
 ## Harness roles
 
-Use project agents in `.codex/agents/`: `explore`, `develop`, and `review`.
+Use project agents in `.codex/agents/`: `review`.
 
 Resolve scope from the invocation input. Explicit paths/globs/directories limit the review; empty input means staged, unstaged, and untracked working-tree changes.
 

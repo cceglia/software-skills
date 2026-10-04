@@ -1,13 +1,13 @@
 ---
 name: my-grill-to-implementation
-description: Grill a change, persist decisions, implement it after explicit approval, independently review it, and create one task-scoped commit.
+description: Grill a small change, keep a resumable implementation ledger, then explore, develop with Matt Pocock's tdd, independently review, fix, and commit it in one workflow.
 license: MIT
 compatibility: Claude Code with native skill controls and project subagents.
 disable-model-invocation: true
 user-invocable: true
 argument-hint: "[change request | .agents/tmp/implementation state]"
 metadata:
-  version: "2.2.0"
+  version: "2.5.1"
 ---
 
 # my-grill-to-implementation
@@ -20,66 +20,23 @@ Treat `$ARGUMENTS` plus immediately relevant conversation context as the invocat
 
 ## Harness roles
 
-Use project agents in `.claude/agents/`: `explore`, `develop`, and `review`.
+Use project agents in `.claude/agents/`: `explore`, `develop`, `review`.
 
-Use this lightweight workflow when a change needs explicit design decisions but not a SPEC/ticket pipeline. Do not create a SPEC or tracker tickets.
+Use this light path only when SPEC/tickets would add unnecessary ceremony. Require Matt Pocock's `grill-with-docs` and `tdd`; use harness-native `explore`, `develop`, and fresh independent `review` roles.
 
-Use at most one active subagent. Load `grilling` and `domain-modeling` for design, `implement` before coding, and `code-review` in a fresh independent `review` role. Select any additional skills through the active harness's native skill discovery; never invent skill names. A worker must load every skill passed to it and block if a required skill cannot be loaded.
+## Ledger
 
-## State
+Maintain one resumable ledger at `./.agents/tmp/implementation/<slug>.md` containing only current truth: status, scope/decisions, constraints, repository evidence, agreed test seams, ordered slices/progress, starting revision, changed files, validation, review cycles/findings, commit, and `Next action`.
 
-Maintain exactly one resumable file:
+Statuses: `grilling | ready-for-implementation | exploring | developing | reviewing | blocked | completed`.
 
-```text
-./.agents/tmp/implementation/<work-slug>.md
-```
+On resume, read the ledger first and reconcile with branch/HEAD/working tree. Ledger is authoritative for intent; git/filesystem for existing code. Checkpoint after every material grill round, subagent result, review result, and phase boundary.
 
-Keep it concise and current. Track only: status, implementation approval, goal/scope, resolved decisions, constraints/invariants, relevant repository evidence, rejected alternatives, open questions, validation seams, ordered implementation slices/progress, review cycle/findings, starting branch/revision, commit, and next action.
+## Workflow
 
-Statuses: `grilling | ready-for-implementation | implementing | reviewing | blocked | completed`.
-
-Resolve resume state by explicit path, then unambiguous slug/title, then the only non-terminal state. If multiple states are plausible, stop instead of guessing. On resume, reconcile state with branch/HEAD/working tree; state is authoritative for intent, git/filesystem for existing code.
-
-## 1. Grill
-
-Read relevant repository instructions/domain docs. Inspect directly when small; use read-only `explore` for broad discovery. Distinguish repository facts from user decisions, resolve domain language, persist durable domain knowledge/ADRs only when warranted, identify validation seams, and produce ordered testable slices.
-
-When no blocking design question remains, persist:
-
-```text
-Status: ready-for-implementation
-Implementation approval: pending
-```
-
-Show the slices and ask for explicit approval, then end the turn. Never start implementation without recorded approval. A material later change to scope/architecture/constraints resets approval to `pending`.
-
-## 2. Implement
-
-After approval, record starting branch/revision, inspect the working tree, preserve unrelated changes, set `Status: implementing`, and implement one slice at a time. Validate each slice narrowly, persist results, then run the full relevant validation after all slices.
-
-If implementation exposes a new material product/domain decision, return to grilling instead of guessing.
-
-## 3. Review
-
-Set `Status: reviewing` and run a fresh read-only `review` role with `code-review`, the state file, starting revision/current diff, authored files, validation results, and prior findings.
-
-Require:
-
-```text
-VERDICT: APPROVED | CHANGES_REQUIRED | BLOCKED
-SUMMARY: ...
-SKILLS_LOADED: ...
-SKILLS_NOT_LOADED: ...
-BLOCKING_CODE_FINDINGS: id, severity, location, problem, required change, evidence
-NON_BLOCKING_CODE_NOTES: ...
-VALIDATION_CHECK: ...
-REVIEWED_CODE_FILES: ...
-```
-
-Persist the result before acting. Maximum 3 review cycles. On `CHANGES_REQUIRED`, fix only blocking findings, validate, and run a fresh review. Block on reviewer `BLOCKED`, exhausted cycles, repeated blocker, unavailable decision, or missing required skill.
-
-## 4. Commit
-
-Only after `APPROVED`, create exactly one task-scoped commit containing only this work. Always exclude `./.agents/tmp/` and preserve unrelated changes. If the task boundary cannot be isolated, block instead of making a mixed commit.
-
-Record the commit, set `Status: completed`, and report the outcome concisely.
+1. Invoke `grill-with-docs`; update the ledger after each material round. When decisions and test seams are settled, record ordered testable slices, set `ready-for-implementation`, and obtain explicit implementation approval.
+2. Run read-only `explore`; persist only implementation-relevant evidence.
+3. Run `develop` with the ledger/evidence and require it to load `tdd` plus the smallest sufficient discovered skills. It implements the slices without committing, preserves unrelated changes, validates narrowly while working and fully at the end, and reports loaded/missing skills, changed files, validation, and blockers.
+4. Run a **fresh** read-only `review` against the complete task diff, ledger, and validation evidence. Require `VERDICT: APPROVED | CHANGES_REQUIRED | BLOCKED` plus blocking findings.
+5. On `CHANGES_REQUIRED`, persist findings, run a new `develop` fix pass, validate, then run another fresh review. Maximum 3 review cycles; never approve by self-review.
+6. After approval create exactly one task-scoped commit, excluding `./.agents/tmp/`; preserve unrelated changes. Record the commit, set `completed`, and stop.

@@ -13,7 +13,7 @@ Treat command/skill arguments plus immediately relevant conversation context as 
 
 ## Harness roles
 
-Use `.agents/agents.md`: `@explore`, `@develop`, and `@review`.
+Use roles from `.agents/agents.md`: `explore`, `develop`.
 
 Improve comments/documentation and logical blank-line spacing in the invocation scope; empty scope means the repository. Exclude generated, vendored/third-party, build-artifact, and non-manually-maintained files.
 

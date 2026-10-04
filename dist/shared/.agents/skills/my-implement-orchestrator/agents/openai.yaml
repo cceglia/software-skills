@@ -1,7 +1,7 @@
 interface:
   display_name: "Implementation Orchestrator"
-  short_description: "Implement approved tickets with review cycles"
-  default_prompt: "Use $my-implement-orchestrator to implement approved work items with native skill discovery and independent review."
+  short_description: "Implement tickets with repeated TDD and code-review gates"
+  default_prompt: "Use $my-implement-orchestrator to implement approved tickets with develop/TDD, repeated Matt Pocock code-review gates, scoped commits, and tracker finalization."
 policy:
   products:
     - CODEX

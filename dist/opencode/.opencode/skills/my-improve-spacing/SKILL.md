@@ -5,7 +5,7 @@ license: MIT
 compatibility: OpenCode V2; explicit slash invocation only.
 slash: true
 metadata:
-  version: "2.2.0"
+  version: "2.5.1"
   opencode/autoinvoke: false
   opencode/slash: true
 ---
@@ -20,7 +20,7 @@ Treat command/skill arguments plus immediately relevant conversation context as 
 
 ## Harness roles
 
-Use OpenCode V2 child sessions: built-in `explore` plus bundled `develop` and `review`.
+Use OpenCode V2 child-session roles: `explore`, `develop`.
 
 Improve logical blank-line spacing in the invocation scope; empty scope means the repository. Exclude generated, vendored/third-party, build-artifact, and non-manually-maintained files.
 

@@ -7,7 +7,7 @@ disable-model-invocation: true
 user-invocable: true
 argument-hint: "[scope]"
 metadata:
-  version: "2.2.0"
+  version: "2.5.1"
 ---
 
 # my-improve-spacing
@@ -20,7 +20,7 @@ Treat `$ARGUMENTS` plus immediately relevant conversation context as the invocat
 
 ## Harness roles
 
-Use project agents in `.claude/agents/`: `explore`, `develop`, and `review`.
+Use project agents in `.claude/agents/`: `explore`, `develop`.
 
 Improve logical blank-line spacing in the invocation scope; empty scope means the repository. Exclude generated, vendored/third-party, build-artifact, and non-manually-maintained files.
 

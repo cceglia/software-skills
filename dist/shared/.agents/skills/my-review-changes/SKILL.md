@@ -4,7 +4,7 @@ description: Explicit-only workflow. Independently review specified modified fil
 license: MIT
 compatibility: Shared Agent Skills profile for Codex, Claude Code, OpenCode V2, and Antigravity; native support files install separately.
 metadata:
-  version: "2.2.0"
+  version: "2.5.1"
   opencode/autoinvoke: "false"
   opencode/slash: "true"
 ---
@@ -19,7 +19,7 @@ Treat command/skill arguments plus immediately relevant conversation context as 
 
 ## Harness roles
 
-Use the active harness's installed `explore`, `develop`, and `review` support roles.
+Use the active harness's installed support roles: `review`.
 
 Resolve scope from the invocation input. Explicit paths/globs/directories limit the review; empty input means staged, unstaged, and untracked working-tree changes.
 
