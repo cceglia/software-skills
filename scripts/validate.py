@@ -8,7 +8,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "source" / "skills"
 DIST = ROOT / "dist"
-VERSION = "4.0.0"
+VERSION = "4.1.0"
 EXPECTED = {
     "my-grill-to-implementation",
     "my-improve-code",
@@ -105,7 +105,7 @@ def validate_source() -> None:
     if "./.agents/tmp/implementation/" not in text:
         fail("canonical source missing runtime path ./.agents/tmp/implementation/")
     light = read(SRC / "my-grill-to-implementation" / "SKILL.md")
-    for token in ("grill-with-docs", "`tdd`", "exploration", "development", "fresh** read-only review", "./.agents/tmp/implementation/", "Next action"):
+    for token in ("grill-with-docs", "`tdd`", "exploration", "development", "fresh** read-only review", "./.agents/tmp/implementation/", "Next action", "develop(tdd) -> validation green -> commit", "new fresh review", "never create worktrees", "pull requests", "starting revision", "Run subagents sequentially", "different repositories"):
         if token not in light:
             fail(f"my-grill-to-implementation missing light-flow invariant: {token}")
 
@@ -136,6 +136,7 @@ def validate_agents_md() -> None:
         "source/skills/",
         "./.agents/tmp/",
         "my-grill-to-implementation",
+        "develop(tdd) -> validation green -> commit",
         "Removed in 4.0.0",
         "my-update-skills-list",
         "my-plan-to-spec",

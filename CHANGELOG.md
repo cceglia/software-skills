@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.1.0 — 2026-10-05 (`claude` branch)
+
+- `my-grill-to-implementation`: per-slice `develop(tdd) -> validation green -> commit`, then one fresh review of the whole change with `fix -> commit -> new fresh review` cycles (max 3). Intermediate reviews after high-risk slices are optional.
+- `my-grill-to-implementation` works only in the current checkout: no worktrees, branches, pull requests, or pushes; subagents run sequentially, in parallel only across different repositories.
+
 ## 4.0.0 — 2026-10-05 (`claude` branch)
 
 - Removed `my-grill-to-spec`, `my-spec-to-tickets`, `my-implement-orchestrator`, `my-review-changes`, and `my-git-commit`: use Matt Pocock's skills directly (`grill-with-docs`, `to-spec`, `to-tickets`, `implement` / `implement-spec`, `code-review`).

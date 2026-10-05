@@ -1,5 +1,11 @@
 # Changelog — my-grill-to-implementation
 
+## 4.1.0 — 2026-10-05
+
+- Each slice is developed with `tdd` by a fresh subagent and committed after green tests/typecheck; one fresh review of the whole change runs at the end, followed by fix -> commit -> new review cycles (max 3).
+- Optional intermediate review after high-risk slices, at the agent's discretion.
+- Works only in the current checkout: no worktrees, branches, pull requests, or pushes. Subagents run sequentially; parallelism only across different repositories.
+
 ## 4.0.0 — 2026-10-05
 
 - Package version synchronized with the removal of workflows now covered by Matt Pocock's skills; no skill-specific behavior change.

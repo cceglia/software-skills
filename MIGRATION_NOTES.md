@@ -1,5 +1,9 @@
 # Migration notes
 
+## 4.1.0 (`claude` branch)
+
+- `my-grill-to-implementation` now creates one commit per slice instead of a single commit after approval, and reviews the whole change once at the end. Ledgers from earlier versions record a single final commit; on resume, the workflow reconciles them with the current HEAD and continues with the new flow.
+
 ## 4.0.0 (`claude` branch)
 
 - `my-grill-to-spec`, `my-spec-to-tickets`, `my-implement-orchestrator`, `my-review-changes`, and `my-git-commit` were removed; use Matt Pocock's `grill-with-docs`, `to-spec`, `to-tickets`, `implement` / `implement-spec`, and `code-review` directly.

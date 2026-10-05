@@ -1,5 +1,9 @@
 # Changelog — my-improve-code
 
+## 4.1.0 — 2026-10-05
+
+- Package version synchronized with the `my-grill-to-implementation` flow update; no skill-specific behavior change.
+
 ## 4.0.0 — 2026-10-05
 
 - Package version synchronized with the removal of workflows now covered by Matt Pocock's skills; no skill-specific behavior change.

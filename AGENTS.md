@@ -25,7 +25,14 @@ Skills delegate responsibilities (exploration, development, review) but never na
 
 ### `my-grill-to-implementation`
 
-This is the light path for changes that do not justify SPEC + tickets. Use `grill-with-docs`, keep one resumable implementation ledger, then delegate `exploration -> development -> fresh review` to subagents. Development/fix passes use Matt Pocock's `tdd`. On findings, run a new development fix pass followed by a new fresh review. Commit only after approval.
+This is the light path for changes that do not justify SPEC + tickets. Use `grill-with-docs`, keep one resumable implementation ledger, delegate exploration, then:
+
+```text
+per slice:  develop(tdd) -> validation green -> commit
+at the end: fresh review -> (develop fix(tdd) -> commit -> new fresh review)* -> completed
+```
+
+Every fix requires a subsequent clean fresh review before `completed`; fixes are committed first because the review diffs committed history from the recorded starting revision. An intermediate review after a high-risk slice is optional, at the agent's discretion. Work only in the current checkout: no worktrees, branches, pull requests, or pushes. Subagents run sequentially; parallelism is allowed only across different repositories. Never approve by self-review.
 
 ## Deliberately removed workflows
 

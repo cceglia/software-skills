@@ -1,4 +1,4 @@
-# Validation report — 4.0.0 (`claude` branch)
+# Validation report — 4.1.0 (`claude` branch)
 
 Validated on 2026-10-05.
 
@@ -10,7 +10,7 @@ Validated on 2026-10-05.
 - `dist/` contains only the Claude Code profile (`dist/skills/`);
 - no generated skill uses `agent:`/`context:` frontmatter, names a subagent type, or references `.claude/agents`;
 - every delegating skill carries the generated "never prescribe a subagent type" block;
-- `my-grill-to-implementation` delegates exploration, development (with Matt Pocock's `tdd`), and a fresh review to subagents;
+- `my-grill-to-implementation` delegates exploration and per-slice development (with Matt Pocock's `tdd`), commits each slice after green validation, and gates the whole change with a final fresh review and fix -> commit -> new review cycles; no worktrees, PRs, or pushes;
 - installer tests passed for project scope, global scope (`~/.claude` and `$CLAUDE_CONFIG_DIR`), `--force`, `--dry-run`, leftover skill/agent notices, and git exclude;
 - `npm pack --dry-run` includes `AGENTS.md` and `dist/skills/`.
 

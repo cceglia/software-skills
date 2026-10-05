@@ -122,7 +122,7 @@ The installer only writes skill files. It never deletes anything; if it finds sk
 
 | Skill | Invocation | Purpose |
 | --- | --- | --- |
-| `my-grill-to-implementation` | `/my-grill-to-implementation` | Light path: grill, explore, develop with `tdd`, review, commit |
+| `my-grill-to-implementation` | `/my-grill-to-implementation` | Light path: grill, explore, implement and commit every slice with `tdd`, then a final review with fix/review cycles |
 | `my-improve-code` | `/my-improve-code` | Improve comments and spacing without behavior changes |
 | `my-improve-comments` | `/my-improve-comments` | Improve comments/documentation only |
 | `my-improve-spacing` | `/my-improve-spacing` | Improve logical blank-line spacing only |
@@ -155,11 +155,17 @@ my-grill-to-implementation
   -> grill-with-docs
   -> .agents/tmp/implementation/<slug>.md
   -> exploration subagent
-  -> development subagent + tdd
-  -> fresh review subagent
-  -> (development fix -> fresh review)*
-  -> one scoped commit
+  per slice:
+    -> development subagent + tdd
+    -> tests/typecheck green
+    -> one commit
+  at the end:
+    -> fresh review subagent (diff since the starting revision)
+    -> (development fix + tdd -> commit -> new fresh review)*
+    -> completed
 ```
+
+It works only in the current checkout (no worktrees, branches, pull requests, or pushes) and runs subagents sequentially, in parallel only across different repositories. An intermediate review after a high-risk slice is optional.
 
 ## Runtime state and resume
 
