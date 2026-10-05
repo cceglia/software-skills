@@ -1,15 +1,19 @@
 # Repository guidance
 
-This file is the maintenance contract for future agents working on `software-skills`. Keep it concise. Do not duplicate the README, individual skills, or upstream Matt Pocock skill instructions.
+This file is the maintenance contract for future agents working on `software-skills` (`claude` branch: Claude Code only). Keep it concise. Do not duplicate the README, individual skills, or upstream Matt Pocock skill instructions.
 
 ## Architecture
 
 - `source/skills/` is the canonical source of truth. Never edit generated files under `dist/` directly.
-- `scripts/build.py` generates harness-specific profiles for Codex, Claude Code, OpenCode V2, Antigravity, and the shared `.agents` layout.
-- Prefer composition over reimplementation. Matt Pocock skills own their domain behavior; our skills add orchestration, resumability, stronger acceptance loops, and harness adaptation.
+- `scripts/build.py` generates the single Claude Code profile in `dist/skills/`.
+- `bin/software-skills.js` installs that profile into project `.claude/skills` or global `~/.claude/skills` (`$CLAUDE_CONFIG_DIR/skills` when set), asking interactively when `--scope` is missing.
+- Prefer composition over reimplementation. Matt Pocock skills own their domain behavior; our skills add orchestration, resumability, and stronger acceptance loops.
 - Keep skills short. Put a rule in the narrowest single place that owns it; do not repeat shared concepts across multiple skills.
-- Use the active harness's native skill discovery. Do not recreate `skills.json` or another persistent skill registry.
-- Harness-specific behavior belongs in generated adapters/support files, not in duplicated canonical workflow bodies.
+- Use Claude Code's native skill discovery. Do not recreate `skills.json` or another persistent skill registry.
+
+## Subagents
+
+Skills delegate responsibilities (exploration, development, review) but never name a subagent type: Claude Code chooses the subagent autonomously. Do not ship custom agents, `agent:`/`context: fork` frontmatter, or `subagent_type` instructions. The shared "never prescribe a subagent type" rule is appended once by `scripts/build.py` to every delegating skill.
 
 ## Runtime state
 
@@ -31,7 +35,7 @@ Remain a thin wrapper around Matt Pocock's `to-tickets`. Let upstream own decomp
 
 ### `my-grill-to-implementation`
 
-This is the light path for changes that do not justify SPEC + tickets. Use `grill-with-docs`, keep one resumable implementation ledger, then run explicit harness-native `explore -> develop -> fresh review`. Develop/fix passes use Matt Pocock's `tdd`. On findings, run a new develop fix pass followed by a new fresh review. Commit only after approval.
+This is the light path for changes that do not justify SPEC + tickets. Use `grill-with-docs`, keep one resumable implementation ledger, then delegate `exploration -> development -> fresh review` to subagents. Development/fix passes use Matt Pocock's `tdd`. On findings, run a new development fix pass followed by a new fresh review. Commit only after approval.
 
 ### `my-implement-orchestrator`
 
@@ -47,22 +51,14 @@ Every fix requires a subsequent clean `code-review`; never commit immediately af
 
 Do not reintroduce these unless the architecture is intentionally changed:
 
-- `my-update-skills-list` and `skills.json`: native harness discovery is the source of truth.
+- `my-update-skills-list` and `skills.json`: native skill discovery is the source of truth.
 - `my-grill-to-plan`: replaced by `my-grill-to-spec`.
 - `my-plan-to-spec`: the grill-to-SPEC workflow already composes `to-spec`.
+- Codex, OpenCode V2, Antigravity, and shared `.agents/skills` profiles: they live on `main`; this branch is Claude Code only.
 
 ## Upstream Matt Pocock constraints
 
-Respect upstream invocation policy. Some Matt Pocock workflows such as `grill-with-docs`, `to-spec`, `to-tickets`, `implement`, and `implement-spec` may be marked user-invoked only on strict harnesses. Do not silently patch or pretend those policies do not exist. `my-implement-orchestrator` intentionally composes the model-invokable `tdd` and `code-review` primitives instead of depending on user-only `implement`/`implement-spec`.
-
-## Harness invariants
-
-- Preserve native properties for Codex, Claude Code, OpenCode V2, and Antigravity instead of reducing all targets to a lowest-common-denominator `SKILL.md`.
-- Codex-specific skill metadata belongs in `agents/openai.yaml`; project agents belong in `.codex/agents/`.
-- Claude Code-specific invocation/context fields and project agents belong in its native `.claude/` structures.
-- OpenCode V2-specific slash/autoinvoke metadata and agents belong in `.opencode/` structures.
-- Antigravity manual commands belong in `.agents/workflows/`; its roles/rules use the native `.agents/` structures.
-- When the installer uses shared `.agents/skills`, install one standards-compatible skill copy and keep harness-specific support artifacts in their native locations.
+Respect upstream invocation policy. Some Matt Pocock workflows such as `grill-with-docs`, `to-spec`, `to-tickets`, `implement`, and `implement-spec` are user-invoked only (`disable-model-invocation: true`). Do not silently patch or pretend those policies do not exist. `my-implement-orchestrator` intentionally composes the model-invokable `tdd` and `code-review` primitives instead of depending on user-only `implement`/`implement-spec`.
 
 ## Change procedure
 
@@ -71,5 +67,5 @@ Respect upstream invocation policy. Some Matt Pocock workflows such as `grill-wi
 3. Run `python3 scripts/build.py`.
 4. Run `python3 scripts/validate.py`.
 5. Run `node scripts/test-installer.js`.
-6. Verify `npm pack --dry-run` still includes required hidden harness directories and `AGENTS.md`.
+6. Verify `npm pack --dry-run` still includes `dist/skills/` and `AGENTS.md`.
 7. Never hand-edit `dist/` to fix a generated profile; fix the source/build logic instead.

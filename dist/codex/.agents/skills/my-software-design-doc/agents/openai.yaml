@@ -1,8 +1,0 @@
-interface:
-  display_name: "Software Design Doc"
-  short_description: "Create or review software design documents"
-  default_prompt: "Use $my-software-design-doc to create or review a software design document."
-policy:
-  products:
-    - CODEX
-  allow_implicit_invocation: true

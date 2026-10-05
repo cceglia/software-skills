@@ -1,5 +1,10 @@
 # Changelog — my-implement-orchestrator
 
+## 3.0.0 — 2026-10-05
+
+- Claude Code-only profile: installs into project `.claude/skills` or global `~/.claude/skills`.
+- Subagent delegation no longer names a subagent type; Claude Code chooses the most suitable subagent.
+
 ## 2.5.0 — 2026-10-03
 
 - Replaced the invalid dependency on user-only `implement` with Matt Pocock's model-invokable `tdd`.

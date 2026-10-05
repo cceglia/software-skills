@@ -1,5 +1,12 @@
 # Migration notes
 
+## 3.0.0 (`claude` branch)
+
+- Claude Code only: the Codex, OpenCode V2, Antigravity, and shared `.agents/skills` profiles were removed from this branch (they remain on `main`).
+- Install with `npx --yes github:cceglia/software-skills#claude`; the installer asks for `project` (`.claude/skills`) or `global` (`~/.claude/skills`) scope. `--harness` and `--layout` were replaced by `--scope`.
+- Skills no longer name subagent types and the bundled `explore`/`develop`/`review` agents are no longer installed. `my-review-changes` no longer runs as `context: fork` + `agent: review`; it delegates to a fresh review subagent chosen by Claude Code.
+- Remove leftover `.claude/agents/{explore,develop,review}.md` from previous installs if you do not use them elsewhere; the installer lists them but never deletes them.
+
 ## 2.5.0
 
 - `my-grill-to-spec` keeps only a resumable decision ledger in `./.agents/tmp/grill/`; Matt Pocock's `to-spec` remains the sole owner of canonical SPEC synthesis and tracker destination.

@@ -1,8 +1,0 @@
-interface:
-  display_name: "SPEC to Tickets"
-  short_description: "Publish implementation tickets with to-tickets"
-  default_prompt: "Use $my-spec-to-tickets to turn an approved SPEC into implementation tickets through Matt Pocock's to-tickets."
-policy:
-  products:
-    - CODEX
-  allow_implicit_invocation: false

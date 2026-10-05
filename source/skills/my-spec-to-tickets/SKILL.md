@@ -2,9 +2,9 @@
 name: my-spec-to-tickets
 description: Turn an approved canonical SPEC into implementation tickets by delegating decomposition and publishing to Matt Pocock's to-tickets skill.
 license: MIT
-compatibility: Canonical multi-harness source; use scripts/build.py to generate native profiles.
+compatibility: Canonical Claude Code source; use scripts/build.py to generate the installable profile.
 metadata:
-  version: "2.5.1"
+  version: "3.0.0"
 ---
 
 # my-spec-to-tickets

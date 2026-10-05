@@ -4,7 +4,7 @@
 
 Edit `source/skills/<skill-name>/`; never hand-edit `dist/`. Regenerate with `python3 scripts/build.py`.
 
-Canonical `SKILL.md` files stay harness-neutral. Harness-specific frontmatter, sidecars, agents, workflows, and rules belong in `scripts/build.py`.
+This branch targets Claude Code only. Claude Code frontmatter (`disable-model-invocation`, `argument-hint`, …) and shared generated blocks belong in `scripts/build.py`; canonical bodies describe delegated responsibilities and never name a subagent type.
 
 ## Runtime invariants
 
@@ -17,11 +17,11 @@ Only resumable state belongs under:
 
 Canonical SPECs and tickets are owned by Matt Pocock's configured issue tracker through `to-spec` / `to-tickets`; never duplicate them under `.agents/tmp`.
 
-There is no skill registry. Use native harness discovery. Never stage, commit, or review `./.agents/tmp/`; do not ignore `.agents/` globally.
+There is no skill registry. Use Claude Code's native skill discovery. Never stage, commit, or review `./.agents/tmp/`; do not ignore `.agents/` globally.
 
 ## Skill style
 
-Keep `SKILL.md` concise and single-source-of-truth: state each invariant once, delegate upstream behavior instead of restating it, keep harness mapping out of canonical bodies, and preserve exact schemas only when callers depend on them.
+Keep `SKILL.md` concise and single-source-of-truth: state each invariant once, delegate upstream behavior instead of restating it, never prescribe subagent types, and preserve exact schemas only when callers depend on them.
 
 ## Validation
 

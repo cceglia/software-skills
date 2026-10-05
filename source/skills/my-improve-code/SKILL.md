@@ -2,16 +2,16 @@
 name: my-improve-code
 description: Improve comments/documentation and logical spacing without changing runtime behavior.
 license: MIT
-compatibility: Canonical multi-harness source; use scripts/build.py to generate native profiles.
+compatibility: Canonical Claude Code source; use scripts/build.py to generate the installable profile.
 metadata:
-  version: "2.5.1"
+  version: "3.0.0"
 ---
 
 # my-improve-code
 
 Improve comments/documentation and logical blank-line spacing in the invocation scope; empty scope means the repository. Exclude generated, vendored/third-party, build-artifact, and non-manually-maintained files.
 
-For one small explicit target, edit directly. For broad scope, use one `explore` role to create coherent non-overlapping batches, then process batches sequentially with one `develop` role at a time. Each worker reads applicable repository instructions and `CODING_STANDARDS.md`, preserves unrelated changes, formats modified files when appropriate, and never commits.
+For one small explicit target, edit directly. For broad scope, use one read-only exploration subagent to create coherent non-overlapping batches, then process batches sequentially with one editing subagent at a time. Each worker reads applicable repository instructions and `CODING_STANDARDS.md`, preserves unrelated changes, formats modified files when appropriate, and never commits.
 
 Apply two passes to each target:
 

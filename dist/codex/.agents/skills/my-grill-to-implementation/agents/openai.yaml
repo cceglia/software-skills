@@ -1,8 +1,0 @@
-interface:
-  display_name: "Grill to Implementation"
-  short_description: "Light grill-to-code workflow with resumable ledger"
-  default_prompt: "Use $my-grill-to-implementation to grill this change, then explore, develop with tdd, independently review, fix as needed, and commit it using the resumable ledger."
-policy:
-  products:
-    - CODEX
-  allow_implicit_invocation: false

@@ -1,5 +1,10 @@
 # Changelog — my-software-design-doc
 
+## 3.0.0 — 2026-10-05
+
+- Claude Code-only profile: installs into project `.claude/skills` or global `~/.claude/skills`.
+- Subagent delegation no longer names a subagent type; Claude Code chooses the most suitable subagent.
+
 ## 2.3.0 — 2026-10-03
 
 - Package version synchronized with the grill-to-SPEC workflow update; no skill-specific behavior change.

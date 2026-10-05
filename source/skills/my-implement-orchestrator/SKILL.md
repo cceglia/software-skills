@@ -2,9 +2,9 @@
 name: my-implement-orchestrator
 description: Implement approved tracker tickets with develop/TDD, repeated Matt Pocock code-review gates, scoped commits, and tracker finalization.
 license: MIT
-compatibility: Canonical multi-harness source; use scripts/build.py to generate native profiles.
+compatibility: Canonical Claude Code source; use scripts/build.py to generate the installable profile.
 metadata:
-  version: "2.5.1"
+  version: "3.0.0"
 ---
 
 # my-implement-orchestrator
@@ -23,13 +23,13 @@ Process ready tickets one at a time in dependency order; a ticket's referenced S
 
 ## Develop
 
-Run a fresh harness-native `develop` role with ticket/SPEC pointers and relevant repository context. Require it to load `tdd` plus the smallest sufficient discovered skills, use only pre-agreed test seams, preserve unrelated changes, validate its work, report loaded/missing skills and changed files, and never commit or rewrite git history. Missing required skills or a newly exposed product/domain decision blocks the ticket.
+Delegate each develop/fix pass to a fresh subagent with ticket/SPEC pointers and relevant repository context. Require it to load `tdd` plus the smallest sufficient discovered skills, use only pre-agreed test seams, preserve unrelated changes, validate its work, report loaded/missing skills and changed files, and never commit or rewrite git history. Missing required skills or a newly exposed product/domain decision blocks the ticket.
 
 ## Review loop
 
 After every develop/fix pass, invoke Matt's `code-review` against the ticket's fixed starting revision and the authoritative SPEC/ticket context. Treat blocking Standards or Spec findings as `CHANGES_REQUIRED`; a blocked review is `BLOCKED`; otherwise the cycle is approved.
 
-On `CHANGES_REQUIRED`, persist only the blocking findings, run a fresh `develop` fix pass, validate, then run a **new `code-review`**. Repeat until approved or `MAX_REVIEW_CYCLES` is exhausted. Never commit after fixes without a clean subsequent review.
+On `CHANGES_REQUIRED`, persist only the blocking findings, delegate a fresh develop fix pass, validate, then run a **new `code-review`**. Repeat until approved or `MAX_REVIEW_CYCLES` is exhausted. Never commit after fixes without a clean subsequent review.
 
 ## Commit and finalize
 

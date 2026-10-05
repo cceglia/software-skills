@@ -1,32 +1,21 @@
 # Custom installer reference
 
-Canonical repository: <https://github.com/cceglia/software-skills>
+Canonical repository: <https://github.com/cceglia/software-skills> (branch `claude`, Claude Code only)
 
-The complete public CLI reference and copy-paste examples are maintained in the root `README.md` under:
+The complete CLI reference and examples are maintained in the root `README.md` under "Install" and "Installer CLI reference".
 
-- Quick install
-- Non-interactive install
-- Installer CLI reference
-- Command examples with parameters
-- Pinning a branch, tag, or commit
-- Running from a cloned repository
-- What gets installed
-- Existing files and `--force`
-
-Canonical interactive command:
+Interactive command (asks project vs global):
 
 ```bash
-npx --yes github:cceglia/software-skills
+npx --yes github:cceglia/software-skills#claude
 ```
 
-Canonical fully non-interactive command:
+Fully non-interactive commands:
 
 ```bash
-npx --yes github:cceglia/software-skills -- \
-  --harness all \
-  --layout native \
-  --target . \
-  --git-exclude auto
+npx --yes github:cceglia/software-skills#claude --scope project --target . --git-exclude auto
 ```
 
-Use `--dry-run` before installation when evaluating changes, and `--force` only when replacing a known older managed installation.
+```bash
+npx --yes github:cceglia/software-skills#claude --scope global
+```

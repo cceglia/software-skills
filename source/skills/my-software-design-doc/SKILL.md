@@ -2,9 +2,9 @@
 name: my-software-design-doc
 description: Create or review software design documents, discovering repository context and asking only for decisions that cannot be inferred safely.
 license: MIT
-compatibility: Canonical multi-harness source; use scripts/build.py to generate native profiles.
+compatibility: Canonical Claude Code source; use scripts/build.py to generate the installable profile.
 metadata:
-  version: "2.5.1"
+  version: "3.0.0"
 ---
 
 # Software Design Documentation
@@ -27,11 +27,11 @@ Use this skill for technical designs, architecture proposals, RFC-like documents
 
 The primary agent coordinates design and user decisions; it must not consume its context with broad repository exploration.
 
-Use the harness-mapped read-only `explore` role for broad codebase discovery. Ask for concise evidence: relevant files/symbols, architecture/components, contracts, data ownership, dependencies, tests/configuration, constraints, inconsistencies, and unresolved questions. The primary agent may inspect a small targeted set of files to verify high-impact claims or exact interfaces.
+Delegate broad codebase discovery to a read-only subagent. Ask for concise evidence: relevant files/symbols, architecture/components, contracts, data ownership, dependencies, tests/configuration, constraints, inconsistencies, and unresolved questions. The primary agent may inspect a small targeted set of files to verify high-impact claims or exact interfaces.
 
 If isolated exploration is unavailable, do not silently perform a repository-wide scan in the primary context; continue with targeted inspection or user-provided context.
 
-For external dependencies, use the active harness's web/research capability or a narrowly scoped research agent when available.
+For external dependencies, use web research or a narrowly scoped research subagent when available.
 
 ## Workflow
 

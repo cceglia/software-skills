@@ -2,9 +2,9 @@
 name: my-git-commit
 description: Commit all project changes except ephemeral ./.agents/tmp state. Never amend.
 license: MIT
-compatibility: Canonical multi-harness source; use scripts/build.py to generate native profiles.
+compatibility: Canonical Claude Code source; use scripts/build.py to generate the installable profile.
 metadata:
-  version: "2.5.1"
+  version: "3.0.0"
 ---
 
 # my-git-commit

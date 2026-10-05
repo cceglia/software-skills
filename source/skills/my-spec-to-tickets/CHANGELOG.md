@@ -1,5 +1,10 @@
 # Changelog — my-spec-to-tickets
 
+## 3.0.0 — 2026-10-05
+
+- Claude Code-only profile: installs into project `.claude/skills` or global `~/.claude/skills`.
+- Subagent delegation no longer names a subagent type; Claude Code chooses the most suitable subagent.
+
 ## 2.5.0 — 2026-10-03
 
 - Clarified that `to-tickets` owns ticket decomposition and tracker destination and that this wrapper stops before implementation.

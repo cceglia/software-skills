@@ -1,5 +1,5 @@
 {
-  "version": "2.5.0",
+  "version": "3.0.0",
   "canonical_skills": 10,
   "manual_workflows": 9,
   "semantic_skills": [
@@ -10,79 +10,38 @@
     "grill": "./.agents/tmp/grill/<slug>.md",
     "implementation": "./.agents/tmp/implementation/<slug>.md"
   },
-  "skill_routing": "native harness discovery; no generated registry",
+  "skill_routing": "Claude Code native skill discovery; no generated registry",
   "profiles": {
-    "opencode": {
-      "root": "dist/opencode/.opencode",
-      "native_features": [
-        "skill slash visibility",
-        "metadata.opencode/autoinvoke",
-        "metadata.opencode/slash",
-        "V2 subagent tool",
-        "V2 permissions",
-        "built-in explore plus custom develop/review agents"
-      ]
-    },
-    "codex": {
-      "root": "dist/codex",
-      "native_features": [
-        ".agents/skills",
-        "agents/openai.yaml",
-        "policy.allow_implicit_invocation",
-        ".codex/agents/*.toml",
-        "sandbox_mode"
-      ]
-    },
     "claude-code": {
-      "root": "dist/claude-code/.claude",
+      "root": "dist/skills",
+      "install_destinations": {
+        "project": "<target>/.claude/skills",
+        "global": "~/.claude/skills (or $CLAUDE_CONFIG_DIR/skills)"
+      },
       "native_features": [
         "disable-model-invocation",
         "user-invocable",
         "argument-hint",
-        "context: fork",
-        "agent",
-        "background",
-        ".claude/agents/*.md",
-        "permissionMode"
+        "$ARGUMENTS"
       ]
-    },
-    "antigravity": {
-      "root": "dist/antigravity/.agents",
-      "native_features": [
-        ".agents/workflows slash commands",
-        ".agents/skills semantic skills",
-        ".agents/agents.md personas",
-        ".agents/rules persistent runtime rules"
-      ]
-    },
-    "shared": {
-      "root": "dist/shared/.agents/skills",
-      "native_features": [
-        "Agent Skills specification compliant frontmatter",
-        "OpenCode namespaced metadata",
-        "Codex agents/openai.yaml sidecars",
-        "multi-harness role mapping"
-      ],
-      "notes": "Used by --layout agents and automatically when Codex + Antigravity share the project .agents/skills path."
     }
   },
   "installer": {
     "entrypoint": "bin/software-skills.js",
     "repository": "https://github.com/cceglia/software-skills",
     "interactive_prompts": [
-      "harness selection",
-      "skill layout (.agents or harness-native)"
+      "install scope (project or global)"
     ],
     "cli_options": [
-      "--harness",
-      "--layout",
+      "--scope",
       "--target",
       "--force",
       "--dry-run",
       "--git-exclude",
       "--help",
       "--version"
-    ]
+    ],
+    "install_command": "npx --yes github:cceglia/software-skills#claude"
   },
   "external_dependencies": {
     "my-grill-to-spec": [
@@ -104,5 +63,6 @@
       "mattpocock/skills:tdd",
       "mattpocock/skills:code-review"
     ]
-  }
+  },
+  "subagents": "skills never name a subagent type; Claude Code chooses autonomously; no custom agents installed"
 }

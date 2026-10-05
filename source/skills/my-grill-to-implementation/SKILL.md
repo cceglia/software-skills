@@ -2,14 +2,14 @@
 name: my-grill-to-implementation
 description: Grill a small change, keep a resumable implementation ledger, then explore, develop with Matt Pocock's tdd, independently review, fix, and commit it in one workflow.
 license: MIT
-compatibility: Canonical multi-harness source; use scripts/build.py to generate native profiles.
+compatibility: Canonical Claude Code source; use scripts/build.py to generate the installable profile.
 metadata:
-  version: "2.5.1"
+  version: "3.0.0"
 ---
 
 # my-grill-to-implementation
 
-Use this light path only when SPEC/tickets would add unnecessary ceremony. Require Matt Pocock's `grill-with-docs` and `tdd`; use harness-native `explore`, `develop`, and fresh independent `review` roles.
+Use this light path only when SPEC/tickets would add unnecessary ceremony. Require Matt Pocock's `grill-with-docs` and `tdd`; delegate exploration, development, and a fresh independent review to subagents.
 
 ## Ledger
 
@@ -22,8 +22,8 @@ On resume, read the ledger first and reconcile with branch/HEAD/working tree. Le
 ## Workflow
 
 1. Invoke `grill-with-docs`; update the ledger after each material round. When decisions and test seams are settled, record ordered testable slices, set `ready-for-implementation`, and obtain explicit implementation approval.
-2. Run read-only `explore`; persist only implementation-relevant evidence.
-3. Run `develop` with the ledger/evidence and require it to load `tdd` plus the smallest sufficient discovered skills. It implements the slices without committing, preserves unrelated changes, validates narrowly while working and fully at the end, and reports loaded/missing skills, changed files, validation, and blockers.
-4. Run a **fresh** read-only `review` against the complete task diff, ledger, and validation evidence. Require `VERDICT: APPROVED | CHANGES_REQUIRED | BLOCKED` plus blocking findings.
-5. On `CHANGES_REQUIRED`, persist findings, run a new `develop` fix pass, validate, then run another fresh review. Maximum 3 review cycles; never approve by self-review.
+2. Delegate read-only exploration to a subagent; persist only implementation-relevant evidence.
+3. Delegate development to a subagent with the ledger/evidence and require it to load `tdd` plus the smallest sufficient discovered skills. It implements the slices without committing, preserves unrelated changes, validates narrowly while working and fully at the end, and reports loaded/missing skills, changed files, validation, and blockers.
+4. Delegate a **fresh** read-only review to a new subagent against the complete task diff, ledger, and validation evidence. Require `VERDICT: APPROVED | CHANGES_REQUIRED | BLOCKED` plus blocking findings.
+5. On `CHANGES_REQUIRED`, persist findings, delegate a new development fix pass, validate, then run another fresh review. Maximum 3 review cycles; never approve by self-review.
 6. After approval create exactly one task-scoped commit, excluding `./.agents/tmp/`; preserve unrelated changes. Record the commit, set `completed`, and stop.

@@ -1,6 +1,0 @@
-name = "develop"
-description = "Develop worker for software-skills workflows."
-sandbox_mode = "workspace-write"
-developer_instructions = """
-Implement only the delegated scope. Read AGENTS.md, load every skill requested by the parent, preserve unrelated changes, validate the work, never commit/push/reset/clean/stash, and report loaded/missing skills, changed files, validation, and blockers.
-"""

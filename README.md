@@ -1,118 +1,87 @@
-# software-skills
+# software-skills — Claude Code edition
 
-Native multi-harness software-engineering workflows for:
-
-- OpenAI Codex
-- Claude Code
-- OpenCode V2
-- Google Antigravity IDE
+Software-engineering workflows packaged as native **Claude Code** skills.
 
 Repository: <https://github.com/cceglia/software-skills>
 
-The repository keeps one canonical workflow source and generates harness-specific profiles. A custom zero-dependency Node.js installer lets you choose:
+> This is the `claude` branch: it installs the skills **only for Claude Code**. The multi-harness version (Codex, OpenCode V2, Antigravity, shared `.agents/skills`) lives on `main`.
 
-1. which harnesses to install;
-2. whether skill packages go under the shared `.agents/skills` location or each harness' native project skill directory.
+## Install
 
-Harness-specific support files such as custom agents, workflows, rules, and Codex sidecars are installed automatically in the locations required by each runtime.
-
-## Quick install
-
-Run the installer directly from GitHub:
+The skills live on the `claude` branch, so always reference it with `#claude` in the package spec:
 
 ```bash
-npx --yes github:cceglia/software-skills
+npx --yes github:cceglia/software-skills#claude
 ```
 
-The interactive installer asks:
+The interactive installer asks where to install:
 
 ```text
-Select the harnesses to install:
-  1) Codex
-  2) Claude Code
-  3) OpenCode V2
-  4) Antigravity IDE
-  a) All
-Harnesses [comma-separated numbers, e.g. 1,2,4]:
-
-Where should SKILL.md packages be installed?
-  1) .agents/skills (shared Agent Skills location)
-  2) Harness-native skill directories
-Skill layout [1/2]:
+Where should the Claude Code skills be installed?
+  1) Project (/path/to/project/.claude/skills)
+  2) Global (/home/you/.claude/skills)
+Scope [1/2]:
 ```
 
-Node.js 18+ is required. The installer itself has no npm runtime dependencies.
+| Scope | Destination | Available in |
+| --- | --- | --- |
+| `project` | `<target>/.claude/skills/` | that project only (can be committed and shared with the team) |
+| `global` | `~/.claude/skills/` (or `$CLAUDE_CONFIG_DIR/skills/`) | every project on your machine |
 
+Node.js 18+ is required. The installer has no npm runtime dependencies.
 
-### Equivalent `npm exec` form
+### Non-interactive install
 
-If you prefer the explicit npm package form:
+Install into the current project:
 
 ```bash
-npm exec --yes --package=github:cceglia/software-skills -- \
-  software-skills \
-  --harness all \
-  --layout native
+npx --yes github:cceglia/software-skills#claude --scope project
 ```
 
-## Non-interactive install
-
-Use `--harness` and `--layout` to skip the two interactive questions.
-
-Install every harness using native skill directories:
+Install globally for your user:
 
 ```bash
-npx --yes github:cceglia/software-skills \
-  --harness all \
-  --layout native
+npx --yes github:cceglia/software-skills#claude --scope global
 ```
 
-Install every harness using one shared `.agents/skills` copy:
+Install into another project:
 
 ```bash
-npx --yes github:cceglia/software-skills \
-  --harness all \
-  --layout agents
+npx --yes github:cceglia/software-skills#claude --scope project --target ../my-project
 ```
 
-Install Codex only:
+Preview without writing:
 
 ```bash
-npx --yes github:cceglia/software-skills \
-  --harness codex \
-  --layout native
+npx --yes github:cceglia/software-skills#claude --scope global --dry-run
 ```
 
-Install Claude Code only:
+Overwrite an older installation:
 
 ```bash
-npx --yes github:cceglia/software-skills \
-  --harness claude-code \
-  --layout native
+npx --yes github:cceglia/software-skills#claude --scope global --force
 ```
 
-Install OpenCode V2 only:
+Pin a specific commit of the branch:
 
 ```bash
-npx --yes github:cceglia/software-skills \
-  --harness opencode \
-  --layout native
+npx --yes github:cceglia/software-skills#<commit-sha> --scope project
 ```
 
-Install Antigravity only:
+Equivalent explicit `npm exec` form:
 
 ```bash
-npx --yes github:cceglia/software-skills \
-  --harness antigravity \
-  --layout native
+npm exec --yes --package=github:cceglia/software-skills#claude -- software-skills --scope project
 ```
 
-Install a subset of harnesses:
+### From a cloned repository
 
 ```bash
-npx --yes github:cceglia/software-skills \
-  --harness codex,claude-code,opencode \
-  --layout native
+git clone --branch claude https://github.com/cceglia/software-skills.git
+```
+
+```bash
+node ./software-skills/bin/software-skills.js --scope global
 ```
 
 ## Installer CLI reference
@@ -120,271 +89,65 @@ npx --yes github:cceglia/software-skills \
 ```text
 software-skills [options]
 
---harness <list>
-    Harnesses to install.
-    Values: codex, claude-code, opencode, antigravity, all
-    Multiple values are comma-separated.
-    Example: --harness codex,claude-code
+--scope <scope>
+    Where the skills are installed.
+    Values: project, global (aliases: local/repo, user/personal)
+    Asked interactively when omitted.
 
---layout <mode>
-    Where SKILL.md packages are installed.
-    Values: agents, native
-
-    agents
-        Use one shared .agents/skills installation.
-        Harness-specific support files are still installed natively.
-
-    native
-        Use each harness' documented project skill directory.
-        Claude Code -> .claude/skills
-        OpenCode V2 -> .opencode/skills
-        Codex -> .agents/skills
-        Antigravity -> .agents/skills
+    project   <target>/.claude/skills
+    global    ~/.claude/skills, or $CLAUDE_CONFIG_DIR/skills when set
 
 --target <path>
-    Project root to install into.
-    Default: current working directory.
+    Project root for --scope project.
+    Default: current working directory. Rejected with --scope global.
 
 --force
     Overwrite existing managed files when their contents differ.
     Without --force, the installer stops rather than replacing them.
 
 --dry-run
-    Print every planned write without modifying the target project.
+    Print every planned write without modifying anything.
 
 --git-exclude <mode>
-    Controls whether /.agents/tmp/ is added to .git/info/exclude.
-    Values: auto, yes, no
-    Default: auto
-
-    auto
-        Add /.agents/tmp/ when the target is a Git repository or worktree.
-        Otherwise do nothing.
-
-    yes
-        Require a Git repository and add /.agents/tmp/ if missing.
-
-    no
-        Never edit .git/info/exclude.
+    Controls whether /.agents/tmp/ is added to .git/info/exclude (project scope only).
+    Values: auto (default), yes, no
 
 --help, -h
-    Show installer help.
-
 --version, -v
-    Print installer version.
 ```
 
-## Command examples with parameters
+The installer only writes skill files. It never deletes anything; if it finds the `explore`/`develop`/`review` subagents installed by older releases under `.claude/agents/`, it reports them so you can remove them.
 
-### Preview without writing
+## Skills
 
-```bash
-npx --yes github:cceglia/software-skills \
-  --harness all \
-  --layout native \
-  --dry-run
-```
-
-### Install into another repository
-
-```bash
-npx --yes github:cceglia/software-skills \
-  --harness codex,claude-code \
-  --layout native \
-  --target ../my-project
-```
-
-### Overwrite an older installation
-
-```bash
-npx --yes github:cceglia/software-skills \
-  --harness all \
-  --layout native \
-  --force
-```
-
-### Use shared `.agents/skills` and overwrite existing managed files
-
-```bash
-npx --yes github:cceglia/software-skills \
-  --harness all \
-  --layout agents \
-  --force
-```
-
-### Do not touch `.git/info/exclude`
-
-```bash
-npx --yes github:cceglia/software-skills \
-  --harness all \
-  --layout native \
-  --git-exclude no
-```
-
-### Require `/.agents/tmp/` in the local Git exclude
-
-```bash
-npx --yes github:cceglia/software-skills \
-  --harness codex \
-  --layout native \
-  --git-exclude yes
-```
-
-### Install into an explicit absolute path
-
-```bash
-npx --yes github:cceglia/software-skills \
-  --harness opencode \
-  --layout native \
-  --target /path/to/project
-```
-
-### Show help
-
-```bash
-npx --yes github:cceglia/software-skills --help
-```
-
-### Show version
-
-```bash
-npx --yes github:cceglia/software-skills --version
-```
-
-## Pinning a branch, tag, or commit
-
-Use npm's GitHub package syntax to run a specific repository ref.
-
-Main branch:
-
-```bash
-npx --yes github:cceglia/software-skills#main
-```
-
-Tag:
-
-```bash
-npx --yes github:cceglia/software-skills#v2.5.0
-```
-
-Commit SHA:
-
-```bash
-npx --yes github:cceglia/software-skills#<commit-sha>
-```
-
-The same installer parameters can follow the package spec:
-
-```bash
-npx --yes github:cceglia/software-skills#main \
-  --harness codex,claude-code \
-  --layout native \
-  --dry-run
-```
-
-## Running from a cloned repository
-
-Clone:
-
-```bash
-git clone https://github.com/cceglia/software-skills.git
-cd software-skills
-```
-
-Interactive:
-
-```bash
-node ./bin/software-skills.js
-```
-
-Non-interactive:
-
-```bash
-node ./bin/software-skills.js \
-  --harness all \
-  --layout native
-```
-
-Dry-run:
-
-```bash
-node ./bin/software-skills.js \
-  --harness all \
-  --layout native \
-  --dry-run
-```
-
-Run against another project:
-
-```bash
-node ./bin/software-skills.js \
-  --harness codex,opencode \
-  --layout native \
-  --target ../another-project
-```
-
-## What gets installed
-
-### `--layout native`
-
-| Harness | Skill packages | Harness-specific support files |
+| Skill | Invocation | Purpose |
 | --- | --- | --- |
-| Codex | `.agents/skills/*` | `.codex/agents/*.toml`, `agents/openai.yaml` inside each skill |
-| Claude Code | `.claude/skills/*` | `.claude/agents/*.md` |
-| OpenCode V2 | `.opencode/skills/*` | `.opencode/agents/*.md` |
-| Antigravity | `.agents/skills/*` | `.agents/workflows/*.md`, `.agents/rules/*`, `.agents/agents.md` |
+| `my-grill-to-spec` | `/my-grill-to-spec` | Grill a change, keep a resumable ledger, publish the SPEC with `to-spec`, review it |
+| `my-spec-to-tickets` | `/my-spec-to-tickets` | Turn an approved SPEC into tickets with `to-tickets` |
+| `my-implement-orchestrator` | `/my-implement-orchestrator` | Implement tickets with `tdd` + repeated `code-review` gates |
+| `my-grill-to-implementation` | `/my-grill-to-implementation` | Light path: grill, explore, develop with `tdd`, review, commit |
+| `my-review-changes` | `/my-review-changes` | Independent read-only review of changed files |
+| `my-improve-code` | `/my-improve-code` | Improve comments and spacing without behavior changes |
+| `my-improve-comments` | `/my-improve-comments` | Improve comments/documentation only |
+| `my-improve-spacing` | `/my-improve-spacing` | Improve logical blank-line spacing only |
+| `my-git-commit` | `/my-git-commit` | Commit everything except `./.agents/tmp/` |
+| `my-software-design-doc` | automatic or `/my-software-design-doc` | Create or review software design documents |
 
-Native layout is recommended when you want the strongest harness-specific behavior. For example, Claude Code's native skill profile can use `disable-model-invocation`, `user-invocable`, `argument-hint`, `context`, and `agent` fields directly in `SKILL.md`.
+Every workflow except `my-software-design-doc` is explicit-only (`disable-model-invocation: true`).
 
-### `--layout agents`
+### Subagents
 
-Skill packages are installed once:
-
-```text
-.agents/skills/*
-```
-
-The shared profile is Agent-Skills-spec compliant. It also contains:
-
-- OpenCode namespaced metadata under the standard `metadata` map;
-- Codex `agents/openai.yaml` sidecars;
-- explicit-only instructions in the skill descriptions/bodies.
-
-Harness-specific support artifacts are still installed in their native locations:
-
-```text
-.codex/agents/*
-.claude/agents/*
-.opencode/agents/*
-.agents/workflows/*
-.agents/rules/*
-.agents/agents.md
-```
-
-A single shared `SKILL.md` cannot simultaneously contain every vendor-only top-level frontmatter extension while remaining strictly compliant with the Agent Skills specification. Therefore, **native layout is the recommended mode when exact harness-specific invocation controls matter**. Shared layout is intended for teams that prefer one physical skill copy across compatible harnesses.
-
-## Codex + Antigravity together
-
-Codex and Antigravity both use `.agents/skills` as their documented project-level skill location. If both are selected with `--layout native`, the installer automatically uses the standards-compliant shared skill profile for that common directory, while still installing:
-
-```text
-.codex/agents/*
-.agents/workflows/*
-.agents/rules/*
-.agents/agents.md
-```
-
-This prevents two different generated `SKILL.md` files from overwriting each other.
+Skills that delegate work (exploration, development, review) **do not name a subagent type**. Claude Code picks the most suitable available subagent for each delegation; the skill only states the scope and constraints (read-only, no commits, skills to load, expected report). No custom agents are installed.
 
 ## Matt Pocock dependency
 
-These workflows compose Matt Pocock's skills instead of duplicating them. Install Matt's set in the harness you use:
+These workflows compose Matt Pocock's skills instead of duplicating them. Install them in Claude Code:
 
 ```bash
 npx skills add mattpocock/skills
 ```
 
-Run `setup-matt-pocock-skills` once per repository so `docs/agents/issue-tracker.md` identifies the canonical tracker. `to-spec` and `to-tickets` own their output locations. With Matt's local-markdown tracker, the SPEC is `.scratch/<feature>/spec.md` and tickets are `.scratch/<feature>/issues/<NN>-<slug>.md`; with GitHub/GitLab/Linear or another configured tracker, they are native tracker issues. `./.agents/tmp/` contains only resumable workflow ledgers.
+Run `setup-matt-pocock-skills` once per repository so `docs/agents/issue-tracker.md` identifies the canonical tracker. `to-spec` and `to-tickets` own their output locations. With Matt's local-markdown tracker, the SPEC is `.scratch/<feature>/spec.md` and tickets are `.scratch/<feature>/issues/<NN>-<slug>.md`; with GitHub/GitLab/Linear or another configured tracker, they are native tracker issues.
 
 ### Full path
 
@@ -409,9 +172,9 @@ my-implement-orchestrator
   -> scoped commit + tracker finalization
 ```
 
-`my-grill-to-spec` never delegates SPEC authorship to a subagent: `to-spec` owns synthesis and publishing. A fresh `review` role is used only after the canonical SPEC exists, and the workflow stops after approval.
+`my-grill-to-spec` never delegates SPEC authorship to a subagent: `to-spec` owns synthesis and publishing. A fresh review subagent is used only after the canonical SPEC exists, and the workflow stops after approval.
 
-Matt's `implement` and `implement-spec` are user-invoked upstream skills (`disable-model-invocation: true`), so `my-implement-orchestrator` does not pretend to call them. It composes the model-invokable primitives they rely on: `tdd` for develop/fix passes and `code-review` for every acceptance gate. Every fix must be followed by a new code review before commit.
+Matt's `implement` and `implement-spec` are user-invoked upstream skills, so `my-implement-orchestrator` composes the model-invokable primitives they rely on: `tdd` for develop/fix passes and `code-review` for every acceptance gate. Every fix must be followed by a new code review before commit.
 
 ### Light path
 
@@ -419,18 +182,16 @@ Matt's `implement` and `implement-spec` are user-invoked upstream skills (`disab
 my-grill-to-implementation
   -> grill-with-docs
   -> .agents/tmp/implementation/<slug>.md
-  -> explore
-  -> develop + tdd
-  -> fresh review
-  -> (develop fix -> fresh review)*
+  -> exploration subagent
+  -> development subagent + tdd
+  -> fresh review subagent
+  -> (development fix -> fresh review)*
   -> one scoped commit
 ```
 
-`my-grill-to-plan` and `my-plan-to-spec` no longer exist. `my-spec-to-tickets` remains intentionally thin around Matt's `to-tickets`.
-
 ## Runtime state and resume
 
-All generated workflow state lives under:
+All workflow state lives in the project under:
 
 ```text
 ./.agents/tmp/
@@ -445,92 +206,30 @@ Both ledgers survive context exhaustion. Reinvoke the same workflow with the led
 /my-grill-to-implementation ./.agents/tmp/implementation/<slug>.md
 ```
 
-Each workflow checkpoints material decisions and phase/subagent boundaries and records `Next action`. A fresh session reads the ledger first and reconciles external state before resuming side-effecting work.
-
-Skill selection during development uses each harness's native discovery; there is no generated skill registry. Workflows never include `./.agents/tmp/` in commits or code reviews.
-
-By default the installer adds this repository-local Git exclude rule when possible:
-
-```text
-/.agents/tmp/
-```
-
-It edits `.git/info/exclude`, not the project's versioned `.gitignore`.
-
-## Existing files and `--force`
-
-The installer is deliberately conservative. If a destination file already exists with different contents, installation stops and lists the conflicting files.
-
-Inspect first:
-
-```bash
-npx --yes github:cceglia/software-skills \
-  --harness all \
-  --layout native \
-  --dry-run
-```
-
-Then overwrite only when intended:
-
-```bash
-npx --yes github:cceglia/software-skills \
-  --harness all \
-  --layout native \
-  --force
-```
-
-The installer does not delete unrelated files from harness directories.
+Workflows never include `./.agents/tmp/` in commits or code reviews. For project installs, the installer adds `/.agents/tmp/` to `.git/info/exclude` when the target is a Git repository. For global installs, add that rule yourself in each project where you use the workflows.
 
 ## Source architecture
 
 ```text
-source/skills/                    canonical workflow source
-scripts/build.py                  generates harness profiles
-scripts/validate.py               validates generated profiles
-bin/software-skills.js            custom installer
-
-dist/shared/.agents/skills/       standards-compliant shared profile
-dist/codex/                       Codex-native profile
-dist/claude-code/                 Claude Code-native profile
-dist/opencode/                    OpenCode V2-native profile
-dist/antigravity/                 Antigravity-native profile
+source/skills/            canonical skill source
+scripts/build.py          generates dist/skills/ (Claude Code profile)
+scripts/validate.py       validates source and generated profile
+scripts/test-installer.js installer tests
+bin/software-skills.js    installer
+dist/skills/              generated, installable Claude Code skills
 ```
-
-Edit `source/skills/` first and regenerate distributions:
 
 ```bash
 python3 scripts/build.py
 ```
 
-Validate:
-
 ```bash
 python3 scripts/validate.py
 ```
 
-Test the installer:
-
 ```bash
 npm test
 ```
-
-## Native harness behavior
-
-### OpenCode V2
-
-The native profile uses `.opencode/skills`, OpenCode invocation metadata, the built-in `explore` agent, and bundled `develop` / `review` subagents.
-
-### Codex
-
-The profile uses `.agents/skills`, `agents/openai.yaml` invocation policy and UI metadata, plus project custom agents under `.codex/agents/`.
-
-### Claude Code
-
-The native profile uses `.claude/skills` with Claude-specific invocation/frontmatter properties and bundled project subagents under `.claude/agents/`.
-
-### Antigravity
-
-Manual workflows are native slash workflows under `.agents/workflows/`. The semantic design-document capability remains a skill. Runtime rules and specialized personas live under `.agents/rules/` and `.agents/agents.md`.
 
 ## License
 

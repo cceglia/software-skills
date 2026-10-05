@@ -2,9 +2,9 @@
 name: my-review-changes
 description: Independently review specified modified files or the current working-tree changes without editing them.
 license: MIT
-compatibility: Canonical multi-harness source; use scripts/build.py to generate native profiles.
+compatibility: Canonical Claude Code source; use scripts/build.py to generate the installable profile.
 metadata:
-  version: "2.5.1"
+  version: "3.0.0"
 ---
 
 # my-review-changes
@@ -21,7 +21,7 @@ REASON: ...
 FILES: ...
 ```
 
-Otherwise use one fresh independent read-only `review` role. Pass the resolved files, complete diff, repository instructions/standards, and available validation results. Review correctness/regressions, scope, compatibility, security/performance where relevant, repository standards, misleading comments/spacing, and missing tests.
+Otherwise delegate to one fresh independent read-only review subagent. Pass the resolved files, complete diff, repository instructions/standards, and available validation results. Review correctness/regressions, scope, compatibility, security/performance where relevant, repository standards, misleading comments/spacing, and missing tests.
 
 The reviewer must not edit, fix, stage, commit, push, reset, clean, stash, or delegate.
 

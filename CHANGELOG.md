@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.0.0 — 2026-10-05 (`claude` branch)
+
+- Claude Code-only distribution: removed Codex, OpenCode V2, Antigravity, and shared `.agents/skills` profiles; `dist/skills/` is the only generated profile.
+- Installer now asks for install scope: project (`<target>/.claude/skills`) or global (`~/.claude/skills`, honoring `$CLAUDE_CONFIG_DIR`). `--scope` replaces `--harness`/`--layout`.
+- Skills no longer name subagent types; Claude Code chooses the subagent for each delegation. Removed the bundled `explore`/`develop`/`review` agents and `my-review-changes`' `context: fork` + `agent: review` frontmatter.
+- Installer reports leftover legacy agents from previous releases without deleting them.
+
 ## 2.5.1 — 2026-10-04
 
 - Added root `AGENTS.md` as the concise maintenance contract for future agents.
