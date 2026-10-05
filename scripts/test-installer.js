@@ -40,20 +40,23 @@ function expectFailure(args, message, options) {
   const target = tempDir();
   const home = tempDir();
   run(['--scope', 'project', '--target', target, '--git-exclude', 'no'], { home });
-  assert(exists(target, '.claude/skills/my-git-commit/SKILL.md'));
+  assert(exists(target, '.claude/skills/my-improve-code/SKILL.md'));
   assert(exists(target, '.claude/skills/my-software-design-doc/references/design-doc-template.md'));
   assert(!exists(target, '.claude/agents'));
   assert(!exists(target, '.agents/skills'));
   assert(!exists(target, '.opencode'));
   assert(!exists(target, '.codex'));
   assert(!exists(home, '.claude'));
+  for (const removed of ['my-git-commit', 'my-grill-to-spec', 'my-implement-orchestrator', 'my-review-changes', 'my-spec-to-tickets']) {
+    assert(!exists(target, `.claude/skills/${removed}`));
+  }
 }
 
 // Global install writes to ~/.claude/skills and leaves the project untouched.
 {
   const home = tempDir();
   const out = run(['--scope', 'global', '--git-exclude', 'no'], { home });
-  assert(exists(home, '.claude/skills/my-review-changes/SKILL.md'));
+  assert(exists(home, '.claude/skills/my-improve-comments/SKILL.md'));
   assert(!exists(home, '.claude/agents'));
   assert(!exists(ROOT, '.claude/skills'));
   assert(out.includes('Scope: global'));
@@ -64,7 +67,7 @@ function expectFailure(args, message, options) {
   const home = tempDir();
   const config = tempDir();
   run(['--scope=user'], { home, env: { CLAUDE_CONFIG_DIR: config } });
-  assert(exists(config, 'skills/my-grill-to-spec/SKILL.md'));
+  assert(exists(config, 'skills/my-improve-spacing/SKILL.md'));
   assert(!exists(home, '.claude'));
 }
 
@@ -72,7 +75,7 @@ function expectFailure(args, message, options) {
 {
   const target = tempDir();
   run(['--scope', 'project', '--target', target, '--git-exclude', 'no']);
-  const review = fs.readFileSync(path.join(target, '.claude/skills/my-review-changes/SKILL.md'), 'utf8');
+  const review = fs.readFileSync(path.join(target, '.claude/skills/my-improve-comments/SKILL.md'), 'utf8');
   assert(!/^agent:/m.test(review));
   assert(!/^context:/m.test(review));
   assert(review.includes('Never prescribe a subagent type'));
@@ -89,12 +92,12 @@ function expectFailure(args, message, options) {
 // Existing differing file blocks unless --force is used.
 {
   const target = tempDir();
-  const dest = path.join(target, '.claude/skills/my-git-commit/SKILL.md');
+  const dest = path.join(target, '.claude/skills/my-improve-code/SKILL.md');
   fs.mkdirSync(path.dirname(dest), { recursive: true });
   fs.writeFileSync(dest, 'local change\n');
   expectFailure(['--scope', 'project', '--target', target, '--git-exclude', 'no'], '--force');
   run(['--scope', 'project', '--target', target, '--git-exclude', 'no', '--force']);
-  assert(fs.readFileSync(dest, 'utf8').includes('name: my-git-commit'));
+  assert(fs.readFileSync(dest, 'utf8').includes('name: my-improve-code'));
 }
 
 // Dry run writes nothing.
@@ -105,15 +108,21 @@ function expectFailure(args, message, options) {
   assert(!exists(home, '.claude'));
 }
 
-// Legacy typed subagents from older releases are reported, not deleted.
+// Leftover skills and typed subagents from older releases are reported, not deleted.
 {
   const target = tempDir();
+  const oldSkill = path.join(target, '.claude/skills/my-review-changes/SKILL.md');
+  fs.mkdirSync(path.dirname(oldSkill), { recursive: true });
+  fs.writeFileSync(oldSkill, '---\nname: my-review-changes\n---\n');
   const legacy = path.join(target, '.claude/agents/review.md');
   fs.mkdirSync(path.dirname(legacy), { recursive: true });
   fs.writeFileSync(legacy, '---\nname: review\ndescription: Independent read-only reviewer for software-skills workflows.\n---\n');
   const out = run(['--scope', 'project', '--target', target, '--git-exclude', 'no']);
-  assert(out.includes('legacy software-skills subagents'));
+  assert(out.includes('no longer used and can be removed'));
+  assert(out.includes(legacy));
+  assert(out.includes(path.dirname(oldSkill)));
   assert(fs.existsSync(legacy));
+  assert(fs.existsSync(oldSkill));
 }
 
 // Git exclude targets only ephemeral .agents/tmp state, and only for project installs.

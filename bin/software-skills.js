@@ -11,6 +11,7 @@ const ROOT = path.resolve(__dirname, '..');
 const VERSION = require(path.join(ROOT, 'package.json')).version;
 const SKILLS_SOURCE = path.join(ROOT, 'dist', 'skills');
 const LEGACY_AGENTS = ['explore.md', 'develop.md', 'review.md'];
+const REMOVED_SKILLS = ['my-git-commit', 'my-grill-to-spec', 'my-implement-orchestrator', 'my-review-changes', 'my-spec-to-tickets'];
 
 function usage() {
   return `software-skills ${VERSION}\n\n` +
@@ -186,11 +187,15 @@ function execute(ops, opts, base, excludeOp) {
   }
 }
 
-// Earlier releases installed typed subagents; the skills no longer reference them.
-function legacyAgents(installRoot) {
-  return LEGACY_AGENTS
+// Earlier releases installed typed subagents and skills that are now gone; report them, never delete.
+function leftovers(installRoot) {
+  const agents = LEGACY_AGENTS
     .map(name => path.join(installRoot, 'agents', name))
     .filter(p => fs.existsSync(p) && fs.readFileSync(p, 'utf8').includes('for software-skills workflows.'));
+  const skills = REMOVED_SKILLS
+    .map(name => path.join(installRoot, 'skills', name))
+    .filter(p => fs.existsSync(path.join(p, 'SKILL.md')));
+  return [...skills, ...agents];
 }
 
 function printSummary(opts, installRoot, ops) {
@@ -201,9 +206,9 @@ function printSummary(opts, installRoot, ops) {
   if (opts.scope === 'global') {
     console.log('Note: workflow ledgers live in each project under ./.agents/tmp/; keep that path out of commits (for example via .git/info/exclude).');
   }
-  const legacy = legacyAgents(installRoot);
+  const legacy = leftovers(installRoot);
   if (legacy.length) {
-    console.log('Note: legacy software-skills subagents are no longer used and can be removed:');
+    console.log('Note: these files from earlier software-skills releases are no longer used and can be removed:');
     for (const p of legacy) console.log(`  - ${p}`);
   }
 }

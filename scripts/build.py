@@ -7,42 +7,29 @@ import shutil
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "source" / "skills"
 DIST = ROOT / "dist"
-VERSION = "3.0.0"
+VERSION = "4.0.0"
 
 MANUAL = {
-    "my-git-commit",
     "my-grill-to-implementation",
-    "my-grill-to-spec",
-    "my-implement-orchestrator",
     "my-improve-code",
     "my-improve-comments",
     "my-improve-spacing",
-    "my-review-changes",
-    "my-spec-to-tickets",
 }
 
 # Skills that delegate work to subagents. They describe responsibilities, never subagent types.
 DELEGATING = {
     "my-grill-to-implementation",
-    "my-grill-to-spec",
-    "my-implement-orchestrator",
     "my-improve-code",
     "my-improve-comments",
     "my-improve-spacing",
-    "my-review-changes",
     "my-software-design-doc",
 }
 
 ARG_HINT = {
-    "my-git-commit": "[optional context]",
     "my-grill-to-implementation": "[change request | .agents/tmp/implementation state]",
-    "my-grill-to-spec": "[change request | .agents/tmp/grill ledger]",
-    "my-implement-orchestrator": "[work item source]",
     "my-improve-code": "[scope]",
     "my-improve-comments": "[scope]",
     "my-improve-spacing": "[scope]",
-    "my-review-changes": "[files | directory | glob]",
-    "my-spec-to-tickets": "[approved SPEC]",
 }
 
 SUBAGENTS_BLOCK = (

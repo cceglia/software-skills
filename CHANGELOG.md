@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.0.0 — 2026-10-05 (`claude` branch)
+
+- Removed `my-grill-to-spec`, `my-spec-to-tickets`, `my-implement-orchestrator`, `my-review-changes`, and `my-git-commit`: use Matt Pocock's skills directly (`grill-with-docs`, `to-spec`, `to-tickets`, `implement` / `implement-spec`, `code-review`).
+- Removed the `./.agents/tmp/grill/` runtime ledger, which belonged to `my-grill-to-spec`.
+- Installer lists removed skills still present in the destination, without deleting them.
+
 ## 3.0.0 — 2026-10-05 (`claude` branch)
 
 - Claude Code-only distribution: removed Codex, OpenCode V2, Antigravity, and shared `.agents/skills` profiles; `dist/skills/` is the only generated profile.

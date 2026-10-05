@@ -116,21 +116,16 @@ software-skills [options]
 --version, -v
 ```
 
-The installer only writes skill files. It never deletes anything; if it finds the `explore`/`develop`/`review` subagents installed by older releases under `.claude/agents/`, it reports them so you can remove them.
+The installer only writes skill files. It never deletes anything; if it finds skills removed in 4.0.0 or the `explore`/`develop`/`review` subagents installed by older releases, it lists them so you can remove them.
 
 ## Skills
 
 | Skill | Invocation | Purpose |
 | --- | --- | --- |
-| `my-grill-to-spec` | `/my-grill-to-spec` | Grill a change, keep a resumable ledger, publish the SPEC with `to-spec`, review it |
-| `my-spec-to-tickets` | `/my-spec-to-tickets` | Turn an approved SPEC into tickets with `to-tickets` |
-| `my-implement-orchestrator` | `/my-implement-orchestrator` | Implement tickets with `tdd` + repeated `code-review` gates |
 | `my-grill-to-implementation` | `/my-grill-to-implementation` | Light path: grill, explore, develop with `tdd`, review, commit |
-| `my-review-changes` | `/my-review-changes` | Independent read-only review of changed files |
 | `my-improve-code` | `/my-improve-code` | Improve comments and spacing without behavior changes |
 | `my-improve-comments` | `/my-improve-comments` | Improve comments/documentation only |
 | `my-improve-spacing` | `/my-improve-spacing` | Improve logical blank-line spacing only |
-| `my-git-commit` | `/my-git-commit` | Commit everything except `./.agents/tmp/` |
 | `my-software-design-doc` | automatic or `/my-software-design-doc` | Create or review software design documents |
 
 Every workflow except `my-software-design-doc` is explicit-only (`disable-model-invocation: true`).
@@ -147,34 +142,11 @@ These workflows compose Matt Pocock's skills instead of duplicating them. Instal
 npx skills add mattpocock/skills
 ```
 
-Run `setup-matt-pocock-skills` once per repository so `docs/agents/issue-tracker.md` identifies the canonical tracker. `to-spec` and `to-tickets` own their output locations. With Matt's local-markdown tracker, the SPEC is `.scratch/<feature>/spec.md` and tickets are `.scratch/<feature>/issues/<NN>-<slug>.md`; with GitHub/GitLab/Linear or another configured tracker, they are native tracker issues.
+Run `setup-matt-pocock-skills` once per repository so Matt's skills know the configured issue tracker.
 
-### Full path
+### Removed workflows
 
-```text
-my-grill-to-spec
-  -> grill-with-docs
-  -> .agents/tmp/grill/<slug>.md        (resumable decision ledger)
-  -> to-spec
-  -> canonical SPEC in configured tracker
-  -> fresh independent SPEC review
-  -> STOP
-
-my-spec-to-tickets
-  -> to-tickets
-  -> canonical tickets in configured tracker
-  -> STOP
-
-my-implement-orchestrator
-  -> develop + tdd
-  -> code-review
-  -> (develop fix + tdd -> new code-review)*
-  -> scoped commit + tracker finalization
-```
-
-`my-grill-to-spec` never delegates SPEC authorship to a subagent: `to-spec` owns synthesis and publishing. A fresh review subagent is used only after the canonical SPEC exists, and the workflow stops after approval.
-
-Matt's `implement` and `implement-spec` are user-invoked upstream skills, so `my-implement-orchestrator` composes the model-invokable primitives they rely on: `tdd` for develop/fix passes and `code-review` for every acceptance gate. Every fix must be followed by a new code review before commit.
+`my-grill-to-spec`, `my-spec-to-tickets`, `my-implement-orchestrator`, `my-review-changes`, and `my-git-commit` were removed in 4.0.0: use Matt Pocock's skills directly (`grill-with-docs`, `to-spec`, `to-tickets`, `implement` / `implement-spec`, `code-review`). The installer never deletes files, but it lists removed skills still present in the destination so you can delete them.
 
 ### Light path
 
@@ -195,14 +167,12 @@ All workflow state lives in the project under:
 
 ```text
 ./.agents/tmp/
-├── grill/<slug>.md
 └── implementation/<slug>.md
 ```
 
-Both ledgers survive context exhaustion. Reinvoke the same workflow with the ledger path:
+The ledger survives context exhaustion. Reinvoke the workflow with the ledger path:
 
 ```text
-/my-grill-to-spec ./.agents/tmp/grill/<slug>.md
 /my-grill-to-implementation ./.agents/tmp/implementation/<slug>.md
 ```
 

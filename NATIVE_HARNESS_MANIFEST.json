@@ -1,13 +1,12 @@
 {
-  "version": "3.0.0",
-  "canonical_skills": 10,
-  "manual_workflows": 9,
+  "version": "4.0.0",
+  "canonical_skills": 5,
+  "manual_workflows": 4,
   "semantic_skills": [
     "my-software-design-doc"
   ],
   "runtime_state": {
     "root": "./.agents/tmp/",
-    "grill": "./.agents/tmp/grill/<slug>.md",
     "implementation": "./.agents/tmp/implementation/<slug>.md"
   },
   "skill_routing": "Claude Code native skill discovery; no generated registry",
@@ -44,25 +43,22 @@
     "install_command": "npx --yes github:cceglia/software-skills#claude"
   },
   "external_dependencies": {
-    "my-grill-to-spec": [
-      "mattpocock/skills:grill-with-docs",
-      "mattpocock/skills:grilling",
-      "mattpocock/skills:domain-modeling",
-      "mattpocock/skills:to-spec"
-    ],
     "my-grill-to-implementation": [
       "mattpocock/skills:grill-with-docs",
       "mattpocock/skills:grilling",
       "mattpocock/skills:domain-modeling",
       "mattpocock/skills:tdd"
-    ],
-    "my-spec-to-tickets": [
-      "mattpocock/skills:to-tickets"
-    ],
-    "my-implement-orchestrator": [
-      "mattpocock/skills:tdd",
-      "mattpocock/skills:code-review"
     ]
   },
-  "subagents": "skills never name a subagent type; Claude Code chooses autonomously; no custom agents installed"
+  "subagents": "skills never name a subagent type; Claude Code chooses autonomously; no custom agents installed",
+  "removed_workflows": {
+    "replaced_by": "Matt Pocock skills used directly",
+    "skills": [
+      "my-git-commit",
+      "my-grill-to-spec",
+      "my-implement-orchestrator",
+      "my-review-changes",
+      "my-spec-to-tickets"
+    ]
+  }
 }

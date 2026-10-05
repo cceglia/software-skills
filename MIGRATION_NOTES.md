@@ -1,5 +1,11 @@
 # Migration notes
 
+## 4.0.0 (`claude` branch)
+
+- `my-grill-to-spec`, `my-spec-to-tickets`, `my-implement-orchestrator`, `my-review-changes`, and `my-git-commit` were removed; use Matt Pocock's `grill-with-docs`, `to-spec`, `to-tickets`, `implement` / `implement-spec`, and `code-review` directly.
+- Reinstalling does not delete the old skill directories: remove `.claude/skills/<name>/` (or `~/.claude/skills/<name>/`) yourself; the installer lists the leftovers.
+- Leftover `./.agents/tmp/grill/` ledgers are no longer read by any skill.
+
 ## 3.0.0 (`claude` branch)
 
 - Claude Code only: the Codex, OpenCode V2, Antigravity, and shared `.agents/skills` profiles were removed from this branch (they remain on `main`).

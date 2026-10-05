@@ -1,5 +1,9 @@
 # Changelog — my-improve-spacing
 
+## 4.0.0 — 2026-10-05
+
+- Package version synchronized with the removal of workflows now covered by Matt Pocock's skills; no skill-specific behavior change.
+
 ## 3.0.0 — 2026-10-05
 
 - Claude Code-only profile: installs into project `.claude/skills` or global `~/.claude/skills`.

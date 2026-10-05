@@ -11,11 +11,8 @@ This branch targets Claude Code only. Claude Code frontmatter (`disable-model-in
 Only resumable state belongs under:
 
 ```text
-./.agents/tmp/grill/
 ./.agents/tmp/implementation/
 ```
-
-Canonical SPECs and tickets are owned by Matt Pocock's configured issue tracker through `to-spec` / `to-tickets`; never duplicate them under `.agents/tmp`.
 
 There is no skill registry. Use Claude Code's native skill discovery. Never stage, commit, or review `./.agents/tmp/`; do not ignore `.agents/` globally.
 

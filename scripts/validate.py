@@ -8,18 +8,13 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "source" / "skills"
 DIST = ROOT / "dist"
-VERSION = "3.0.0"
+VERSION = "4.0.0"
 EXPECTED = {
-    "my-git-commit",
     "my-grill-to-implementation",
-    "my-grill-to-spec",
-    "my-implement-orchestrator",
     "my-improve-code",
     "my-improve-comments",
     "my-improve-spacing",
-    "my-review-changes",
     "my-software-design-doc",
-    "my-spec-to-tickets",
 }
 MANUAL = EXPECTED - {"my-software-design-doc"}
 
@@ -93,8 +88,9 @@ def check_skill_dir(root: Path, expected: set[str] = EXPECTED) -> None:
             fail(f"skill should remain concise (<250 lines): {path.relative_to(ROOT)}")
 
 
-FORBIDDEN = ("my-update-skills-list", "skills.json", "./.tmp/", ".opencode", ".codex", "subagent_type", "my-grill-to-plan", "my-plan-to-spec", ".claude/agents", "harness-mapped", "harness-native")
-DELEGATING = EXPECTED - {"my-git-commit", "my-spec-to-tickets"}
+REMOVED = ("my-git-commit", "my-grill-to-spec", "my-implement-orchestrator", "my-review-changes", "my-spec-to-tickets")
+FORBIDDEN = REMOVED + ("my-update-skills-list", "skills.json", "./.tmp/", ".opencode", ".codex", "subagent_type", "my-grill-to-plan", "my-plan-to-spec", ".claude/agents", "harness-mapped", "harness-native")
+DELEGATING = EXPECTED
 
 
 def validate_source() -> None:
@@ -108,23 +104,10 @@ def validate_source() -> None:
             fail(f"obsolete token remains in canonical source: {forbidden}")
     if "./.agents/tmp/implementation/" not in text:
         fail("canonical source missing runtime path ./.agents/tmp/implementation/")
-    grill = read(SRC / "my-grill-to-spec" / "SKILL.md")
-    for token in ("grill-with-docs", "to-spec", "./.agents/tmp/grill/", "Next action"):
-        if token not in grill:
-            fail(f"my-grill-to-spec missing resume/Matt integration invariant: {token}")
     light = read(SRC / "my-grill-to-implementation" / "SKILL.md")
     for token in ("grill-with-docs", "`tdd`", "exploration", "development", "fresh** read-only review", "./.agents/tmp/implementation/", "Next action"):
         if token not in light:
             fail(f"my-grill-to-implementation missing light-flow invariant: {token}")
-    tickets = read(SRC / "my-spec-to-tickets" / "SKILL.md")
-    if "to-tickets" not in tickets:
-        fail("my-spec-to-tickets must delegate to Matt Pocock to-tickets")
-    orchestrator = read(SRC / "my-implement-orchestrator" / "SKILL.md")
-    for token in ("`tdd`", "`code-review`", "develop(tdd)", "new `code-review`", "MAX_REVIEW_CYCLES"):
-        if token not in orchestrator:
-            fail(f"orchestrator missing TDD/review-loop invariant: {token}")
-    if "develop/fix: `implement`" in orchestrator:
-        fail("orchestrator must not depend on user-only Matt implement")
 
 
 def validate_claude() -> None:
@@ -152,11 +135,8 @@ def validate_agents_md() -> None:
     for token in (
         "source/skills/",
         "./.agents/tmp/",
-        "my-grill-to-spec",
         "my-grill-to-implementation",
-        "my-spec-to-tickets",
-        "my-implement-orchestrator",
-        "develop(tdd) -> code-review",
+        "Removed in 4.0.0",
         "my-update-skills-list",
         "my-plan-to-spec",
         "native skill discovery",
@@ -191,7 +171,7 @@ def main() -> int:
     print("OK: canonical source and Claude Code profile validated")
     print(f"- canonical skills: {len(EXPECTED)}")
     print(f"- explicit workflows: {len(MANUAL)}")
-    print("- runtime state: resumable ledgers under ./.agents/tmp/grill and ./.agents/tmp/implementation")
+    print("- runtime state: resumable ledgers under ./.agents/tmp/implementation")
     print("- skill routing: Claude Code native skill discovery; no skills.json registry")
     print("- subagents: no prescribed subagent types; Claude Code chooses autonomously")
     return 0

@@ -18,47 +18,27 @@ Skills delegate responsibilities (exploration, development, review) but never na
 ## Runtime state
 
 - All ephemeral/resumable state owned by this project lives under `./.agents/tmp/`.
-- Grill ledgers: `./.agents/tmp/grill/<slug>.md`.
 - Light implementation ledgers: `./.agents/tmp/implementation/<slug>.md`.
 - `./.agents/tmp/` is never a canonical deliverable and must not be staged, committed, or treated as review scope.
-- Canonical SPECs and tickets belong to the issue tracker configured by Matt Pocock's tooling. For the local tracker, that means `.scratch/<feature>/spec.md` and `.scratch/<feature>/issues/<NN>-<slug>.md`.
 
 ## Workflow contracts
-
-### `my-grill-to-spec`
-
-Compose Matt Pocock's `grill-with-docs` and `to-spec`. Maintain a resumable decision ledger while grilling, let `to-spec` own canonical SPEC synthesis/publishing, run a fresh independent post-SPEC review, then stop. Do not create tickets or start implementation.
-
-### `my-spec-to-tickets`
-
-Remain a thin wrapper around Matt Pocock's `to-tickets`. Let upstream own decomposition, dependencies, approval quiz, and publishing. Stop after ticket creation.
 
 ### `my-grill-to-implementation`
 
 This is the light path for changes that do not justify SPEC + tickets. Use `grill-with-docs`, keep one resumable implementation ledger, then delegate `exploration -> development -> fresh review` to subagents. Development/fix passes use Matt Pocock's `tdd`. On findings, run a new development fix pass followed by a new fresh review. Commit only after approval.
-
-### `my-implement-orchestrator`
-
-This is the full ticket implementation path. Per ticket, enforce:
-
-```text
-develop(tdd) -> code-review -> (develop fix(tdd) -> new code-review)* -> commit -> tracker finalization
-```
-
-Every fix requires a subsequent clean `code-review`; never commit immediately after fixes. Keep review-cycle limits explicit. Do not replace Matt Pocock's `tdd` or `code-review` with duplicated local rules.
 
 ## Deliberately removed workflows
 
 Do not reintroduce these unless the architecture is intentionally changed:
 
 - `my-update-skills-list` and `skills.json`: native skill discovery is the source of truth.
-- `my-grill-to-plan`: replaced by `my-grill-to-spec`.
-- `my-plan-to-spec`: the grill-to-SPEC workflow already composes `to-spec`.
+- `my-grill-to-plan` and `my-plan-to-spec`: superseded, then removed.
+- Removed in 4.0.0 because Matt Pocock's skills are used directly: `my-grill-to-spec` (`grill-with-docs` + `to-spec`), `my-spec-to-tickets` (`to-tickets`), `my-implement-orchestrator` (`implement` / `implement-spec`), `my-review-changes` (`code-review`), and `my-git-commit`.
 - Codex, OpenCode V2, Antigravity, and shared `.agents/skills` profiles: they live on `main`; this branch is Claude Code only.
 
 ## Upstream Matt Pocock constraints
 
-Respect upstream invocation policy. Some Matt Pocock workflows such as `grill-with-docs`, `to-spec`, `to-tickets`, `implement`, and `implement-spec` are user-invoked only (`disable-model-invocation: true`). Do not silently patch or pretend those policies do not exist. `my-implement-orchestrator` intentionally composes the model-invokable `tdd` and `code-review` primitives instead of depending on user-only `implement`/`implement-spec`.
+Respect upstream invocation policy. Some Matt Pocock workflows such as `grill-with-docs`, `to-spec`, `to-tickets`, `implement`, and `implement-spec` are user-invoked only (`disable-model-invocation: true`). Do not silently patch or pretend those policies do not exist; prefer the model-invokable primitives (`tdd`, `code-review`) when a skill must compose them.
 
 ## Change procedure
 
