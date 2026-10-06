@@ -11,7 +11,7 @@ const ROOT = path.resolve(__dirname, '..');
 const VERSION = require(path.join(ROOT, 'package.json')).version;
 const SKILLS_SOURCE = path.join(ROOT, 'dist', 'skills');
 const LEGACY_AGENTS = ['explore.md', 'develop.md', 'review.md'];
-const REMOVED_SKILLS = ['my-git-commit', 'my-grill-to-spec', 'my-implement-orchestrator', 'my-review-changes', 'my-spec-to-tickets'];
+const REMOVED_SKILLS = ['my-git-commit', 'my-grill-to-spec', 'my-review-changes', 'my-spec-to-tickets'];
 
 function usage() {
   return `software-skills ${VERSION}\n\n` +

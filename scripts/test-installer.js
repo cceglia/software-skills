@@ -41,13 +41,14 @@ function expectFailure(args, message, options) {
   const home = tempDir();
   run(['--scope', 'project', '--target', target, '--git-exclude', 'no'], { home });
   assert(exists(target, '.claude/skills/my-improve-code/SKILL.md'));
+  assert(exists(target, '.claude/skills/my-implement-orchestrator/SKILL.md'));
   assert(exists(target, '.claude/skills/my-software-design-doc/references/design-doc-template.md'));
   assert(!exists(target, '.claude/agents'));
   assert(!exists(target, '.agents/skills'));
   assert(!exists(target, '.opencode'));
   assert(!exists(target, '.codex'));
   assert(!exists(home, '.claude'));
-  for (const removed of ['my-git-commit', 'my-grill-to-spec', 'my-implement-orchestrator', 'my-review-changes', 'my-spec-to-tickets']) {
+  for (const removed of ['my-git-commit', 'my-grill-to-spec', 'my-review-changes', 'my-spec-to-tickets']) {
     assert(!exists(target, `.claude/skills/${removed}`));
   }
 }

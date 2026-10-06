@@ -7,7 +7,7 @@ disable-model-invocation: true
 user-invocable: true
 argument-hint: "[change request | .agents/tmp/implementation state]"
 metadata:
-  version: "4.1.0"
+  version: "4.2.0"
 ---
 
 # my-grill-to-implementation

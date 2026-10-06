@@ -1,5 +1,9 @@
 # Changelog — my-grill-to-implementation
 
+## 4.2.0 — 2026-10-06
+
+- Package version synchronized with the restored `my-implement-orchestrator`; no skill-specific behavior change.
+
 ## 4.1.0 — 2026-10-05
 
 - Each slice is developed with `tdd` by a fresh subagent and committed after green tests/typecheck; one fresh review of the whole change runs at the end, followed by fix -> commit -> new review cycles (max 3).

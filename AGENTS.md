@@ -34,13 +34,25 @@ at the end: fresh review -> (develop fix(tdd) -> commit -> new fresh review)* ->
 
 Every fix requires a subsequent clean fresh review before `completed`; fixes are committed first because the review diffs committed history from the recorded starting revision. An intermediate review after a high-risk slice is optional, at the agent's discretion. Work only in the current checkout: no worktrees, branches, pull requests, or pushes. Subagents run sequentially; parallelism is allowed only across different repositories. Never approve by self-review.
 
+### `my-implement-orchestrator`
+
+This is the full ticket implementation path:
+
+```text
+per ticket:        develop(tdd) -> validation green -> commit
+important ticket:  + code-review of that ticket -> (develop fix(tdd) -> commit -> new code-review)*
+at the end:        code-review -> (develop fix(tdd) -> commit -> new code-review)* -> tracker finalization
+```
+
+Do not review every ticket: only important (high-risk or foundational) tickets get their own `code-review`. Every fix requires a subsequent clean `code-review`; fixes are committed first because `code-review` diffs committed history. Tickets are finalized only after the final review is clean. Same working-copy and subagent rules as `my-grill-to-implementation`. Keep `MAX_REVIEW_CYCLES` explicit and do not replace Matt Pocock's `tdd` or `code-review` with duplicated local rules.
+
 ## Deliberately removed workflows
 
 Do not reintroduce these unless the architecture is intentionally changed:
 
 - `my-update-skills-list` and `skills.json`: native skill discovery is the source of truth.
 - `my-grill-to-plan` and `my-plan-to-spec`: superseded, then removed.
-- Removed in 4.0.0 because Matt Pocock's skills are used directly: `my-grill-to-spec` (`grill-with-docs` + `to-spec`), `my-spec-to-tickets` (`to-tickets`), `my-implement-orchestrator` (`implement` / `implement-spec`), `my-review-changes` (`code-review`), and `my-git-commit`.
+- Removed in 4.0.0 because Matt Pocock's skills are used directly: `my-grill-to-spec` (`grill-with-docs` + `to-spec`), `my-spec-to-tickets` (`to-tickets`), `my-review-changes` (`code-review`), and `my-git-commit`.
 - Codex, OpenCode V2, Antigravity, and shared `.agents/skills` profiles: they live on `main`; this branch is Claude Code only.
 
 ## Upstream Matt Pocock constraints

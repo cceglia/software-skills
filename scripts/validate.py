@@ -8,9 +8,10 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "source" / "skills"
 DIST = ROOT / "dist"
-VERSION = "4.1.0"
+VERSION = "4.2.0"
 EXPECTED = {
     "my-grill-to-implementation",
+    "my-implement-orchestrator",
     "my-improve-code",
     "my-improve-comments",
     "my-improve-spacing",
@@ -88,7 +89,7 @@ def check_skill_dir(root: Path, expected: set[str] = EXPECTED) -> None:
             fail(f"skill should remain concise (<250 lines): {path.relative_to(ROOT)}")
 
 
-REMOVED = ("my-git-commit", "my-grill-to-spec", "my-implement-orchestrator", "my-review-changes", "my-spec-to-tickets")
+REMOVED = ("my-git-commit", "my-grill-to-spec", "my-review-changes", "my-spec-to-tickets")
 FORBIDDEN = REMOVED + ("my-update-skills-list", "skills.json", "./.tmp/", ".opencode", ".codex", "subagent_type", "my-grill-to-plan", "my-plan-to-spec", ".claude/agents", "harness-mapped", "harness-native")
 DELEGATING = EXPECTED
 
@@ -108,6 +109,10 @@ def validate_source() -> None:
     for token in ("grill-with-docs", "`tdd`", "exploration", "development", "fresh** read-only review", "./.agents/tmp/implementation/", "Next action", "develop(tdd) -> validation green -> commit", "new fresh review", "never create worktrees", "pull requests", "starting revision", "Run subagents sequentially", "different repositories"):
         if token not in light:
             fail(f"my-grill-to-implementation missing light-flow invariant: {token}")
+    orchestrator = read(SRC / "my-implement-orchestrator" / "SKILL.md")
+    for token in ("`tdd`", "`code-review`", "develop(tdd) -> validation green -> commit", "Do not review every ticket", "new `code-review`", "MAX_REVIEW_CYCLES", "never create worktrees", "pull requests", "starting revision", "Run subagents sequentially", "different repositories"):
+        if token not in orchestrator:
+            fail(f"my-implement-orchestrator missing flow invariant: {token}")
 
 
 def validate_claude() -> None:
@@ -136,6 +141,8 @@ def validate_agents_md() -> None:
         "source/skills/",
         "./.agents/tmp/",
         "my-grill-to-implementation",
+        "my-implement-orchestrator",
+        "Do not review every ticket",
         "develop(tdd) -> validation green -> commit",
         "Removed in 4.0.0",
         "my-update-skills-list",

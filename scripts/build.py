@@ -7,10 +7,11 @@ import shutil
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "source" / "skills"
 DIST = ROOT / "dist"
-VERSION = "4.1.0"
+VERSION = "4.2.0"
 
 MANUAL = {
     "my-grill-to-implementation",
+    "my-implement-orchestrator",
     "my-improve-code",
     "my-improve-comments",
     "my-improve-spacing",
@@ -19,6 +20,7 @@ MANUAL = {
 # Skills that delegate work to subagents. They describe responsibilities, never subagent types.
 DELEGATING = {
     "my-grill-to-implementation",
+    "my-implement-orchestrator",
     "my-improve-code",
     "my-improve-comments",
     "my-improve-spacing",
@@ -27,6 +29,7 @@ DELEGATING = {
 
 ARG_HINT = {
     "my-grill-to-implementation": "[change request | .agents/tmp/implementation state]",
+    "my-implement-orchestrator": "[work item source]",
     "my-improve-code": "[scope]",
     "my-improve-comments": "[scope]",
     "my-improve-spacing": "[scope]",

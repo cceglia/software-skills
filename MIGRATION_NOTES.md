@@ -1,5 +1,9 @@
 # Migration notes
 
+## 4.2.0 (`claude` branch)
+
+- `my-implement-orchestrator` is back. Reinstall with `--force` to replace an older copy (for example 2.5.1, which reviewed every ticket); it is no longer reported as a leftover.
+
 ## 4.1.0 (`claude` branch)
 
 - `my-grill-to-implementation` now creates one commit per slice instead of a single commit after approval, and reviews the whole change once at the end. Ledgers from earlier versions record a single final commit; on resume, the workflow reconciles them with the current HEAD and continues with the new flow.

@@ -1,7 +1,7 @@
 {
-  "version": "4.1.0",
-  "canonical_skills": 5,
-  "manual_workflows": 4,
+  "version": "4.2.0",
+  "canonical_skills": 6,
+  "manual_workflows": 5,
   "semantic_skills": [
     "my-software-design-doc"
   ],
@@ -48,6 +48,10 @@
       "mattpocock/skills:grilling",
       "mattpocock/skills:domain-modeling",
       "mattpocock/skills:tdd"
+    ],
+    "my-implement-orchestrator": [
+      "mattpocock/skills:tdd",
+      "mattpocock/skills:code-review"
     ]
   },
   "subagents": "skills never name a subagent type; Claude Code chooses autonomously; no custom agents installed",
@@ -56,7 +60,6 @@
     "skills": [
       "my-git-commit",
       "my-grill-to-spec",
-      "my-implement-orchestrator",
       "my-review-changes",
       "my-spec-to-tickets"
     ]

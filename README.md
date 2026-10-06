@@ -123,6 +123,7 @@ The installer only writes skill files. It never deletes anything; if it finds sk
 | Skill | Invocation | Purpose |
 | --- | --- | --- |
 | `my-grill-to-implementation` | `/my-grill-to-implementation` | Light path: grill, explore, implement and commit every slice with `tdd`, then a final review with fix/review cycles |
+| `my-implement-orchestrator` | `/my-implement-orchestrator` | Implement tracker tickets with `tdd` and per-ticket commits; review only important tickets individually, then a final `code-review` with fix/review cycles |
 | `my-improve-code` | `/my-improve-code` | Improve comments and spacing without behavior changes |
 | `my-improve-comments` | `/my-improve-comments` | Improve comments/documentation only |
 | `my-improve-spacing` | `/my-improve-spacing` | Improve logical blank-line spacing only |
@@ -146,7 +147,24 @@ Run `setup-matt-pocock-skills` once per repository so Matt's skills know the con
 
 ### Removed workflows
 
-`my-grill-to-spec`, `my-spec-to-tickets`, `my-implement-orchestrator`, `my-review-changes`, and `my-git-commit` were removed in 4.0.0: use Matt Pocock's skills directly (`grill-with-docs`, `to-spec`, `to-tickets`, `implement` / `implement-spec`, `code-review`). The installer never deletes files, but it lists removed skills still present in the destination so you can delete them.
+`my-grill-to-spec`, `my-spec-to-tickets`, `my-review-changes`, and `my-git-commit` were removed in 4.0.0: use Matt Pocock's skills directly (`grill-with-docs`, `to-spec`, `to-tickets`, `code-review`). `my-implement-orchestrator` was restored in 4.2.0. The installer never deletes files, but it lists removed skills still present in the destination so you can delete them.
+
+### Ticket path
+
+```text
+my-implement-orchestrator
+  per ticket:
+    -> development subagent + tdd
+    -> tests/typecheck green
+    -> one commit (ticket reference in the message)
+    -> important ticket only: code-review of that ticket -> (fix -> commit -> new code-review)*
+  at the end:
+    -> code-review since the starting revision
+    -> (development fix + tdd -> commit -> new code-review)*
+    -> tracker finalization
+```
+
+Only important tickets (migrations, persistence, public contracts, security/auth, concurrency, or foundational for dependent tickets) are reviewed individually; every other ticket is covered by the final review. Same working-copy rules as the light path.
 
 ### Light path
 

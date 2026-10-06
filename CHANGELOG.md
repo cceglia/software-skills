@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.2.0 — 2026-10-06 (`claude` branch)
+
+- Restored `my-implement-orchestrator`: per-ticket `develop(tdd) -> validation green -> commit`, an individual `code-review` only for important (high-risk or foundational) tickets, and a final `code-review` of the whole change with `fix -> commit -> new code-review` cycles before tracker finalization. No worktrees, branches, pull requests, or pushes.
+
 ## 4.1.0 — 2026-10-05 (`claude` branch)
 
 - `my-grill-to-implementation`: per-slice `develop(tdd) -> validation green -> commit`, then one fresh review of the whole change with `fix -> commit -> new fresh review` cycles (max 3). Intermediate reviews after high-risk slices are optional.
