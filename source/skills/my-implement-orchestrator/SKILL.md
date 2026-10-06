@@ -1,10 +1,10 @@
 ---
 name: my-implement-orchestrator
-description: Implement approved tracker tickets with develop/TDD and per-ticket commits, review only important tickets individually, then gate the whole change with repeated Matt Pocock code-review cycles before tracker finalization.
+description: Implement approved tracker tickets with develop/TDD and per-ticket commits, review a ticket individually only in exceptional high-risk cases, then gate the whole change with repeated Matt Pocock code-review cycles before tracker finalization.
 license: MIT
 compatibility: Canonical Claude Code source; use scripts/build.py to generate the installable profile.
 metadata:
-  version: "4.2.0"
+  version: "4.3.0"
 ---
 
 # my-implement-orchestrator
@@ -15,7 +15,7 @@ Read repository instructions and `docs/agents/issue-tracker.md`. Before implemen
 
 ```text
 per ticket:        develop(tdd) -> validation green -> commit
-important ticket:  + code-review of that ticket -> (develop fix(tdd) -> commit -> new code-review)*
+exceptional ticket: + code-review of that ticket -> (develop fix(tdd) -> commit -> new code-review)*
 at the end:        code-review -> (develop fix(tdd) -> commit -> new code-review)* -> tracker finalization
 ```
 
@@ -33,9 +33,9 @@ Process ready tickets one at a time in dependency order. Delegate each develop/f
 
 After each pass, re-run the project's tests and typecheck yourself. Only when they are green, create exactly one commit containing only that ticket's changes, excluding `./.agents/tmp/`, with the ticket reference in the message so `code-review` can find the spec. Preserve unrelated work and block if the boundary cannot be isolated safely.
 
-## Important tickets
+## Exceptional ticket review
 
-Do not review every ticket. Review a ticket on its own only when it is important: high-risk (migrations, persistence or data-loss risk, public contracts, security/auth boundaries, concurrency) or foundational for dependent tickets. Decide per ticket and record the reason in the report. For an important ticket, run `code-review` right after its commit with the commit before that ticket as fixed point, and apply the review loop before starting dependent tickets.
+Do not review tickets individually by default; the final review covers them. Review a ticket on its own only for a high and concrete risk: a data migration, a risk of data loss, or a new security boundary. A public contract, or other tickets depending on it, is not enough. Before launching it, tell the user which ticket and why, and record the reason in the report. Then run `code-review` right after the ticket's commit with the commit before that ticket as fixed point, and apply the review loop before starting dependent tickets.
 
 ## Review loop
 

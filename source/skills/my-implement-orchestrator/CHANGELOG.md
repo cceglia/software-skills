@@ -1,5 +1,9 @@
 # Changelog — my-implement-orchestrator
 
+## 4.3.0 — 2026-10-06
+
+- Individual ticket `code-review` restricted to data migration, data-loss risk, or a new security boundary; announced to the user first.
+
 ## 4.2.0 — 2026-10-06
 
 - Restored after its removal in 4.0.0.

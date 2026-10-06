@@ -32,7 +32,7 @@ per slice:  develop(tdd) -> validation green -> commit
 at the end: fresh review -> (develop fix(tdd) -> commit -> new fresh review)* -> completed
 ```
 
-Every fix requires a subsequent clean fresh review before `completed`; fixes are committed first because the review diffs committed history from the recorded starting revision. An intermediate review after a high-risk slice is optional, at the agent's discretion. Work only in the current checkout: no worktrees, branches, pull requests, or pushes. Subagents run sequentially; parallelism is allowed only across different repositories. Never approve by self-review.
+Every fix requires a subsequent clean fresh review before `completed`; fixes are committed first because the review diffs committed history from the recorded starting revision. No per-slice review by default; an intermediate review only for a high and concrete risk (data migration, data-loss risk, new security boundary), announced to the user beforehand. Work only in the current checkout: no worktrees, branches, pull requests, or pushes. Subagents run sequentially; parallelism is allowed only across different repositories. Never approve by self-review.
 
 ### `my-implement-orchestrator`
 
@@ -40,11 +40,11 @@ This is the full ticket implementation path:
 
 ```text
 per ticket:        develop(tdd) -> validation green -> commit
-important ticket:  + code-review of that ticket -> (develop fix(tdd) -> commit -> new code-review)*
+exceptional ticket: + code-review of that ticket -> (develop fix(tdd) -> commit -> new code-review)*
 at the end:        code-review -> (develop fix(tdd) -> commit -> new code-review)* -> tracker finalization
 ```
 
-Do not review every ticket: only important (high-risk or foundational) tickets get their own `code-review`. Every fix requires a subsequent clean `code-review`; fixes are committed first because `code-review` diffs committed history. Tickets are finalized only after the final review is clean. Same working-copy and subagent rules as `my-grill-to-implementation`. Keep `MAX_REVIEW_CYCLES` explicit and do not replace Matt Pocock's `tdd` or `code-review` with duplicated local rules.
+Do not review tickets individually by default: only a high and concrete risk (data migration, data-loss risk, new security boundary; a contract or dependents are not enough) gets its own `code-review`, announced to the user beforehand. Every fix requires a subsequent clean `code-review`; fixes are committed first because `code-review` diffs committed history. Tickets are finalized only after the final review is clean. Same working-copy and subagent rules as `my-grill-to-implementation`. Keep `MAX_REVIEW_CYCLES` explicit and do not replace Matt Pocock's `tdd` or `code-review` with duplicated local rules.
 
 ## Deliberately removed workflows
 

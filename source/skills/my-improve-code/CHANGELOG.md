@@ -1,5 +1,9 @@
 # Changelog — my-improve-code
 
+## 4.3.0 — 2026-10-06
+
+- Package version synchronized with the exceptional-review change; no skill-specific behavior change.
+
 ## 4.2.0 — 2026-10-06
 
 - Package version synchronized with the restored `my-implement-orchestrator`; no skill-specific behavior change.

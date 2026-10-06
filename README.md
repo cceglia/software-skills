@@ -123,7 +123,7 @@ The installer only writes skill files. It never deletes anything; if it finds sk
 | Skill | Invocation | Purpose |
 | --- | --- | --- |
 | `my-grill-to-implementation` | `/my-grill-to-implementation` | Light path: grill, explore, implement and commit every slice with `tdd`, then a final review with fix/review cycles |
-| `my-implement-orchestrator` | `/my-implement-orchestrator` | Implement tracker tickets with `tdd` and per-ticket commits; review only important tickets individually, then a final `code-review` with fix/review cycles |
+| `my-implement-orchestrator` | `/my-implement-orchestrator` | Implement tracker tickets with `tdd` and per-ticket commits; review a ticket individually only in exceptional high-risk cases, then a final `code-review` with fix/review cycles |
 | `my-improve-code` | `/my-improve-code` | Improve comments and spacing without behavior changes |
 | `my-improve-comments` | `/my-improve-comments` | Improve comments/documentation only |
 | `my-improve-spacing` | `/my-improve-spacing` | Improve logical blank-line spacing only |
@@ -157,14 +157,14 @@ my-implement-orchestrator
     -> development subagent + tdd
     -> tests/typecheck green
     -> one commit (ticket reference in the message)
-    -> important ticket only: code-review of that ticket -> (fix -> commit -> new code-review)*
+    -> exceptional ticket only: code-review of that ticket -> (fix -> commit -> new code-review)*
   at the end:
     -> code-review since the starting revision
     -> (development fix + tdd -> commit -> new code-review)*
     -> tracker finalization
 ```
 
-Only important tickets (migrations, persistence, public contracts, security/auth, concurrency, or foundational for dependent tickets) are reviewed individually; every other ticket is covered by the final review. Same working-copy rules as the light path.
+A ticket is reviewed individually only for a high and concrete risk (data migration, data-loss risk, new security boundary), which the agent announces beforehand; a public contract or dependent tickets are not enough. every other ticket is covered by the final review. Same working-copy rules as the light path.
 
 ### Light path
 
@@ -183,7 +183,7 @@ my-grill-to-implementation
     -> completed
 ```
 
-It works only in the current checkout (no worktrees, branches, pull requests, or pushes) and runs subagents sequentially, in parallel only across different repositories. An intermediate review after a high-risk slice is optional.
+It works only in the current checkout (no worktrees, branches, pull requests, or pushes) and runs subagents sequentially, in parallel only across different repositories. An intermediate slice review happens only under the same exceptional high-risk criteria, announced beforehand.
 
 ## Runtime state and resume
 

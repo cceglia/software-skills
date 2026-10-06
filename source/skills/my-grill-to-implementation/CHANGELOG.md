@@ -1,5 +1,9 @@
 # Changelog — my-grill-to-implementation
 
+## 4.3.0 — 2026-10-06
+
+- Intermediate slice review restricted to data migration, data-loss risk, or a new security boundary; announced to the user first.
+
 ## 4.2.0 — 2026-10-06
 
 - Package version synchronized with the restored `my-implement-orchestrator`; no skill-specific behavior change.
