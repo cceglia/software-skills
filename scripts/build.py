@@ -7,7 +7,7 @@ import shutil
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "source" / "skills"
 DIST = ROOT / "dist"
-VERSION = "3.0.0"
+VERSION = "3.1.0"
 
 MANUAL = {
     "my-grill-to-implementation",

@@ -8,7 +8,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "source" / "skills"
 DIST = ROOT / "dist"
-VERSION = "3.0.0"
+VERSION = "3.1.0"
 EXPECTED = {
     "my-grill-to-implementation",
     "my-implement-orchestrator",
@@ -108,7 +108,7 @@ def validate_source() -> None:
         if token not in light:
             fail(f"my-grill-to-implementation missing light-flow invariant: {token}")
     orchestrator = read(SRC / "my-implement-orchestrator" / "SKILL.md")
-    for token in ("`tdd`", "`code-review`", "develop(tdd) -> validation green -> commit", "Do not review every ticket", "new `code-review`", "MAX_REVIEW_CYCLES", "never create worktrees", "pull requests", "starting revision", "Run subagents sequentially", "different repositories"):
+    for token in ("`tdd`", "`code-review`", "develop(tdd) -> validation green -> commit", "Do not review tickets individually by default", "new `code-review`", "MAX_REVIEW_CYCLES", "never create worktrees", "pull requests", "starting revision", "Run subagents sequentially", "different repositories"):
         if token not in orchestrator:
             fail(f"my-implement-orchestrator missing flow invariant: {token}")
 
@@ -146,7 +146,7 @@ def validate_agents_md() -> None:
         "./.agents/tmp/",
         "my-grill-to-implementation",
         "my-implement-orchestrator",
-        "Do not review every ticket",
+        "Do not review tickets individually by default",
         "develop(tdd) -> validation green -> commit",
         "OpenCode V2",
         "native skill discovery",

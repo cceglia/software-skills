@@ -1,5 +1,9 @@
 # Changelog — my-grill-to-implementation
 
+## 3.1.0 — 2026-10-06
+
+- Intermediate slice review restricted to data migration, data-loss risk, or a new security boundary; announced to the user first.
+
 ## 3.0.0 — 2026-10-06
 
 - OpenCode V2-only distribution; installer asks only for project or global scope.

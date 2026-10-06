@@ -1,5 +1,9 @@
 # Changelog — my-improve-spacing
 
+## 3.1.0 — 2026-10-06
+
+- Package version synchronized with the exceptional-review change; no skill-specific behavior change.
+
 ## 3.0.0 — 2026-10-06
 
 - Package version synchronized with the OpenCode V2-only distribution; no skill-specific behavior change.

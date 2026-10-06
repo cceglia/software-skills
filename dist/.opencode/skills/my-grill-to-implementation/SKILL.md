@@ -5,7 +5,7 @@ license: MIT
 compatibility: OpenCode V2; explicit slash invocation only.
 slash: true
 metadata:
-  version: "3.0.0"
+  version: "3.1.0"
   opencode/autoinvoke: false
   opencode/slash: true
 ---
@@ -48,7 +48,7 @@ Run subagents sequentially. Parallelism is allowed only across different reposit
 1. Invoke `grill-with-docs`; update the ledger after each material round. When decisions and test seams are settled, record ordered testable slices, set `ready-for-implementation`, and obtain explicit implementation approval.
 2. Delegate read-only exploration to a subagent; persist only implementation-relevant evidence.
 3. For each slice in order, delegate development to a fresh subagent with the ledger/evidence and require it to load `tdd` plus the smallest sufficient discovered skills. It implements only that slice, never commits, preserves unrelated changes, validates its work, and reports loaded/missing skills, changed files, validation, and blockers. Re-run the project's tests and typecheck yourself; only when green, create exactly one commit with only that slice's changes, excluding `./.agents/tmp/`. Block if the boundary cannot be isolated safely.
-4. At your discretion, after a high-risk slice (for example migrations, public contracts, or security boundaries) run an intermediate fresh review of that slice before later slices build on it; its findings follow step 6.
+4. Do not review slices individually by default. Only for a high and concrete risk (a data migration, a risk of data loss, or a new security boundary; a public contract or later slices depending on it is not enough), run an intermediate fresh review of that slice before later slices build on it, after telling the user which slice and why; its findings follow step 6.
 5. After all slices are committed, delegate a **fresh** read-only review to a new subagent against `git diff <starting-revision>...HEAD`, the ledger, and validation evidence. Require `VERDICT: APPROVED | CHANGES_REQUIRED | BLOCKED` plus blocking findings.
 6. On `CHANGES_REQUIRED`, persist only the blocking findings, delegate a new development fix pass with `tdd`, validate, commit the fixes, then run another fresh review in a new subagent. Maximum 3 review cycles; never approve by self-review.
 7. After a clean review, record the commits, set `completed`, and stop.

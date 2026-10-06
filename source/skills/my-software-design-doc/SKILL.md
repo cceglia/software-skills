@@ -4,7 +4,7 @@ description: Create or review software design documents, discovering repository 
 license: MIT
 compatibility: Canonical OpenCode V2 source; use scripts/build.py to generate the installable profile.
 metadata:
-  version: "3.0.0"
+  version: "3.1.0"
 ---
 
 # Software Design Documentation

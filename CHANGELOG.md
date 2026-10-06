@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.0 — 2026-10-06
+
+- Per-ticket/per-slice review is now exceptional: only for a high and concrete risk (data migration, data-loss risk, new security boundary), announced to the user beforehand. Public contracts or dependent tickets no longer qualify.
+
 ## 3.0.0 — 2026-10-06
 
 - OpenCode V2-only distribution: removed the Codex, Claude Code, Antigravity, and shared `.agents/skills` profiles; `dist/.opencode/` is the only generated profile.
