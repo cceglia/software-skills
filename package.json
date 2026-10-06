@@ -1,7 +1,7 @@
 {
   "name": "software-skills",
-  "version": "2.5.1",
-  "description": "Native multi-harness software engineering skills installer for Codex, Claude Code, OpenCode V2, and Antigravity.",
+  "version": "3.0.0",
+  "description": "OpenCode V2 software engineering skills installer (project or global scope).",
   "license": "MIT",
   "repository": {
     "type": "git",

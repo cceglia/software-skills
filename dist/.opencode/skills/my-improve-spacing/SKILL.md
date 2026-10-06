@@ -2,12 +2,25 @@
 name: my-improve-spacing
 description: Improve logical blank-line spacing without changing behavior or comments.
 license: MIT
-compatibility: Canonical OpenCode V2 source; use scripts/build.py to generate the installable profile.
+compatibility: OpenCode V2; explicit slash invocation only.
+slash: true
 metadata:
   version: "3.0.0"
+  opencode/autoinvoke: false
+  opencode/slash: true
 ---
 
 # my-improve-spacing
+
+## Invocation
+
+Explicit-only OpenCode V2 workflow. Run `/my-improve-spacing`; never invoke it implicitly.
+
+Treat command/skill arguments plus immediately relevant conversation context as the invocation input.
+
+## Harness roles
+
+Use OpenCode V2 child-session roles: `explore`, `develop`.
 
 Improve logical blank-line spacing in the invocation scope; empty scope means the repository. Exclude generated, vendored/third-party, build-artifact, and non-manually-maintained files.
 

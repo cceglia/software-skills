@@ -1,8 +1,0 @@
-interface:
-  display_name: "Improve Comments"
-  short_description: "Improve code comments and documentation safely"
-  default_prompt: "Use $my-improve-comments to improve comments and documentation without changing behavior."
-policy:
-  products:
-    - CODEX
-  allow_implicit_invocation: false

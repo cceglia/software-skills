@@ -1,5 +1,12 @@
 # Changelog — my-grill-to-implementation
 
+## 3.0.0 — 2026-10-06
+
+- OpenCode V2-only distribution; installer asks only for project or global scope.
+- Each slice is developed with `tdd` by a fresh `develop` role and committed after green tests/typecheck; one fresh `review` of the whole change runs at the end, followed by fix -> commit -> new review cycles (max 3). The single final commit is gone.
+- Optional intermediate review after high-risk slices, at the agent's discretion.
+- Works only in the current checkout: no worktrees, branches, pull requests, or pushes. Roles run sequentially; parallelism only across different repositories.
+
 ## 2.5.0 — 2026-10-03
 
 - Develop now explicitly loads Matt Pocock's `tdd` at pre-agreed seams.

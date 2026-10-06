@@ -1,9 +1,11 @@
 # my-implement-orchestrator
 
-Implements approved tracker tickets one at a time with:
+Implements approved tracker tickets with:
 
 ```text
-develop(tdd) → code-review → (develop fix(tdd) → code-review)* → scoped commit → tracker finalization
+per ticket:        develop(tdd) → validation green → commit
+important ticket:  + code-review of that ticket → (fix → commit → new code-review)*
+at the end:        code-review → (develop fix(tdd) → commit → new code-review)* → tracker finalization
 ```
 
-It uses Matt Pocock's model-invokable `tdd` and `code-review` primitives. It does not call `implement` or `implement-spec`, which upstream marks user-invoked only.
+Only important tickets (high-risk or foundational) are reviewed individually. It works only in the current checkout (no worktrees, branches, pull requests, or pushes) and runs subagents sequentially, in parallel only across different repositories. It uses Matt Pocock's model-invokable `tdd` and `code-review` primitives.

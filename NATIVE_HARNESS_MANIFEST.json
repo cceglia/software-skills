@@ -1,19 +1,18 @@
 {
-  "version": "2.5.0",
-  "canonical_skills": 10,
-  "manual_workflows": 9,
+  "version": "3.0.0",
+  "canonical_skills": 6,
+  "manual_workflows": 5,
   "semantic_skills": [
     "my-software-design-doc"
   ],
   "runtime_state": {
     "root": "./.agents/tmp/",
-    "grill": "./.agents/tmp/grill/<slug>.md",
     "implementation": "./.agents/tmp/implementation/<slug>.md"
   },
-  "skill_routing": "native harness discovery; no generated registry",
+  "skill_routing": "native OpenCode V2 discovery; no generated registry",
   "profiles": {
     "opencode": {
-      "root": "dist/opencode/.opencode",
+      "root": "dist/.opencode",
       "native_features": [
         "skill slash visibility",
         "metadata.opencode/autoinvoke",
@@ -22,87 +21,6 @@
         "V2 permissions",
         "built-in explore plus custom develop/review agents"
       ]
-    },
-    "codex": {
-      "root": "dist/codex",
-      "native_features": [
-        ".agents/skills",
-        "agents/openai.yaml",
-        "policy.allow_implicit_invocation",
-        ".codex/agents/*.toml",
-        "sandbox_mode"
-      ]
-    },
-    "claude-code": {
-      "root": "dist/claude-code/.claude",
-      "native_features": [
-        "disable-model-invocation",
-        "user-invocable",
-        "argument-hint",
-        "context: fork",
-        "agent",
-        "background",
-        ".claude/agents/*.md",
-        "permissionMode"
-      ]
-    },
-    "antigravity": {
-      "root": "dist/antigravity/.agents",
-      "native_features": [
-        ".agents/workflows slash commands",
-        ".agents/skills semantic skills",
-        ".agents/agents.md personas",
-        ".agents/rules persistent runtime rules"
-      ]
-    },
-    "shared": {
-      "root": "dist/shared/.agents/skills",
-      "native_features": [
-        "Agent Skills specification compliant frontmatter",
-        "OpenCode namespaced metadata",
-        "Codex agents/openai.yaml sidecars",
-        "multi-harness role mapping"
-      ],
-      "notes": "Used by --layout agents and automatically when Codex + Antigravity share the project .agents/skills path."
     }
-  },
-  "installer": {
-    "entrypoint": "bin/software-skills.js",
-    "repository": "https://github.com/cceglia/software-skills",
-    "interactive_prompts": [
-      "harness selection",
-      "skill layout (.agents or harness-native)"
-    ],
-    "cli_options": [
-      "--harness",
-      "--layout",
-      "--target",
-      "--force",
-      "--dry-run",
-      "--git-exclude",
-      "--help",
-      "--version"
-    ]
-  },
-  "external_dependencies": {
-    "my-grill-to-spec": [
-      "mattpocock/skills:grill-with-docs",
-      "mattpocock/skills:grilling",
-      "mattpocock/skills:domain-modeling",
-      "mattpocock/skills:to-spec"
-    ],
-    "my-grill-to-implementation": [
-      "mattpocock/skills:grill-with-docs",
-      "mattpocock/skills:grilling",
-      "mattpocock/skills:domain-modeling",
-      "mattpocock/skills:tdd"
-    ],
-    "my-spec-to-tickets": [
-      "mattpocock/skills:to-tickets"
-    ],
-    "my-implement-orchestrator": [
-      "mattpocock/skills:tdd",
-      "mattpocock/skills:code-review"
-    ]
   }
 }

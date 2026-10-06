@@ -2,12 +2,25 @@
 name: my-grill-to-implementation
 description: Grill a small change, keep a resumable implementation ledger, then explore, implement every slice with Matt Pocock's tdd and per-slice commits, and gate the whole change with a final independent review and fix/review cycles.
 license: MIT
-compatibility: Canonical OpenCode V2 source; use scripts/build.py to generate the installable profile.
+compatibility: OpenCode V2; explicit slash invocation only.
+slash: true
 metadata:
   version: "3.0.0"
+  opencode/autoinvoke: false
+  opencode/slash: true
 ---
 
 # my-grill-to-implementation
+
+## Invocation
+
+Explicit-only OpenCode V2 workflow. Run `/my-grill-to-implementation`; never invoke it implicitly.
+
+Treat command/skill arguments plus immediately relevant conversation context as the invocation input.
+
+## Harness roles
+
+Use OpenCode V2 child-session roles: `explore`, `develop`, `review`.
 
 Use this light path only when SPEC/tickets would add unnecessary ceremony. Require Matt Pocock's `grill-with-docs` and `tdd`; delegate exploration, development, and a fresh independent review to subagents.
 

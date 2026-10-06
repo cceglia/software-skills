@@ -1,8 +1,0 @@
-interface:
-  display_name: "Grill to SPEC"
-  short_description: "Grill into a resumable ledger and publish with to-spec"
-  default_prompt: "Use $my-grill-to-spec to run Matt Pocock's grill-with-docs, maintain a resumable working SPEC ledger, and publish the canonical SPEC with to-spec."
-policy:
-  products:
-    - CODEX
-  allow_implicit_invocation: false

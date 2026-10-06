@@ -1,8 +1,0 @@
-interface:
-  display_name: "Improve Spacing"
-  short_description: "Improve logical blank-line spacing safely"
-  default_prompt: "Use $my-improve-spacing to improve logical spacing without changing behavior."
-policy:
-  products:
-    - CODEX
-  allow_implicit_invocation: false

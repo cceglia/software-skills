@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.0.0 — 2026-10-06
+
+- OpenCode V2-only distribution: removed the Codex, Claude Code, Antigravity, and shared `.agents/skills` profiles; `dist/.opencode/` is the only generated profile.
+- Installer now asks for install scope: project (`<target>/.opencode`) or global (`~/.config/opencode`, honoring `$OPENCODE_CONFIG_DIR` and `$XDG_CONFIG_HOME`). `--scope` replaces `--harness`/`--layout`.
+- Removed `my-grill-to-spec`, `my-spec-to-tickets`, `my-review-changes`, and `my-git-commit`: use Matt Pocock's skills directly. Removed the `./.agents/tmp/grill/` ledger.
+- `my-grill-to-implementation`: per-slice `develop(tdd) -> validation green -> commit`, then one fresh review of the whole change with `fix -> commit -> new fresh review` cycles (max 3).
+- `my-implement-orchestrator`: per-ticket `develop(tdd) -> validation green -> commit`, an individual `code-review` only for important tickets, and a final `code-review` with `fix -> commit -> new code-review` cycles before tracker finalization.
+- Both workflows work only in the current checkout (no worktrees, branches, pull requests, or pushes) and run roles sequentially.
+- Installer lists removed skills still present in the destination, without deleting them.
+
 ## 2.5.1 — 2026-10-04
 
 - Added root `AGENTS.md` as the concise maintenance contract for future agents.

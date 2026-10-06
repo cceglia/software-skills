@@ -2,7 +2,7 @@
 name: my-software-design-doc
 description: Create or review software design documents, discovering repository context and asking only for decisions that cannot be inferred safely.
 license: MIT
-compatibility: Canonical OpenCode V2 source; use scripts/build.py to generate the installable profile.
+compatibility: OpenCode V2 with native subagents.
 metadata:
   version: "3.0.0"
 ---
@@ -27,7 +27,7 @@ Use this skill for technical designs, architecture proposals, RFC-like documents
 
 The primary agent coordinates design and user decisions; it must not consume its context with broad repository exploration.
 
-Use the harness-mapped read-only `explore` role for broad codebase discovery. Ask for concise evidence: relevant files/symbols, architecture/components, contracts, data ownership, dependencies, tests/configuration, constraints, inconsistencies, and unresolved questions. The primary agent may inspect a small targeted set of files to verify high-impact claims or exact interfaces.
+Use the built-in OpenCode V2 `explore` subagent for broad codebase discovery. Ask for concise evidence: relevant files/symbols, architecture/components, contracts, data ownership, dependencies, tests/configuration, constraints, inconsistencies, and unresolved questions. The primary agent may inspect a small targeted set of files to verify high-impact claims or exact interfaces.
 
 If isolated exploration is unavailable, do not silently perform a repository-wide scan in the primary context; continue with targeted inspection or user-provided context.
 

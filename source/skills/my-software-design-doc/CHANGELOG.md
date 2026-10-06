@@ -1,5 +1,9 @@
 # Changelog — my-software-design-doc
 
+## 3.0.0 — 2026-10-06
+
+- Package version synchronized with the OpenCode V2-only distribution; no skill-specific behavior change.
+
 ## 2.3.0 — 2026-10-03
 
 - Package version synchronized with the grill-to-SPEC workflow update; no skill-specific behavior change.

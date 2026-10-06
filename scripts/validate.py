@@ -4,23 +4,18 @@ from __future__ import annotations
 from pathlib import Path
 import re
 import sys
-import tomllib
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "source" / "skills"
 DIST = ROOT / "dist"
-VERSION = "2.5.1"
+VERSION = "3.0.0"
 EXPECTED = {
-    "my-git-commit",
     "my-grill-to-implementation",
-    "my-grill-to-spec",
     "my-implement-orchestrator",
     "my-improve-code",
     "my-improve-comments",
     "my-improve-spacing",
-    "my-review-changes",
     "my-software-design-doc",
-    "my-spec-to-tickets",
 }
 MANUAL = EXPECTED - {"my-software-design-doc"}
 
@@ -94,18 +89,7 @@ def check_skill_dir(root: Path, expected: set[str] = EXPECTED) -> None:
             fail(f"skill should remain concise (<250 lines): {path.relative_to(ROOT)}")
 
 
-def parse_yaml(path: Path) -> dict:
-    text = read(path)
-    if yaml is None:
-        return {"_raw": text}
-    try:
-        value = yaml.safe_load(text) or {}
-        if not isinstance(value, dict):
-            raise TypeError("root is not a mapping")
-        return value
-    except Exception as exc:
-        fail(f"invalid YAML in {path.relative_to(ROOT)}: {exc}")
-        return {}
+FORBIDDEN = ("my-grill-to-spec", "my-spec-to-tickets", "my-review-changes", "my-update-skills-list", "skills.json", "./.tmp/", ".opencode/grill", ".opencode/implementation", "subagent_type", "my-grill-to-plan", "my-plan-to-spec")
 
 
 def validate_source() -> None:
@@ -114,32 +98,25 @@ def validate_source() -> None:
         if read(SRC / name / "VERSION").strip() != VERSION:
             fail(f"source VERSION mismatch for {name}")
     text = "\n".join(p.read_text(encoding="utf-8") for p in SRC.glob("*/SKILL.md"))
-    for forbidden in ("my-update-skills-list", "skills.json", "./.tmp/", ".opencode/grill", ".opencode/implementation", "subagent_type", "my-grill-to-plan", "my-plan-to-spec"):
+    for forbidden in FORBIDDEN:
         if forbidden in text:
             fail(f"obsolete token remains in canonical source: {forbidden}")
     if "./.agents/tmp/implementation/" not in text:
         fail("canonical source missing runtime path ./.agents/tmp/implementation/")
-    grill = read(SRC / "my-grill-to-spec" / "SKILL.md")
-    for token in ("grill-with-docs", "to-spec", "./.agents/tmp/grill/", "Next action"):
-        if token not in grill:
-            fail(f"my-grill-to-spec missing resume/Matt integration invariant: {token}")
     light = read(SRC / "my-grill-to-implementation" / "SKILL.md")
-    for token in ("grill-with-docs", "`tdd`", "`explore`", "`develop`", "`review`", "./.agents/tmp/implementation/", "Next action"):
+    for token in ("grill-with-docs", "`tdd`", "exploration", "development", "fresh** read-only review", "./.agents/tmp/implementation/", "Next action", "develop(tdd) -> validation green -> commit", "new fresh review", "never create worktrees", "pull requests", "starting revision", "Run subagents sequentially", "different repositories"):
         if token not in light:
             fail(f"my-grill-to-implementation missing light-flow invariant: {token}")
-    tickets = read(SRC / "my-spec-to-tickets" / "SKILL.md")
-    if "to-tickets" not in tickets:
-        fail("my-spec-to-tickets must delegate to Matt Pocock to-tickets")
     orchestrator = read(SRC / "my-implement-orchestrator" / "SKILL.md")
-    for token in ("`tdd`", "`code-review`", "develop(tdd)", "new `code-review`", "MAX_REVIEW_CYCLES"):
+    for token in ("`tdd`", "`code-review`", "develop(tdd) -> validation green -> commit", "Do not review every ticket", "new `code-review`", "MAX_REVIEW_CYCLES", "never create worktrees", "pull requests", "starting revision", "Run subagents sequentially", "different repositories"):
         if token not in orchestrator:
-            fail(f"orchestrator missing TDD/review-loop invariant: {token}")
-    if "develop/fix: `implement`" in orchestrator:
-        fail("orchestrator must not depend on user-only Matt implement")
+            fail(f"my-implement-orchestrator missing flow invariant: {token}")
 
 
 def validate_opencode() -> None:
-    root = DIST / "opencode" / ".opencode"
+    if {p.name for p in DIST.iterdir()} != {".opencode"}:
+        fail(f"dist must contain only the OpenCode V2 profile, got {sorted(p.name for p in DIST.iterdir())}")
+    root = DIST / ".opencode"
     check_skill_dir(root / "skills")
     for name in MANUAL:
         fm, body = frontmatter(root / "skills" / name / "SKILL.md")
@@ -149,84 +126,17 @@ def validate_opencode() -> None:
             fail(f"OpenCode {name} missing autoinvoke=false")
         if f"/{name}" not in body:
             fail(f"OpenCode {name} missing explicit slash invocation")
+    for name, roles in {
+        "my-grill-to-implementation": "`explore`, `develop`, `review`",
+        "my-implement-orchestrator": "`develop`",
+    }.items():
+        _, body = frontmatter(root / "skills" / name / "SKILL.md")
+        if f"Use OpenCode V2 child-session roles: {roles}." not in body:
+            fail(f"OpenCode {name} missing harness roles mapping")
     for agent in ("develop", "review"):
         fm, _ = frontmatter(root / "agents" / f"{agent}.md")
         if fm.get("mode") != "subagent":
             fail(f"OpenCode {agent} missing mode: subagent")
-
-
-def validate_codex() -> None:
-    root = DIST / "codex"
-    sroot = root / ".agents" / "skills"
-    check_skill_dir(sroot)
-    for name in EXPECTED:
-        data = parse_yaml(sroot / name / "agents" / "openai.yaml")
-        if yaml is not None:
-            if nested(data, "policy", "allow_implicit_invocation") is not (name not in MANUAL):
-                fail(f"Codex {name} implicit invocation policy mismatch")
-            if nested(data, "policy", "products") != ["CODEX"]:
-                fail(f"Codex {name} products policy mismatch")
-    expected_sandbox = {"explore": "read-only", "develop": "workspace-write", "review": "read-only"}
-    for name, sandbox in expected_sandbox.items():
-        path = root / ".codex" / "agents" / f"{name}.toml"
-        try:
-            data = tomllib.loads(read(path))
-        except Exception as exc:
-            fail(f"invalid TOML in {path.relative_to(ROOT)}: {exc}")
-            continue
-        if data.get("sandbox_mode") != sandbox:
-            fail(f"Codex {name} sandbox mismatch")
-
-
-def validate_claude() -> None:
-    root = DIST / "claude-code" / ".claude"
-    check_skill_dir(root / "skills")
-    for name in MANUAL:
-        fm, body = frontmatter(root / "skills" / name / "SKILL.md")
-        if fm.get("disable-model-invocation") is not True or fm.get("user-invocable") is not True:
-            fail(f"Claude {name} missing explicit-only invocation fields")
-        if f"/{name}" not in body:
-            fail(f"Claude {name} missing slash invocation text")
-    review_fm, _ = frontmatter(root / "skills" / "my-review-changes" / "SKILL.md")
-    if review_fm.get("context") != "fork" or review_fm.get("agent") != "review" or review_fm.get("background") is not False:
-        fail("Claude my-review-changes must use context: fork + agent: review + background: false")
-
-
-def validate_antigravity() -> None:
-    root = DIST / "antigravity" / ".agents"
-    check_skill_dir(root / "skills", {"my-software-design-doc"})
-    workflows = {p.stem for p in (root / "workflows").glob("*.md")}
-    if workflows != MANUAL:
-        fail(f"Antigravity workflows mismatch: {sorted(workflows)}")
-    for path in (root / "workflows").glob("*.md"):
-        _, body = frontmatter(path)
-        if f"/{path.stem}" not in body:
-            fail(f"Antigravity workflow missing slash invocation: {path.name}")
-    rules = read(root / "rules" / "software-skills-runtime.md")
-    for token in ("./.agents/tmp/", "./.agents/tmp/grill/", "./.agents/tmp/implementation/"):
-        if token not in rules:
-            fail(f"Antigravity runtime rules missing {token}")
-
-
-def validate_shared() -> None:
-    root = DIST / "shared" / ".agents" / "skills"
-    check_skill_dir(root)
-    allowed = {"name", "description", "license", "compatibility", "metadata", "allowed-tools"}
-    for name in EXPECTED:
-        fm, body = frontmatter(root / name / "SKILL.md")
-        if set(fm) - allowed:
-            fail(f"shared {name} has unsupported top-level fields: {sorted(set(fm)-allowed)}")
-        if name in MANUAL:
-            metadata = fm.get("metadata") or {}
-            if metadata.get("opencode/autoinvoke") != "false" or metadata.get("opencode/slash") != "true":
-                fail(f"shared {name} missing OpenCode namespaced metadata")
-            if not str(fm.get("description", "")).startswith("Explicit-only workflow."):
-                fail(f"shared {name} description must state explicit-only")
-            if "never invoke it implicitly" not in body:
-                fail(f"shared {name} body missing explicit-only instruction")
-        data = parse_yaml(root / name / "agents" / "openai.yaml")
-        if yaml is not None and nested(data, "policy", "allow_implicit_invocation") is not (name not in MANUAL):
-            fail(f"shared Codex sidecar policy mismatch for {name}")
 
 
 def validate_agents_md() -> None:
@@ -234,13 +144,11 @@ def validate_agents_md() -> None:
     for token in (
         "source/skills/",
         "./.agents/tmp/",
-        "my-grill-to-spec",
         "my-grill-to-implementation",
-        "my-spec-to-tickets",
         "my-implement-orchestrator",
-        "develop(tdd) -> code-review",
-        "my-update-skills-list",
-        "my-plan-to-spec",
+        "Do not review every ticket",
+        "develop(tdd) -> validation green -> commit",
+        "OpenCode V2",
         "native skill discovery",
         "scripts/build.py",
         "scripts/validate.py",
@@ -252,20 +160,16 @@ def validate_agents_md() -> None:
 def validate_global() -> None:
     files = [p for p in DIST.rglob("*") if p.is_file() and p.suffix in {".md", ".yaml", ".toml"}]
     text = "\n".join(p.read_text(encoding="utf-8") for p in files)
-    for forbidden in ("my-update-skills-list", "skills.json", "./.tmp/", ".opencode/grill", ".opencode/implementation", "subagent_type", "my-grill-to-plan", "my-plan-to-spec"):
+    for forbidden in FORBIDDEN:
         if forbidden in text:
-            fail(f"obsolete token remains in generated profiles: {forbidden}")
+            fail(f"obsolete token remains in generated profile: {forbidden}")
     if "./.agents/tmp/" not in text:
-        fail("generated profiles missing ./.agents/tmp runtime invariant")
+        fail("generated profile missing ./.agents/tmp runtime invariant")
 
 
 def main() -> int:
     validate_source()
     validate_opencode()
-    validate_codex()
-    validate_claude()
-    validate_antigravity()
-    validate_shared()
     validate_agents_md()
     validate_global()
     if errors:
@@ -273,11 +177,11 @@ def main() -> int:
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         return 1
-    print("OK: canonical source, four native profiles, and shared .agents profile validated")
+    print("OK: canonical source and OpenCode V2 profile validated")
     print(f"- canonical skills: {len(EXPECTED)}")
     print(f"- explicit workflows: {len(MANUAL)}")
-    print("- runtime state: resumable ledgers under ./.agents/tmp/grill and ./.agents/tmp/implementation")
-    print("- skill routing: native harness discovery; no skills.json registry")
+    print("- runtime state: resumable ledgers under ./.agents/tmp/implementation")
+    print("- skill routing: native OpenCode V2 discovery; no skills.json registry")
     return 0
 
 

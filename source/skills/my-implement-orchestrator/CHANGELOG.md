@@ -1,5 +1,11 @@
 # Changelog — my-implement-orchestrator
 
+## 3.0.0 — 2026-10-06
+
+- OpenCode V2-only distribution; installer asks only for project or global scope.
+- Each ticket is developed with `tdd` and committed after green tests/typecheck; only important tickets are reviewed individually, then a final `code-review` with fix -> commit -> new `code-review` cycles gates tracker finalization.
+- Works only in the current checkout: no worktrees, branches, pull requests, or pushes. Roles run sequentially; parallelism only across different repositories.
+
 ## 2.5.0 — 2026-10-03
 
 - Replaced the invalid dependency on user-only `implement` with Matt Pocock's model-invokable `tdd`.
