@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.3.1 — 2026-10-06
+
+- `my-grill-to-implementation`: every slice must be implemented by a subagent, never directly by the orchestrator; the final fresh review is unchanged.
+
 ## 4.3.0 — 2026-10-06 (`claude` branch)
 
 - Per-ticket/per-slice review is now exceptional: only for a high and concrete risk (data migration, data-loss risk, new security boundary), announced to the user beforehand. Public contracts or dependent tickets no longer qualify.

@@ -1,5 +1,9 @@
 # Changelog — my-grill-to-implementation
 
+## 4.3.1 — 2026-10-06
+
+- Stated explicitly that every slice is implemented by a subagent, never directly by the orchestrator; the final fresh review is unchanged.
+
 ## 4.3.0 — 2026-10-06
 
 - Intermediate slice review restricted to data migration, data-loss risk, or a new security boundary; announced to the user first.

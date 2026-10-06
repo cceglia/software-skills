@@ -4,7 +4,7 @@ description: Improve comments/documentation and logical spacing without changing
 license: MIT
 compatibility: Canonical Claude Code source; use scripts/build.py to generate the installable profile.
 metadata:
-  version: "4.3.0"
+  version: "4.3.1"
 ---
 
 # my-improve-code

@@ -4,7 +4,7 @@ description: Improve logical blank-line spacing without changing behavior or com
 license: MIT
 compatibility: Canonical Claude Code source; use scripts/build.py to generate the installable profile.
 metadata:
-  version: "4.3.0"
+  version: "4.3.1"
 ---
 
 # my-improve-spacing
