@@ -4,7 +4,7 @@ description: Grill a small change, keep a resumable implementation ledger, then 
 license: MIT
 compatibility: Canonical OpenCode V2 source; use scripts/build.py to generate the installable profile.
 metadata:
-  version: "3.2.0"
+  version: "3.3.0"
 ---
 
 # my-grill-to-implementation

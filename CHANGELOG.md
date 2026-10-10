@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.3.0 — 2026-10-10
+
+- Installer never overwrites existing agents (`agents/*.md`), not even with `--force`; only skills are overwritten.
+
 ## 3.2.0 — 2026-10-10
 
 - `my-grill-to-implementation`: the plan is now a `spec.md` (slices, no per-slice tickets) in the spec folder defined by `docs/agents/issue-tracker.md` (set up by `/setup-matt-pocock-skills`; `BLOCKED` if missing) and is committed as the last commit; the ledger stays temporary in `./.agents/tmp/` and is never committed.

@@ -20,7 +20,7 @@ function usage() {
 `Options:\n` +
 `  --scope <scope>        Where to install: project | global\n` +
 `  --target <path>        Project root for --scope project (default: current directory)\n` +
-`  --force                Overwrite existing managed files\n` +
+`  --force                Overwrite existing skill files (existing agents are never overwritten)\n` +
 `  --dry-run              Print planned file operations without writing\n` +
 `  --git-exclude <mode>   auto | yes | no (default: auto; project scope only)\n` +
 `  --help                 Show this help\n` +
@@ -123,7 +123,10 @@ function planOperations(installRoot) {
   const files = walkFiles(PROFILE_SOURCE);
   if (!files.length) throw new Error(`No built profile found in ${PROFILE_SOURCE}. Run python3 scripts/build.py.`);
   return files
-    .map(src => ({ src, dest: path.join(installRoot, path.relative(PROFILE_SOURCE, src)) }))
+    .map(src => {
+      const rel = path.relative(PROFILE_SOURCE, src);
+      return { src, dest: path.join(installRoot, rel), keepExisting: rel.split(path.sep)[0] === 'agents' };
+    })
     .sort((a, b) => a.dest.localeCompare(b.dest));
 }
 
@@ -159,7 +162,10 @@ function display(base, p) {
   return r && !r.startsWith('..') ? r : p;
 }
 
-function execute(ops, opts, base, excludeOp) {
+function execute(allOps, opts, base, excludeOp) {
+  // Existing agents are user-owned: never overwritten, even with --force.
+  const kept = allOps.filter(op => op.keepExisting && fs.existsSync(op.dest));
+  const ops = allOps.filter(op => !kept.includes(op));
   const conflicts = ops.filter(op => fs.existsSync(op.dest) && !fs.readFileSync(op.dest).equals(fs.readFileSync(op.src)));
   if (conflicts.length && !opts.force && !opts.dryRun) {
     const preview = conflicts.slice(0, 10).map(op => `  - ${display(base, op.dest)}`).join('\n');
@@ -168,6 +174,8 @@ function execute(ops, opts, base, excludeOp) {
   if (opts.dryRun && conflicts.length) {
     console.log(`[dry-run] ${conflicts.length} existing managed file(s) differ and would require --force for a real install.`);
   }
+
+  for (const op of kept) console.log(`${opts.dryRun ? '[dry-run] ' : ''}skip existing agent ${display(base, op.dest)}`);
 
   for (const op of ops) {
     console.log(`${opts.dryRun ? '[dry-run] ' : ''}write ${display(base, op.dest)}`);

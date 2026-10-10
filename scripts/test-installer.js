@@ -105,6 +105,19 @@ function expectFailure(args, message, options) {
   assert(fs.readFileSync(dest, 'utf8').includes('name: my-improve-code'));
 }
 
+// Existing agents are never overwritten, even with --force; missing agents are still installed.
+{
+  const target = tempDir();
+  const agent = path.join(target, '.opencode/agents/develop.md');
+  fs.mkdirSync(path.dirname(agent), { recursive: true });
+  fs.writeFileSync(agent, 'my custom agent\n');
+  run(['--scope', 'project', '--target', target, '--git-exclude', 'no']);
+  run(['--scope', 'project', '--target', target, '--git-exclude', 'no', '--force']);
+  assert.strictEqual(fs.readFileSync(agent, 'utf8'), 'my custom agent\n');
+  assert(exists(target, '.opencode/agents/review.md'));
+  assert(exists(target, '.opencode/skills/my-improve-code/SKILL.md'));
+}
+
 // Dry run writes nothing.
 {
   const home = tempDir();

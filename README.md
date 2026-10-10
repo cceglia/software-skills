@@ -100,8 +100,9 @@ software-skills [options]
     Default: current working directory. Rejected with --scope global.
 
 --force
-    Overwrite existing managed files when their contents differ.
+    Overwrite existing skill files when their contents differ.
     Without --force, the installer stops rather than replacing them.
+    Existing agents (agents/*.md) are never overwritten, with or without --force.
 
 --dry-run
     Print every planned write without modifying anything.
