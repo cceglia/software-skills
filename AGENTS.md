@@ -18,7 +18,7 @@ Skills delegate responsibilities (exploration, development, review) but never na
 ## Runtime state
 
 - All ephemeral/resumable state owned by this project lives under `./.agents/tmp/`.
-- Light implementation ledgers: `./.agents/tmp/implementation/<slug>.md`.
+- Light implementation ledgers: `./.agents/tmp/implementation/<slug>.md`. The light path's plan is `spec.md` in the spec folder of `docs/agents/issue-tracker.md`, committed as the last commit (never the ledger).
 - `./.agents/tmp/` is never a canonical deliverable and must not be staged, committed, or treated as review scope.
 
 ## Workflow contracts

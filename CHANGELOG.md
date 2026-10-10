@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.4.0 — 2026-10-10 (`claude` branch)
+
+- `my-grill-to-implementation`: the plan is now a `spec.md` (slices, no per-slice tickets) in the spec folder defined by `docs/agents/issue-tracker.md` (set up by `/setup-matt-pocock-skills`; `BLOCKED` if missing) and is committed as the last commit; the ledger stays temporary in `./.agents/tmp/` and is never committed.
+
 ## 4.3.1 — 2026-10-06
 
 - `my-grill-to-implementation`: every slice must be implemented by a subagent, never directly by the orchestrator; the final fresh review is unchanged.

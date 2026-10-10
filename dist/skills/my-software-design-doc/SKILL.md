@@ -4,7 +4,7 @@ description: Create or review software design documents, discovering repository 
 license: MIT
 compatibility: Claude Code with native skill controls.
 metadata:
-  version: "4.3.1"
+  version: "4.4.0"
 ---
 
 # Software Design Documentation

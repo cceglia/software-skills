@@ -7,7 +7,7 @@ disable-model-invocation: true
 user-invocable: true
 argument-hint: "[work item source]"
 metadata:
-  version: "4.3.1"
+  version: "4.4.0"
 ---
 
 # my-implement-orchestrator

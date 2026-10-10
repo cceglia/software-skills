@@ -171,7 +171,7 @@ A ticket is reviewed individually only for a high and concrete risk (data migrat
 ```text
 my-grill-to-implementation
   -> grill-with-docs
-  -> .agents/tmp/implementation/<slug>.md
+  -> spec.md in the tracker's spec folder (committed last) + .agents/tmp/implementation/<slug>.md ledger
   -> exploration subagent
   per slice:
     -> development subagent + tdd

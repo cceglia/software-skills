@@ -1,5 +1,9 @@
 # Changelog — my-grill-to-implementation
 
+## 4.4.0 — 2026-10-10
+
+- Plan written as `spec.md` in the tracker's spec folder (`docs/agents/issue-tracker.md`), slices only, committed last; ledger remains temporary in `./.agents/tmp/`.
+
 ## 4.3.1 — 2026-10-06
 
 - Stated explicitly that every slice is implemented by a subagent, never directly by the orchestrator; the final fresh review is unchanged.
