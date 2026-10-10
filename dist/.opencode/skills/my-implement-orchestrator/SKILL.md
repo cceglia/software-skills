@@ -5,7 +5,7 @@ license: MIT
 compatibility: OpenCode V2; explicit slash invocation only.
 slash: true
 metadata:
-  version: "3.1.1"
+  version: "3.2.0"
   opencode/autoinvoke: false
   opencode/slash: true
 ---
@@ -42,7 +42,9 @@ Run subagents sequentially. Parallelism is allowed only across different reposit
 
 ## Develop
 
-Process ready tickets one at a time in dependency order. Delegate each develop/fix pass to a fresh subagent with ticket/SPEC pointers and relevant repository context. Require it to load `tdd` plus the smallest sufficient discovered skills, use only pre-agreed test seams, preserve unrelated changes, validate its work, report loaded/missing skills and changed files, and never commit or rewrite git history. Missing required skills or a newly exposed product/domain decision blocks the ticket.
+Process ready tickets one at a time in dependency order. Delegate each develop/fix pass to a fresh subagent with ticket/SPEC pointers and relevant repository context. Require it to load `tdd` plus the smallest sufficient discovered skills, use only pre-agreed test seams, preserve unrelated changes, validate its work, report loaded/missing skills, changed files, and edge cases, and never commit or rewrite git history. Missing required skills or a newly exposed product/domain decision blocks the ticket.
+
+Require it to stop at, not decide, any edge case it finds and return an `EDGE CASES` section (possibly empty) with description, impact, and options. For each one: if the ticket/SPEC already defines the behavior, decide yourself and note it in the report; otherwise report it to the user, have them choose the resolution, and relaunch a subagent on that point.
 
 After each pass, re-run the project's tests and typecheck yourself. Only when they are green, create exactly one commit containing only that ticket's changes, excluding `./.agents/tmp/`, with the ticket reference in the message so `code-review` can find the spec. Preserve unrelated work and block if the boundary cannot be isolated safely.
 

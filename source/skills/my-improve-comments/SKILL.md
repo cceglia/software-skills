@@ -4,7 +4,7 @@ description: Improve comments and documentation without changing runtime behavio
 license: MIT
 compatibility: Canonical OpenCode V2 source; use scripts/build.py to generate the installable profile.
 metadata:
-  version: "3.1.1"
+  version: "3.2.0"
 ---
 
 # my-improve-comments

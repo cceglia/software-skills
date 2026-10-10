@@ -4,4 +4,6 @@ Light path: `grill-with-docs` → resumable implementation ledger → exploratio
 
 It works only in the current checkout (no worktrees, branches, pull requests, or pushes) and runs subagents sequentially, in parallel only across different repositories.
 
-Resume with `./.agents/tmp/implementation/<slug>.md`.
+The plan is written as `spec.md` (slices) in the spec folder from `docs/agents/issue-tracker.md` (run `/setup-matt-pocock-skills` first) and committed last. Subagents return edge cases: the orchestrator decides when the spec defines them, otherwise the user chooses.
+
+Resume with the temporary ledger `./.agents/tmp/implementation/<slug>.md`.

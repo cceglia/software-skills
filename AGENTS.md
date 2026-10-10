@@ -15,7 +15,7 @@ This file is the maintenance contract for future agents working on `software-ski
 ## Runtime state
 
 - All ephemeral/resumable state owned by this project lives under `./.agents/tmp/`.
-- Light implementation ledgers: `./.agents/tmp/implementation/<slug>.md`.
+- Light implementation ledgers: `./.agents/tmp/implementation/<slug>.md`. The light path's plan is `spec.md` in the spec folder of `docs/agents/issue-tracker.md`, committed as the last commit (never the ledger).
 - `./.agents/tmp/` is never a canonical deliverable and must not be staged, committed, or treated as review scope.
 
 ## Workflow contracts
@@ -29,7 +29,7 @@ per slice:  develop(tdd) -> validation green -> commit
 at the end: fresh review -> (develop fix(tdd) -> commit -> new fresh review)* -> completed
 ```
 
-Every fix requires a subsequent clean fresh review before `completed`; fixes are committed first because the review diffs committed history from the recorded starting revision. No per-slice review by default; an intermediate review only for a high and concrete risk (data migration, data-loss risk, new security boundary), announced to the user beforehand. Work only in the current checkout: no worktrees, branches, pull requests, or pushes. Roles run sequentially; parallelism is allowed only across different repositories. Never approve by self-review.
+Every fix requires a subsequent clean fresh review before `completed`; fixes are committed first because the review diffs committed history from the recorded starting revision. No per-slice review by default; an intermediate review only for a high and concrete risk (data migration, data-loss risk, new security boundary), announced to the user beforehand. Work only in the current checkout: no worktrees, branches, pull requests, or pushes. Roles run sequentially; parallelism is allowed only across different repositories. Subagents return edge cases; the orchestrator decides if the spec defines them, otherwise the user chooses (same in `my-implement-orchestrator`). Never approve by self-review.
 
 ### `my-implement-orchestrator`
 
