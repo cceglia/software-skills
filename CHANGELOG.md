@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.4.0 — 2026-10-22
+
+- `my-implement-orchestrator`: `codebase-design` is now required; every develop/fix pass loads `tdd` and `codebase-design` plus the available language/framework/tool skills.
+
 ## 3.3.0 — 2026-10-10
 
 - Installer never overwrites existing agents (`agents/*.md`), not even with `--force`; only skills are overwritten.

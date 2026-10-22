@@ -4,12 +4,12 @@ description: Implement approved tracker tickets with develop/TDD and per-ticket 
 license: MIT
 compatibility: Canonical OpenCode V2 source; use scripts/build.py to generate the installable profile.
 metadata:
-  version: "3.3.0"
+  version: "3.4.0"
 ---
 
 # my-implement-orchestrator
 
-Implement approved tracker work without inventing requirements. Require Matt Pocock's `tdd` and `code-review`; if missing, return `BLOCKED`. Matt's `implement` and `implement-spec` are user-only upstream skills, so this orchestrator composes their model-invokable primitives instead.
+Implement approved tracker work without inventing requirements. Require Matt Pocock's `tdd`, `codebase-design` and `code-review`; if missing, return `BLOCKED`. Matt's `implement` and `implement-spec` are user-only upstream skills, so this orchestrator composes their model-invokable primitives instead.
 
 Read repository instructions and `docs/agents/issue-tracker.md`. Before implementation, obtain a positive integer `MAX_REVIEW_CYCLES` and keep it fixed.
 
@@ -29,7 +29,7 @@ Run subagents sequentially. Parallelism is allowed only across different reposit
 
 ## Develop
 
-Process ready tickets one at a time in dependency order. Delegate each develop/fix pass to a fresh subagent with ticket/SPEC pointers and relevant repository context. Require it to load `tdd` plus the smallest sufficient discovered skills, use only pre-agreed test seams, preserve unrelated changes, validate its work, report loaded/missing skills, changed files, and edge cases, and never commit or rewrite git history. Missing required skills or a newly exposed product/domain decision blocks the ticket.
+Process ready tickets one at a time in dependency order. Delegate each develop/fix pass to a fresh subagent with ticket/SPEC pointers and relevant repository context. Require it to load, in every ticket and fix pass, the mandatory skills `tdd` and `codebase-design`, plus every available skill specific to the language, framework or tool it will work with (discover them from the skills list; load the ones that match the files and tools the ticket touches). Require it to use only pre-agreed test seams, shape module interfaces with `codebase-design` without contradicting the SPEC, preserve unrelated changes, validate its work, report loaded/missing skills, changed files, and edge cases, and never commit or rewrite git history. A missing mandatory skill or a newly exposed product/domain decision blocks the ticket; a missing language/tool skill does not.
 
 Require it to stop at, not decide, any edge case it finds and return an `EDGE CASES` section (possibly empty) with description, impact, and options. For each one: if the ticket/SPEC already defines the behavior, decide yourself and note it in the report; otherwise report it to the user, have them choose the resolution, and relaunch a subagent on that point.
 

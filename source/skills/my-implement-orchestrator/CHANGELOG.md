@@ -1,5 +1,9 @@
 # Changelog — my-implement-orchestrator
 
+## 3.4.0 — 2026-10-22
+
+- Every develop/fix pass loads the mandatory `tdd` and `codebase-design`, plus the available language/framework/tool skills for the code it touches.
+
 ## 3.1.0 — 2026-10-06
 
 - Individual ticket `code-review` restricted to data migration, data-loss risk, or a new security boundary; announced to the user first.
