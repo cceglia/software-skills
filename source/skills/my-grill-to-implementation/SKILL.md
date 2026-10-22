@@ -4,7 +4,7 @@ description: Grill a small change, keep a resumable implementation ledger, then 
 license: MIT
 compatibility: Canonical Claude Code source; use scripts/build.py to generate the installable profile.
 metadata:
-  version: "4.4.0"
+  version: "4.5.0"
 ---
 
 # my-grill-to-implementation

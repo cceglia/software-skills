@@ -4,12 +4,12 @@ description: Implement approved tracker tickets with develop/TDD and per-ticket 
 license: MIT
 compatibility: Canonical Claude Code source; use scripts/build.py to generate the installable profile.
 metadata:
-  version: "4.4.0"
+  version: "4.5.0"
 ---
 
 # my-implement-orchestrator
 
-Implement approved tracker work without inventing requirements. Require Matt Pocock's `tdd` and `code-review`; if missing, return `BLOCKED`. Matt's `implement` and `implement-spec` are user-only upstream skills, so this orchestrator composes their model-invokable primitives instead.
+Implement approved tracker work without inventing requirements. Require Matt Pocock's `tdd`, `codebase-design` and `code-review`; if missing, return `BLOCKED`. Matt's `implement` and `implement-spec` are user-only upstream skills, so this orchestrator composes their model-invokable primitives instead.
 
 Read repository instructions and `docs/agents/issue-tracker.md`. Before implementation, obtain a positive integer `MAX_REVIEW_CYCLES` and keep it fixed.
 
@@ -29,7 +29,7 @@ Run subagents sequentially. Parallelism is allowed only across different reposit
 
 ## Develop
 
-Process ready tickets one at a time in dependency order. Delegate each develop/fix pass to a fresh subagent with ticket/SPEC pointers and relevant repository context. Require it to load `tdd` plus the smallest sufficient discovered skills, use only pre-agreed test seams, preserve unrelated changes, validate its work, report loaded/missing skills and changed files, and never commit or rewrite git history. Missing required skills or a newly exposed product/domain decision blocks the ticket.
+Process ready tickets one at a time in dependency order. Delegate each develop/fix pass to a fresh subagent with ticket/SPEC pointers and relevant repository context. Require it to load, in every ticket and fix pass, the mandatory skills `tdd` and `codebase-design`, plus every available skill specific to the language, framework or tool it will work with (discover them from the skills list; load the ones that match the files and tools the ticket touches). Require it to use only pre-agreed test seams, shape module interfaces with `codebase-design` without contradicting the SPEC, preserve unrelated changes, validate its work, report loaded/missing skills and changed files, and never commit or rewrite git history. A missing mandatory skill or a newly exposed product/domain decision blocks the ticket; a missing language/tool skill does not.
 
 After each pass, re-run the project's tests and typecheck yourself. Only when they are green, create exactly one commit containing only that ticket's changes, excluding `./.agents/tmp/`, with the ticket reference in the message so `code-review` can find the spec. Preserve unrelated work and block if the boundary cannot be isolated safely.
 

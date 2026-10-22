@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.5.0 — 2026-10-22 (`claude` branch)
+
+- `my-implement-orchestrator`: `codebase-design` is now required; every develop/fix pass loads `tdd` and `codebase-design` plus the available language/framework/tool skills.
+
 ## 4.4.0 — 2026-10-10 (`claude` branch)
 
 - `my-grill-to-implementation`: the plan is now a `spec.md` (slices, no per-slice tickets) in the spec folder defined by `docs/agents/issue-tracker.md` (set up by `/setup-matt-pocock-skills`; `BLOCKED` if missing) and is committed as the last commit; the ledger stays temporary in `./.agents/tmp/` and is never committed.
