@@ -1,13 +1,16 @@
 ---
-name: my-implement-orchestrator
 description: Implement approved tracker tickets with develop/TDD and per-ticket commits, review a ticket individually only in exceptional high-risk cases, then gate the whole change with repeated Matt Pocock code-review cycles before tracker finalization.
-license: MIT
-compatibility: Canonical OpenCode V2 source; use scripts/build.py to generate the installable profile.
-metadata:
-  version: "3.4.0"
 ---
 
 # my-implement-orchestrator
+
+## Invocation
+
+User-invoked OpenCode V2 command. Treat `$ARGUMENTS` plus the immediately relevant conversation context as the invocation input.
+
+## Harness roles
+
+Use OpenCode V2 child-session roles: `develop`.
 
 Implement approved tracker work without inventing requirements. Require Matt Pocock's `tdd`, `codebase-design` and `code-review`; if missing, return `BLOCKED`. Matt's `implement` and `implement-spec` are user-only upstream skills, so this orchestrator composes their model-invokable primitives instead.
 

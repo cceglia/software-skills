@@ -1,5 +1,12 @@
 # Migration notes
 
+## 4.0.0
+
+- The five user-invoked workflows (`my-grill-to-implementation`, `my-implement-orchestrator`, `my-improve-code`, `my-improve-comments`, `my-improve-spacing`) are now OpenCode V2 commands in `commands/`, not skills. The slash invocation is unchanged (`/my-grill-to-implementation ...`), and `$ARGUMENTS` carries what you type after the command name.
+- Reinstall with `--force`. Then delete the old `skills/<name>/` directories that the installer lists as leftovers; they are no longer shipped. `my-software-design-doc` remains a skill and is updated in place.
+- Project installs now write `.opencode/{commands,skills,agents}/`; global installs write `~/.config/opencode/{commands,skills,agents}/`.
+- Restart OpenCode after reinstalling so it discovers the commands.
+
 ## 3.0.0
 
 - OpenCode V2 only. The Codex, Claude Code, Antigravity, and shared `.agents/skills` profiles are gone, and with them `--harness`/`--layout`. Use `--scope project|global` (or answer the interactive prompt). Skills and agents now install together under `.opencode/` or `~/.config/opencode`.

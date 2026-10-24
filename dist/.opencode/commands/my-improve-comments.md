@@ -1,22 +1,12 @@
 ---
-name: my-improve-comments
 description: Improve comments and documentation without changing runtime behavior.
-license: MIT
-compatibility: OpenCode V2; explicit slash invocation only.
-slash: true
-metadata:
-  version: "3.4.0"
-  opencode/autoinvoke: false
-  opencode/slash: true
 ---
 
 # my-improve-comments
 
 ## Invocation
 
-Explicit-only OpenCode V2 workflow. Run `/my-improve-comments`; never invoke it implicitly.
-
-Treat command/skill arguments plus immediately relevant conversation context as the invocation input.
+User-invoked OpenCode V2 command. Treat `$ARGUMENTS` plus the immediately relevant conversation context as the invocation input.
 
 ## Harness roles
 

@@ -1,16 +1,16 @@
 # Repository guidance
 
-This file is the maintenance contract for future agents working on `software-skills` (OpenCode V2 only). Keep it concise. Do not duplicate the README, individual skills, or upstream Matt Pocock skill instructions.
+This file is the maintenance contract for future agents working on `software-skills` (OpenCode V2 only). Keep it concise. Do not duplicate the README, individual commands/skills, or upstream Matt Pocock skill instructions.
 
 ## Architecture
 
-- `source/skills/` is the canonical source of truth. Never edit generated files under `dist/` directly.
-- `scripts/build.py` generates the single OpenCode V2 profile in `dist/.opencode/` (`skills/` and `agents/`).
+- `source/commands/` holds the five user-invoked workflows (OpenCode commands); `source/skills/` holds the model-invokable skills. Never edit generated files under `dist/` directly.
+- `scripts/build.py` generates the single OpenCode V2 profile in `dist/.opencode/` (`commands/`, `skills/` and `agents/`).
 - `bin/software-skills.js` installs that profile into project `.opencode/` or global `~/.config/opencode` (`$OPENCODE_CONFIG_DIR`, else `$XDG_CONFIG_HOME/opencode`), asking interactively when `--scope` is missing.
 - Prefer composition over reimplementation. Matt Pocock skills own their domain behavior; our skills add orchestration, resumability, and stronger acceptance loops.
-- Keep skills short. Put a rule in the narrowest single place that owns it; do not repeat shared concepts across multiple skills.
-- Use OpenCode V2's native skill discovery. Do not recreate `skills.json` or another persistent skill registry.
-- OpenCode V2-specific slash/autoinvoke metadata, role mapping, and agents (`develop`, `review`; `explore` is built in) belong in `scripts/build.py`, not in canonical bodies.
+- Keep commands and skills short. Put a rule in the narrowest single place that owns it; do not repeat shared concepts across multiple files.
+- Use OpenCode V2 native discovery: commands for explicit user-invoked workflows, skills for model-invokable capabilities. Do not recreate `skills.json` or another persistent registry.
+- OpenCode V2-specific invocation blocks, role mapping, and agents (`develop`, `review`; `explore` is built in) belong in `scripts/build.py`, not in canonical bodies.
 
 ## Runtime state
 

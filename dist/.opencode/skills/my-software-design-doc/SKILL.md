@@ -4,7 +4,7 @@ description: Create or review software design documents, discovering repository 
 license: MIT
 compatibility: OpenCode V2 with native subagents.
 metadata:
-  version: "3.4.0"
+  version: "4.0.0"
 ---
 
 # Software Design Documentation

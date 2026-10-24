@@ -10,7 +10,19 @@ const process = require('process');
 const ROOT = path.resolve(__dirname, '..');
 const VERSION = require(path.join(ROOT, 'package.json')).version;
 const PROFILE_SOURCE = path.join(ROOT, 'dist', '.opencode');
-const REMOVED_SKILLS = ['my-git-commit', 'my-grill-to-spec', 'my-review-changes', 'my-spec-to-tickets'];
+// Skills removed from the package are reported, never deleted. The five
+// 4.0.0 entries used to be autoinvoke-disabled skills and are now commands.
+const REMOVED_SKILLS = [
+  'my-git-commit',
+  'my-grill-to-spec',
+  'my-review-changes',
+  'my-spec-to-tickets',
+  'my-grill-to-implementation',
+  'my-implement-orchestrator',
+  'my-improve-code',
+  'my-improve-comments',
+  'my-improve-spacing',
+];
 
 function usage() {
   return `software-skills ${VERSION}\n\n` +
@@ -20,13 +32,13 @@ function usage() {
 `Options:\n` +
 `  --scope <scope>        Where to install: project | global\n` +
 `  --target <path>        Project root for --scope project (default: current directory)\n` +
-`  --force                Overwrite existing skill files (existing agents are never overwritten)\n` +
+`  --force                Overwrite existing managed files (commands and skills; existing agents are never overwritten)\n` +
 `  --dry-run              Print planned file operations without writing\n` +
 `  --git-exclude <mode>   auto | yes | no (default: auto; project scope only)\n` +
 `  --help                 Show this help\n` +
 `  --version              Print installer version\n\n` +
 `Scopes:\n` +
-`  project  <target>/.opencode — skills and agents available only in that project.\n` +
+`  project  <target>/.opencode — commands, skills and agents available only in that project.\n` +
 `  global   ~/.config/opencode (or $OPENCODE_CONFIG_DIR, or $XDG_CONFIG_HOME/opencode) — available in every project.\n`;
 }
 
@@ -79,7 +91,7 @@ async function interactiveMissing(opts) {
   if (!process.stdin.isTTY) throw new Error('Interactive input is unavailable. Pass --scope project or --scope global.');
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   try {
-    console.log('\nWhere should the OpenCode V2 skills be installed?');
+    console.log('\nWhere should the OpenCode V2 commands and skills be installed?');
     console.log(`  1) Project (${path.join(opts.target || process.cwd(), '.opencode')})`);
     console.log(`  2) Global (${opencodeHome()})`);
     const answer = (await rl.question('Scope [1/2]: ')).trim();
@@ -92,7 +104,7 @@ async function interactiveMissing(opts) {
   return opts;
 }
 
-// Resolves the OpenCode root (.opencode directory) that receives skills and agents.
+// Resolves the OpenCode root (.opencode directory) that receives commands, skills, and agents.
 function resolveInstallRoot(opts) {
   if (opts.scope === 'global') {
     if (opts.target) throw new Error('--target applies only to --scope project');
@@ -212,7 +224,7 @@ function printSummary(opts, installRoot, ops) {
   }
   const legacy = leftovers(installRoot);
   if (legacy.length) {
-    console.log('Note: these skills from earlier software-skills releases are no longer shipped and can be removed:');
+    console.log('Note: these entries from earlier software-skills releases are no longer shipped in that form and can be removed:');
     for (const p of legacy) console.log(`  - ${p}`);
   }
 }

@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.0.0 — 2026-10-24
+
+- The five user-invoked workflows now ship as native OpenCode V2 commands under `commands/` instead of autoinvoke-disabled skills: `my-grill-to-implementation`, `my-implement-orchestrator`, `my-improve-code`, `my-improve-comments`, `my-improve-spacing`. Slash invocation (`/name`) is unchanged; OpenCode no longer exposes them to model skill discovery.
+- `source/commands/` is the canonical source for those workflows; `source/skills/` keeps only `my-software-design-doc`, the one model-invokable skill.
+- `scripts/build.py` generates `dist/.opencode/commands/*.md` with `$ARGUMENTS` invocation blocks and OpenCode role mappings; the installer installs them at project or global scope.
+- Installer now reports the 3.x skill copies of the converted workflows as removable leftovers; it still never deletes files.
+
 ## 3.4.0 — 2026-10-22
 
 - `my-implement-orchestrator`: `codebase-design` is now required; every develop/fix pass loads `tdd` and `codebase-design` plus the available language/framework/tool skills.

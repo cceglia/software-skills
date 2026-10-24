@@ -1,7 +1,7 @@
 {
   "name": "software-skills",
-  "version": "3.4.0",
-  "description": "OpenCode V2 software engineering skills installer (project or global scope).",
+  "version": "4.0.0",
+  "description": "OpenCode V2 software engineering commands, skills and agents installer (project or global scope).",
   "license": "MIT",
   "repository": {
     "type": "git",

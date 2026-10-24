@@ -35,14 +35,19 @@ function expectFailure(args, message, options) {
   assert(failed, `expected failure for ${args.join(' ')}`);
 }
 
-// Project install writes OpenCode skills and agents only.
+// Project install writes OpenCode commands, skills and agents only.
 {
   const target = tempDir();
   const home = tempDir();
   run(['--scope', 'project', '--target', target, '--git-exclude', 'no'], { home });
-  assert(exists(target, '.opencode/skills/my-improve-code/SKILL.md'));
-  assert(exists(target, '.opencode/skills/my-implement-orchestrator/SKILL.md'));
+  assert(exists(target, '.opencode/commands/my-grill-to-implementation.md'));
+  assert(exists(target, '.opencode/commands/my-implement-orchestrator.md'));
+  assert(exists(target, '.opencode/commands/my-improve-code.md'));
+  assert(exists(target, '.opencode/commands/my-improve-comments.md'));
+  assert(exists(target, '.opencode/commands/my-improve-spacing.md'));
+  assert(exists(target, '.opencode/skills/my-software-design-doc/SKILL.md'));
   assert(exists(target, '.opencode/skills/my-software-design-doc/references/design-doc-template.md'));
+  assert(!exists(target, '.opencode/skills/my-improve-code'));
   assert(exists(target, '.opencode/agents/develop.md'));
   assert(exists(target, '.opencode/agents/review.md'));
   assert(!exists(target, '.agents'));
@@ -58,7 +63,8 @@ function expectFailure(args, message, options) {
 {
   const home = tempDir();
   const out = run(['--scope', 'global', '--git-exclude', 'no'], { home });
-  assert(exists(home, '.config/opencode/skills/my-improve-comments/SKILL.md'));
+  assert(exists(home, '.config/opencode/commands/my-improve-comments.md'));
+  assert(exists(home, '.config/opencode/skills/my-software-design-doc/SKILL.md'));
   assert(exists(home, '.config/opencode/agents/review.md'));
   assert(!exists(ROOT, '.opencode/skills'));
   assert(out.includes('Scope: global'));
@@ -70,19 +76,20 @@ function expectFailure(args, message, options) {
   const xdg = tempDir();
   const config = tempDir();
   run(['--scope=user'], { home, env: { XDG_CONFIG_HOME: xdg } });
-  assert(exists(xdg, 'opencode/skills/my-improve-spacing/SKILL.md'));
+  assert(exists(xdg, 'opencode/commands/my-improve-spacing.md'));
   run(['--scope=user'], { home, env: { XDG_CONFIG_HOME: xdg, OPENCODE_CONFIG_DIR: config } });
-  assert(exists(config, 'skills/my-improve-spacing/SKILL.md'));
+  assert(exists(config, 'commands/my-improve-spacing.md'));
   assert(!exists(home, '.config'));
 }
 
-// Generated workflows use OpenCode roles and carry no other harness's controls.
+// Generated workflows are commands that never carry skill invocation metadata.
 {
   const target = tempDir();
   run(['--scope', 'project', '--target', target, '--git-exclude', 'no']);
-  const text = fs.readFileSync(path.join(target, '.opencode/skills/my-implement-orchestrator/SKILL.md'), 'utf8');
+  const text = fs.readFileSync(path.join(target, '.opencode/commands/my-implement-orchestrator.md'), 'utf8');
   assert(text.includes('Use OpenCode V2 child-session roles: `develop`.'));
-  assert(text.includes('opencode/autoinvoke: false'));
+  assert(text.includes('$ARGUMENTS'));
+  assert(!text.includes('opencode/autoinvoke'));
   assert(!text.includes('disable-model-invocation'));
 }
 
@@ -97,12 +104,13 @@ function expectFailure(args, message, options) {
 // Existing differing file blocks unless --force is used.
 {
   const target = tempDir();
-  const dest = path.join(target, '.opencode/skills/my-improve-code/SKILL.md');
+  const dest = path.join(target, '.opencode/commands/my-improve-code.md');
   fs.mkdirSync(path.dirname(dest), { recursive: true });
   fs.writeFileSync(dest, 'local change\n');
   expectFailure(['--scope', 'project', '--target', target, '--git-exclude', 'no'], '--force');
   run(['--scope', 'project', '--target', target, '--git-exclude', 'no', '--force']);
-  assert(fs.readFileSync(dest, 'utf8').includes('name: my-improve-code'));
+  assert(fs.readFileSync(dest, 'utf8').includes('description:'));
+  assert(fs.readFileSync(dest, 'utf8').includes('$ARGUMENTS'));
 }
 
 // Existing agents are never overwritten, even with --force; missing agents are still installed.
@@ -115,7 +123,7 @@ function expectFailure(args, message, options) {
   run(['--scope', 'project', '--target', target, '--git-exclude', 'no', '--force']);
   assert.strictEqual(fs.readFileSync(agent, 'utf8'), 'my custom agent\n');
   assert(exists(target, '.opencode/agents/review.md'));
-  assert(exists(target, '.opencode/skills/my-improve-code/SKILL.md'));
+  assert(exists(target, '.opencode/commands/my-improve-code.md'));
 }
 
 // Dry run writes nothing.
@@ -130,12 +138,17 @@ function expectFailure(args, message, options) {
 {
   const target = tempDir();
   const oldSkill = path.join(target, '.opencode/skills/my-review-changes/SKILL.md');
+  const converted = path.join(target, '.opencode/skills/my-improve-code/SKILL.md');
   fs.mkdirSync(path.dirname(oldSkill), { recursive: true });
   fs.writeFileSync(oldSkill, '---\nname: my-review-changes\n---\n');
+  fs.mkdirSync(path.dirname(converted), { recursive: true });
+  fs.writeFileSync(converted, '---\nname: my-improve-code\n---\n');
   const out = run(['--scope', 'project', '--target', target, '--git-exclude', 'no']);
-  assert(out.includes('no longer shipped and can be removed'));
+  assert(out.includes('no longer shipped in that form and can be removed'));
   assert(out.includes(path.dirname(oldSkill)));
+  assert(out.includes(path.dirname(converted)));
   assert(fs.existsSync(oldSkill));
+  assert(fs.existsSync(converted));
 }
 
 // Git exclude targets only ephemeral .agents/tmp state, and only for project installs.

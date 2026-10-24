@@ -1,10 +1,5 @@
 ---
-name: my-improve-code
 description: Improve comments/documentation and logical spacing without changing runtime behavior.
-license: MIT
-compatibility: Canonical OpenCode V2 source; use scripts/build.py to generate the installable profile.
-metadata:
-  version: "3.4.0"
 ---
 
 # my-improve-code

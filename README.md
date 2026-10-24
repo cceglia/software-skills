@@ -1,10 +1,10 @@
 # software-skills — OpenCode V2 edition
 
-Software-engineering workflows packaged as native **OpenCode V2** skills and agents.
+Software-engineering workflows packaged as native **OpenCode V2** commands, skills, and agents.
 
 Repository: <https://github.com/cceglia/software-skills>
 
-> This is the `main` branch: it installs the skills **only for OpenCode V2**. The Claude Code edition lives on the `claude` branch.
+> This is the `main` branch: it installs the commands and skills **only for OpenCode V2**. The Claude Code edition lives on the `claude` branch.
 
 ## Install
 
@@ -15,7 +15,7 @@ npx --yes github:cceglia/software-skills
 The interactive installer asks where to install:
 
 ```text
-Where should the OpenCode V2 skills be installed?
+Where should the OpenCode V2 commands and skills be installed?
   1) Project (/path/to/project/.opencode)
   2) Global (/home/you/.config/opencode)
 Scope [1/2]:
@@ -23,8 +23,8 @@ Scope [1/2]:
 
 | Scope | Destination | Available in |
 | --- | --- | --- |
-| `project` | `<target>/.opencode/{skills,agents}/` | that project only (can be committed and shared with the team) |
-| `global` | `~/.config/opencode/{skills,agents}/` (`$OPENCODE_CONFIG_DIR`, else `$XDG_CONFIG_HOME/opencode`) | every project on your machine |
+| `project` | `<target>/.opencode/{commands,skills,agents}/` | that project only (can be committed and shared with the team) |
+| `global` | `~/.config/opencode/{commands,skills,agents}/` (`$OPENCODE_CONFIG_DIR`, else `$XDG_CONFIG_HOME/opencode`) | every project on your machine |
 
 Node.js 18+ is required. The installer has no npm runtime dependencies.
 
@@ -88,7 +88,7 @@ node ./software-skills/bin/software-skills.js --scope global
 software-skills [options]
 
 --scope <scope>
-    Where the skills and agents are installed.
+    Where the commands, skills and agents are installed.
     Values: project, global (aliases: local/repo, user/personal)
     Asked interactively when omitted.
 
@@ -100,7 +100,7 @@ software-skills [options]
     Default: current working directory. Rejected with --scope global.
 
 --force
-    Overwrite existing skill files when their contents differ.
+    Overwrite existing managed files (commands and skills) when their contents differ.
     Without --force, the installer stops rather than replacing them.
     Existing agents (agents/*.md) are never overwritten, with or without --force.
 
@@ -115,24 +115,25 @@ software-skills [options]
 --version, -v
 ```
 
-The installer only writes files. It never deletes anything; if it finds skills removed in 3.0.0 still installed, it lists them so you can remove them.
+The installer only writes files. It never deletes anything; if it finds skills removed in earlier releases still installed (including the 3.x skill copies of the five workflows that are now commands), it lists them so you can remove them.
 
-## Skills
+## Commands and skills
 
-| Skill | Invocation | Purpose |
-| --- | --- | --- |
-| `my-grill-to-implementation` | `/my-grill-to-implementation` | Light path: grill, explore, implement and commit every slice with `tdd`, then a final review with fix/review cycles |
-| `my-implement-orchestrator` | `/my-implement-orchestrator` | Implement tracker tickets with `tdd` and per-ticket commits; review a ticket individually only in exceptional high-risk cases, then a final `code-review` with fix/review cycles |
-| `my-improve-code` | `/my-improve-code` | Improve comments and spacing without behavior changes |
-| `my-improve-comments` | `/my-improve-comments` | Improve comments/documentation only |
-| `my-improve-spacing` | `/my-improve-spacing` | Improve logical blank-line spacing only |
-| `my-software-design-doc` | automatic or `/my-software-design-doc` | Create or review software design documents |
+Workflows that must only run on explicit request ship as native OpenCode V2 commands under `commands/`. OpenCode does not expose them to the model's skill discovery, so they run only when you type the slash command.
 
-Every workflow except `my-software-design-doc` is explicit-only (`slash: true`, `metadata.opencode/autoinvoke: false`).
+| Command | Purpose |
+| --- | --- |
+| `/my-grill-to-implementation` | Light path: grill, explore, implement and commit every slice with `tdd`, then a final review with fix/review cycles |
+| `/my-implement-orchestrator` | Implement tracker tickets with `tdd` and per-ticket commits; review a ticket individually only in exceptional high-risk cases, then a final `code-review` with fix/review cycles |
+| `/my-improve-code` | Improve comments and spacing without behavior changes |
+| `/my-improve-comments` | Improve comments/documentation only |
+| `/my-improve-spacing` | Improve logical blank-line spacing only |
+
+`my-software-design-doc` remains a native skill: model-invokable, and also available as `/my-software-design-doc`.
 
 ### OpenCode roles
 
-Delegating skills use the built-in `explore` subagent plus the bundled `develop` and `review` subagents installed under `agents/`. `develop` never commits or pushes; `review` is read-only.
+The delegating commands use the built-in `explore` subagent plus the bundled `develop` and `review` subagents installed under `agents/`. `develop` never commits or pushes; `review` is read-only.
 
 ## Matt Pocock dependency
 
@@ -147,6 +148,8 @@ Run `setup-matt-pocock-skills` once per repository so Matt's skills know the con
 ### Removed workflows
 
 `my-grill-to-spec`, `my-spec-to-tickets`, `my-review-changes`, and `my-git-commit` were removed in 3.0.0: use Matt Pocock's skills directly (`grill-with-docs`, `to-spec`, `to-tickets`, `code-review`) or commit by hand. The installer never deletes files, but it lists removed skills still present in the destination so you can delete them.
+
+In 4.0.0 the five user-invoked workflows moved from skills to commands (`commands/<name>.md`); the slash invocation is unchanged, and the old skill directories can be deleted after reinstalling.
 
 ### Ticket path
 
@@ -204,12 +207,13 @@ Workflows never include `./.agents/tmp/` in commits or code reviews. For project
 ## Source architecture
 
 ```text
-source/skills/            canonical skill source
-scripts/build.py          generates dist/.opencode/ (OpenCode V2 profile)
-scripts/validate.py       validates source and generated profile
-scripts/test-installer.js installer tests
-bin/software-skills.js    installer
-dist/.opencode/           generated, installable skills and agents
+source/commands/<name>.md  canonical user-invoked OpenCode V2 commands
+source/skills/             canonical model-invokable skills
+scripts/build.py           generates dist/.opencode/ (commands, skills, agents)
+scripts/validate.py        validates source and generated profile
+scripts/test-installer.js  installer tests
+bin/software-skills.js     installer
+dist/.opencode/            generated, installable commands, skills and agents
 ```
 
 ```bash

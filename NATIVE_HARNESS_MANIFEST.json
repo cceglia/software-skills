@@ -1,22 +1,28 @@
 {
-  "version": "3.1.1",
-  "canonical_skills": 6,
-  "manual_workflows": 5,
-  "semantic_skills": [
+  "version": "4.0.0",
+  "canonical_skills": 1,
+  "canonical_commands": 5,
+  "model_invokable_skills": [
     "my-software-design-doc"
+  ],
+  "user_invoked_commands": [
+    "my-grill-to-implementation",
+    "my-implement-orchestrator",
+    "my-improve-code",
+    "my-improve-comments",
+    "my-improve-spacing"
   ],
   "runtime_state": {
     "root": "./.agents/tmp/",
     "implementation": "./.agents/tmp/implementation/<slug>.md"
   },
-  "skill_routing": "native OpenCode V2 discovery; no generated registry",
+  "discovery": "native OpenCode V2 discovery; commands are user-invoked, skills are model-invokable; no generated registry",
   "profiles": {
     "opencode": {
       "root": "dist/.opencode",
       "native_features": [
-        "skill slash visibility",
-        "metadata.opencode/autoinvoke",
-        "metadata.opencode/slash",
+        "V2 commands (commands/*.md with $ARGUMENTS)",
+        "V2 skills",
         "V2 subagent tool",
         "V2 permissions",
         "built-in explore plus custom develop/review agents"
