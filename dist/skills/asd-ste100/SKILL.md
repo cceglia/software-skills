@@ -7,7 +7,7 @@ disable-model-invocation: true
 user-invocable: true
 argument-hint: "[level] [replies|docs] [help|off|status]"
 metadata:
-  version: "4.6.0"
+  version: "4.7.0"
 ---
 
 # asd-ste100

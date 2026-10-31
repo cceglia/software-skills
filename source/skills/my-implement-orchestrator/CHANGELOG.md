@@ -1,5 +1,9 @@
 # Changelog — my-implement-orchestrator
 
+## 4.7.0 — 2026-10-31
+
+- The diagram now names `codebase-design`, and the review loop requires the fix pass to load the mandatory `tdd` and `codebase-design` skills.
+
 ## 4.6.0 — 2026-10-31
 
 - Package version synchronized with the shared ASD-STE100 response style; replies now follow level 80 by default.

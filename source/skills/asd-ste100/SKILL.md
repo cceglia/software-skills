@@ -4,7 +4,7 @@ description: Set the ASD-STE100 response style for the session, at a level and s
 license: MIT
 compatibility: Canonical Claude Code source; use scripts/build.py to generate the installable profile.
 metadata:
-  version: "4.6.0"
+  version: "4.7.0"
 ---
 
 # asd-ste100

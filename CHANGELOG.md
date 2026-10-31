@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.7.0 — 2026-10-31 (`claude` branch)
+
+- `my-grill-to-implementation`: `codebase-design` is now mandatory, like `tdd`, in every slice and fix pass; a missing mandatory skill blocks the slice, while a missing language/tool skill does not. The workflow diagrams and the `AGENTS.md` contract now read `develop(tdd+codebase-design)`.
+- `my-implement-orchestrator`: the workflow diagram names `codebase-design`, and the review loop requires the fix pass to load the mandatory `tdd` and `codebase-design` skills, so the requirement no longer lives only in the Develop section.
+- `scripts/validate.py` and `AGENTS.md` treat the new diagram token and the mandatory skill as invariants for both workflows.
+
 ## 4.6.0 — 2026-10-31
 
 - Added the slash-only `asd-ste100` skill: sets the ASD-STE100 response style for the session, with level 80 as default, an optional scope for in-chat documents, and `help`, `status`, and `off`. Without arguments it asks level and scope with `AskUserQuestion`; explicit arguments skip the question.

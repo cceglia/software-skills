@@ -1,5 +1,9 @@
 # Changelog — my-grill-to-implementation
 
+## 4.7.0 — 2026-10-31
+
+- `codebase-design` is mandatory with `tdd` in every slice and fix pass; a missing mandatory skill blocks the slice. The diagram now reads `develop(tdd+codebase-design)`.
+
 ## 4.6.0 — 2026-10-31
 
 - Package version synchronized with the shared ASD-STE100 response style; replies now follow level 80 by default.

@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "source" / "skills"
 SHARED = ROOT / "source" / "shared"
 DIST = ROOT / "dist"
-VERSION = "4.6.0"
+VERSION = "4.7.0"
 EXPECTED = {
     "asd-ste100",
     "my-grill-to-implementation",
@@ -120,11 +120,11 @@ def validate_source() -> None:
     if "./.agents/tmp/implementation/" not in text:
         fail("canonical source missing runtime path ./.agents/tmp/implementation/")
     light = read(SRC / "my-grill-to-implementation" / "SKILL.md")
-    for token in ("grill-with-docs", "`tdd`", "exploration", "development", "fresh** read-only review", "./.agents/tmp/implementation/", "Next action", "develop(tdd) -> validation green -> commit", "new fresh review", "never create worktrees", "pull requests", "starting revision", "Run subagents sequentially", "different repositories"):
+    for token in ("grill-with-docs", "`tdd`", "`codebase-design`", "exploration", "development", "fresh** read-only review", "./.agents/tmp/implementation/", "Next action", "develop(tdd+codebase-design) -> validation green -> commit", "new fresh review", "never create worktrees", "pull requests", "starting revision", "Run subagents sequentially", "different repositories"):
         if token not in light:
             fail(f"my-grill-to-implementation missing light-flow invariant: {token}")
     orchestrator = read(SRC / "my-implement-orchestrator" / "SKILL.md")
-    for token in ("`tdd`", "`code-review`", "develop(tdd) -> validation green -> commit", "Do not review tickets individually by default", "new `code-review`", "MAX_REVIEW_CYCLES", "never create worktrees", "pull requests", "starting revision", "Run subagents sequentially", "different repositories"):
+    for token in ("`tdd`", "`codebase-design`", "`code-review`", "develop(tdd+codebase-design) -> validation green -> commit", "Do not review tickets individually by default", "new `code-review`", "MAX_REVIEW_CYCLES", "never create worktrees", "pull requests", "starting revision", "Run subagents sequentially", "different repositories"):
         if token not in orchestrator:
             fail(f"my-implement-orchestrator missing flow invariant: {token}")
     style_skill = read(SRC / "asd-ste100" / "SKILL.md")
@@ -172,7 +172,7 @@ def validate_agents_md() -> None:
         "my-grill-to-implementation",
         "my-implement-orchestrator",
         "Do not review tickets individually by default",
-        "develop(tdd) -> validation green -> commit",
+        "develop(tdd+codebase-design) -> validation green -> commit",
         "Removed in 4.0.0",
         "my-update-skills-list",
         "my-plan-to-spec",

@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "source" / "skills"
 SHARED = ROOT / "source" / "shared"
 DIST = ROOT / "dist"
-VERSION = "4.6.0"
+VERSION = "4.7.0"
 
 MANUAL = {
     "asd-ste100",
