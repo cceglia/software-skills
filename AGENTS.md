@@ -26,20 +26,20 @@ This file is the maintenance contract for future agents working on `software-ski
 This is the light path for changes that do not justify SPEC + tickets. Use `grill-with-docs`, keep one resumable implementation ledger, delegate exploration, then:
 
 ```text
-per slice:  develop(tdd) -> validation green -> commit
-at the end: fresh review -> (develop fix(tdd) -> commit -> new fresh review)* -> completed
+per slice:  develop(tdd+codebase-design) -> validation green -> commit
+at the end: fresh review -> (develop fix(tdd+codebase-design) -> commit -> new fresh review)* -> completed
 ```
 
-Every fix requires a subsequent clean fresh review before `completed`; fixes are committed first because the review diffs committed history from the recorded starting revision. No per-slice review by default; an intermediate review only for a high and concrete risk (data migration, data-loss risk, new security boundary), announced to the user beforehand. Work only in the current checkout: no worktrees, branches, pull requests, or pushes. Roles run sequentially; parallelism is allowed only across different repositories. Subagents return edge cases; the orchestrator decides if the spec defines them, otherwise the user chooses (same in `my-implement-orchestrator`). Never approve by self-review.
+Every develop/fix pass loads `tdd` and `codebase-design` (mandatory) plus the smallest sufficient discovered language/tool skills. A missing mandatory skill blocks the slice; a missing language/tool skill does not. Every fix requires a subsequent clean fresh review before `completed`; fixes are committed first because the review diffs committed history from the recorded starting revision. No per-slice review by default; an intermediate review only for a high and concrete risk (data migration, data-loss risk, new security boundary), announced to the user beforehand. Work only in the current checkout: no worktrees, branches, pull requests, or pushes. Roles run sequentially; parallelism is allowed only across different repositories. Subagents return edge cases; the orchestrator decides if the spec defines them, otherwise the user chooses (same in `my-implement-orchestrator`). Never approve by self-review.
 
 ### `my-implement-orchestrator`
 
 This is the full ticket implementation path:
 
 ```text
-per ticket:        develop(tdd) -> validation green -> commit
-exceptional ticket: + code-review of that ticket -> (develop fix(tdd) -> commit -> new code-review)*
-at the end:        code-review -> (develop fix(tdd) -> commit -> new code-review)* -> tracker finalization
+per ticket:        develop(tdd+codebase-design) -> validation green -> commit
+exceptional ticket: + code-review of that ticket -> (develop fix(tdd+codebase-design) -> commit -> new code-review)*
+at the end:        code-review -> (develop fix(tdd+codebase-design) -> commit -> new code-review)* -> tracker finalization
 ```
 
 Do not review tickets individually by default: only a high and concrete risk (data migration, data-loss risk, new security boundary; a contract or dependents are not enough) gets its own `code-review`, announced to the user beforehand. Every fix requires a subsequent clean `code-review`; fixes are committed first because `code-review` diffs committed history. Tickets are finalized only after the final review is clean. Every develop/fix pass loads `tdd` and `codebase-design` (mandatory) plus the available language/tool skills. Same working-copy and role rules as `my-grill-to-implementation`. Keep `MAX_REVIEW_CYCLES` explicit and do not replace Matt Pocock's `tdd` or `code-review` with duplicated local rules.

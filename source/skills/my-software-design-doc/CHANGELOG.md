@@ -1,5 +1,9 @@
 # Changelog — my-software-design-doc
 
+## 4.2.0 — 2026-10-31
+
+- Package version synchronized with the mandatory `codebase-design` change; no skill-specific behavior change.
+
 ## 4.1.0 — 2026-10-31
 
 - Responses now follow the shared ASD-STE100 response style at default level 80; the document content is unchanged.

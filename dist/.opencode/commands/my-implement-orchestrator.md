@@ -47,9 +47,9 @@ Implement approved tracker work without inventing requirements. Require Matt Poc
 Read repository instructions and `docs/agents/issue-tracker.md`. Before implementation, obtain a positive integer `MAX_REVIEW_CYCLES` and keep it fixed.
 
 ```text
-per ticket:        develop(tdd) -> validation green -> commit
-exceptional ticket: + code-review of that ticket -> (develop fix(tdd) -> commit -> new code-review)*
-at the end:        code-review -> (develop fix(tdd) -> commit -> new code-review)* -> tracker finalization
+per ticket:        develop(tdd+codebase-design) -> validation green -> commit
+exceptional ticket: + code-review of that ticket -> (develop fix(tdd+codebase-design) -> commit -> new code-review)*
+at the end:        code-review -> (develop fix(tdd+codebase-design) -> commit -> new code-review)* -> tracker finalization
 ```
 
 A ticket's referenced SPEC is normative for requirements, decisions, acceptance criteria, and agreed test seams.
@@ -76,7 +76,7 @@ Do not review tickets individually by default; the final review covers them. Rev
 
 After all tickets are committed, invoke Matt's `code-review` per repository with the recorded starting revision as fixed point. Treat blocking Standards or Spec findings as `CHANGES_REQUIRED`; a blocked review is `BLOCKED`; otherwise the cycle is approved.
 
-On `CHANGES_REQUIRED`, pass only the blocking findings to a fresh develop fix pass, validate, commit the fixes (so `code-review` sees them), then run a **new `code-review`**. Repeat until approved or `MAX_REVIEW_CYCLES` is exhausted. Never finalize after fixes without a clean subsequent review.
+On `CHANGES_REQUIRED`, pass only the blocking findings to a fresh develop fix pass that loads the mandatory `tdd` and `codebase-design` skills, validate, commit the fixes (so `code-review` sees them), then run a **new `code-review`**. Repeat until approved or `MAX_REVIEW_CYCLES` is exhausted. Never finalize after fixes without a clean subsequent review.
 
 ## Finalize
 
