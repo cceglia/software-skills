@@ -122,6 +122,7 @@ The installer only writes skill files. It never deletes anything; if it finds sk
 
 | Skill | Invocation | Purpose |
 | --- | --- | --- |
+| `asd-ste100` | `/asd-ste100` | Set the ASD-STE100 response style for the session: level 80 by default, optional in-chat documents, `help`, `status`, `off` |
 | `my-grill-to-implementation` | `/my-grill-to-implementation` | Light path: grill, explore, implement and commit every slice with `tdd`, then a final review with fix/review cycles |
 | `my-implement-orchestrator` | `/my-implement-orchestrator` | Implement tracker tickets with `tdd` and per-ticket commits; review a ticket individually only in exceptional high-risk cases, then a final `code-review` with fix/review cycles |
 | `my-improve-code` | `/my-improve-code` | Improve comments and spacing without behavior changes |
@@ -130,6 +131,23 @@ The installer only writes skill files. It never deletes anything; if it finds sk
 | `my-software-design-doc` | automatic or `/my-software-design-doc` | Create or review software design documents |
 
 Every workflow except `my-software-design-doc` is explicit-only (`disable-model-invocation: true`).
+
+### Response style
+
+Every skill carries the shared ASD-STE100 response style from `source/shared/response-style.md`. Replies are concise and well formatted at level 80 by default. The style applies to chat prose; code, paths, identifiers, report fields, and verdict schemas stay complete.
+
+`/asd-ste100` changes the style for the whole session:
+
+```text
+/asd-ste100                 ask level and scope with AskUserQuestion
+/asd-ste100 60 docs         level 60, replies and in-chat documents
+/asd-ste100 replies         replies only, keep the level
+/asd-ste100 help            show the level table
+/asd-ste100 status          show the active level and scope
+/asd-ste100 off             deactivate the style
+```
+
+The parent skill writes the active directive into every subagent prompt. Subagent replies use the same style and keep their report schema.
 
 ### Subagents
 
@@ -206,6 +224,7 @@ Workflows never include `./.agents/tmp/` in commits or code reviews. For project
 
 ```text
 source/skills/            canonical skill source
+source/shared/            shared response-style block injected by the build
 scripts/build.py          generates dist/skills/ (Claude Code profile)
 scripts/validate.py       validates source and generated profile
 scripts/test-installer.js installer tests

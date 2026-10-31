@@ -1,10 +1,19 @@
 {
-  "version": "4.3.1",
-  "canonical_skills": 6,
-  "manual_workflows": 5,
+  "version": "4.6.0",
+  "canonical_skills": 7,
+  "manual_workflows": 6,
   "semantic_skills": [
     "my-software-design-doc"
   ],
+  "response_style": {
+    "source": "source/shared/response-style.md",
+    "standard": "ASD-STE100",
+    "default_level": 80,
+    "default_scope": "replies",
+    "parameters": ["help", "status", "off", "replies", "docs"],
+    "question_tool": "AskUserQuestion",
+    "subagents": "the parent writes the active directive into every subagent prompt"
+  },
   "runtime_state": {
     "root": "./.agents/tmp/",
     "implementation": "./.agents/tmp/implementation/<slug>.md"

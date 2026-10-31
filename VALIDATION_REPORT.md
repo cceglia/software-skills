@@ -1,11 +1,14 @@
-# Validation report — 4.2.0 (`claude` branch)
+# Validation report — 4.6.0 (`claude` branch)
 
-Validated on 2026-10-06.
+Validated on 2026-10-31.
 
 ## Passed
 
 - root `AGENTS.md` is present and contains the required maintenance invariants;
-- 6 canonical skills; 5 explicit workflows; `my-software-design-doc` stays model-invocable;
+- 7 canonical skills; 6 explicit workflows; `my-software-design-doc` stays model-invocable;
+- `source/shared/response-style.md` is the only canonical response-style source; every generated skill carries it at default level 80;
+- `asd-ste100` is slash-only (`disable-model-invocation: true`, `user-invocable: true`), asks level and scope with `AskUserQuestion` only without arguments, and supports `help`, `status`, `off`, `replies`, and `docs`;
+- every skill writes the active directive into subagent prompts, and report/verdict contracts keep precedence over style;
 - skills removed in 4.0.0 (except the restored `my-implement-orchestrator`) are absent from source, generated profile, and installs;
 - `dist/` contains only the Claude Code profile (`dist/skills/`);
 - no generated skill uses `agent:`/`context:` frontmatter, names a subagent type, or references `.claude/agents`;

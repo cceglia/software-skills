@@ -40,9 +40,16 @@ function expectFailure(args, message, options) {
   const target = tempDir();
   const home = tempDir();
   run(['--scope', 'project', '--target', target, '--git-exclude', 'no'], { home });
+  assert(exists(target, '.claude/skills/asd-ste100/SKILL.md'));
   assert(exists(target, '.claude/skills/my-improve-code/SKILL.md'));
   assert(exists(target, '.claude/skills/my-implement-orchestrator/SKILL.md'));
   assert(exists(target, '.claude/skills/my-software-design-doc/references/design-doc-template.md'));
+  const styleSkill = fs.readFileSync(path.join(target, '.claude/skills/asd-ste100/SKILL.md'), 'utf8');
+  assert(styleSkill.includes('## Response style (ASD-STE100)'));
+  assert(styleSkill.includes('the `AskUserQuestion` tool'));
+  assert(!styleSkill.includes("the environment's question tool"));
+  const proseSkill = fs.readFileSync(path.join(target, '.claude/skills/my-improve-code/SKILL.md'), 'utf8');
+  assert(proseSkill.includes('## Response style (ASD-STE100)'));
   assert(!exists(target, '.claude/agents'));
   assert(!exists(target, '.agents/skills'));
   assert(!exists(target, '.opencode'));

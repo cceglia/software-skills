@@ -5,6 +5,7 @@ This file is the maintenance contract for future agents working on `software-ski
 ## Architecture
 
 - `source/skills/` is the canonical source of truth. Never edit generated files under `dist/` directly.
+- `source/shared/response-style.md` is the single canonical response style (ASD-STE100, default level 80). `scripts/build.py` injects it into every generated skill; do not repeat its rules.
 - `scripts/build.py` generates the single Claude Code profile in `dist/skills/`.
 - `bin/software-skills.js` installs that profile into project `.claude/skills` or global `~/.claude/skills` (`$CLAUDE_CONFIG_DIR/skills` when set), asking interactively when `--scope` is missing.
 - Prefer composition over reimplementation. Matt Pocock skills own their domain behavior; our skills add orchestration, resumability, and stronger acceptance loops.
@@ -13,7 +14,7 @@ This file is the maintenance contract for future agents working on `software-ski
 
 ## Subagents
 
-Skills delegate responsibilities (exploration, development, review) but never name a subagent type: Claude Code chooses the subagent autonomously. Do not ship custom agents, `agent:`/`context: fork` frontmatter, or `subagent_type` instructions. The shared "never prescribe a subagent type" rule is appended once by `scripts/build.py` to every delegating skill.
+Skills delegate responsibilities (exploration, development, review) but never name a subagent type: Claude Code chooses the subagent autonomously. Do not ship custom agents, `agent:`/`context: fork` frontmatter, or `subagent_type` instructions. The shared "never prescribe a subagent type" rule is appended once by `scripts/build.py` to every delegating skill. Every skill also carries the shared response style; the parent writes the active `/asd-ste100` directive into each subagent prompt.
 
 ## Runtime state
 

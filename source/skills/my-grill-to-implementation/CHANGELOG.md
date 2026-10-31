@@ -1,5 +1,9 @@
 # Changelog — my-grill-to-implementation
 
+## 4.6.0 — 2026-10-31
+
+- Package version synchronized with the shared ASD-STE100 response style; replies now follow level 80 by default.
+
 ## 4.4.0 — 2026-10-10
 
 - Plan written as `spec.md` in the tracker's spec folder (`docs/agents/issue-tracker.md`), slices only, committed last; ledger remains temporary in `./.agents/tmp/`.

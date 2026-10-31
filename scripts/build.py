@@ -6,10 +6,12 @@ import shutil
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "source" / "skills"
+SHARED = ROOT / "source" / "shared"
 DIST = ROOT / "dist"
-VERSION = "4.5.0"
+VERSION = "4.6.0"
 
 MANUAL = {
+    "asd-ste100",
     "my-grill-to-implementation",
     "my-implement-orchestrator",
     "my-improve-code",
@@ -28,6 +30,7 @@ DELEGATING = {
 }
 
 ARG_HINT = {
+    "asd-ste100": "[level] [replies|docs] [help|off|status]",
     "my-grill-to-implementation": "[change request | .agents/tmp/implementation state]",
     "my-implement-orchestrator": "[work item source]",
     "my-improve-code": "[scope]",
@@ -72,6 +75,14 @@ def insert_after_h1(body: str, block: str) -> str:
     return body[:pos] + "\n\n" + block.rstrip() + body[pos:]
 
 
+def response_style() -> str:
+    return (SHARED / "response-style.md").read_text(encoding="utf-8").strip()
+
+
+def adapt_tool_names(text: str) -> str:
+    return text.replace("the environment's question tool", "the `AskUserQuestion` tool")
+
+
 def invocation_block(name: str) -> str:
     return (
         f"## Invocation\n\nExplicit-only Claude Code workflow. Run `/{name}`; never invoke it implicitly.\n\n"
@@ -80,8 +91,11 @@ def invocation_block(name: str) -> str:
 
 
 def adapt_body(name: str, body: str) -> str:
+    body = adapt_tool_names(body)
+    block = response_style()
     if name in MANUAL:
-        body = insert_after_h1(body, invocation_block(name))
+        block = invocation_block(name) + "\n\n" + block
+    body = insert_after_h1(body, block)
     if name in DELEGATING:
         body = body.rstrip() + "\n\n" + SUBAGENTS_BLOCK + "\n"
     return body

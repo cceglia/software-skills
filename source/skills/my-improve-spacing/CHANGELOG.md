@@ -1,5 +1,9 @@
 # Changelog — my-improve-spacing
 
+## 4.6.0 — 2026-10-31
+
+- Package version synchronized with the shared ASD-STE100 response style; replies now follow level 80 by default.
+
 ## 4.3.0 — 2026-10-06
 
 - Package version synchronized with the exceptional-review change; no skill-specific behavior change.

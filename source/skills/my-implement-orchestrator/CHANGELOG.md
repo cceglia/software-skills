@@ -1,5 +1,9 @@
 # Changelog — my-implement-orchestrator
 
+## 4.6.0 — 2026-10-31
+
+- Package version synchronized with the shared ASD-STE100 response style; replies now follow level 80 by default.
+
 ## 4.5.0 — 2026-10-22
 
 - Every develop/fix pass loads the mandatory `tdd` and `codebase-design`, plus the available language/framework/tool skills for the code it touches.

@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.6.0 — 2026-10-31
+
+- Added the slash-only `asd-ste100` skill: sets the ASD-STE100 response style for the session, with level 80 as default, an optional scope for in-chat documents, and `help`, `status`, and `off`. Without arguments it asks level and scope with `AskUserQuestion`; explicit arguments skip the question.
+- Added `source/shared/response-style.md` as the single canonical response-style source. `scripts/build.py` injects it into every generated skill at default level 80.
+- Every skill now asks the parent to write the active directive into each subagent prompt; subagents reply with the same style and keep their report schema.
+- Reporter/verdict contracts take precedence over style: required fields, evidence, file paths, and schema stay complete.
+
 ## 4.5.0 — 2026-10-22 (`claude` branch)
 
 - `my-implement-orchestrator`: `codebase-design` is now required; every develop/fix pass loads `tdd` and `codebase-design` plus the available language/framework/tool skills.

@@ -7,9 +7,11 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "source" / "skills"
+SHARED = ROOT / "source" / "shared"
 DIST = ROOT / "dist"
-VERSION = "4.5.0"
+VERSION = "4.6.0"
 EXPECTED = {
+    "asd-ste100",
     "my-grill-to-implementation",
     "my-implement-orchestrator",
     "my-improve-code",
@@ -91,15 +93,27 @@ def check_skill_dir(root: Path, expected: set[str] = EXPECTED) -> None:
 
 REMOVED = ("my-git-commit", "my-grill-to-spec", "my-review-changes", "my-spec-to-tickets")
 FORBIDDEN = REMOVED + ("my-update-skills-list", "skills.json", "./.tmp/", ".opencode", ".codex", "subagent_type", "my-grill-to-plan", "my-plan-to-spec", ".claude/agents", "harness-mapped", "harness-native")
-DELEGATING = EXPECTED
+DELEGATING = EXPECTED - {"asd-ste100"}
 
 
 def validate_source() -> None:
     check_skill_dir(SRC)
+    style = read(SHARED / "response-style.md")
+    for token in (
+        "## Response style (ASD-STE100)",
+        "**Level:** 80",
+        "**Scope:** replies only",
+        "`docs`",
+        "the subagent prompt",
+        "Never remove required report fields",
+    ):
+        if token not in style:
+            fail(f"shared response style missing invariant: {token}")
     for name in EXPECTED:
         if read(SRC / name / "VERSION").strip() != VERSION:
             fail(f"source VERSION mismatch for {name}")
     text = "\n".join(p.read_text(encoding="utf-8") for p in SRC.glob("*/SKILL.md"))
+    text += "\n" + style
     for forbidden in FORBIDDEN + ("`explore` role", "`develop` role", "`review` role"):
         if forbidden in text:
             fail(f"obsolete token remains in canonical source: {forbidden}")
@@ -113,6 +127,10 @@ def validate_source() -> None:
     for token in ("`tdd`", "`code-review`", "develop(tdd) -> validation green -> commit", "Do not review tickets individually by default", "new `code-review`", "MAX_REVIEW_CYCLES", "never create worktrees", "pull requests", "starting revision", "Run subagents sequentially", "different repositories"):
         if token not in orchestrator:
             fail(f"my-implement-orchestrator missing flow invariant: {token}")
+    style_skill = read(SRC / "asd-ste100" / "SKILL.md")
+    for token in ("the environment's question tool", "**No arguments:**", "`help`", "`off`", "`status`", "`replies`", "`docs`", "subagent prompt", "1-100"):
+        if token not in style_skill:
+            fail(f"asd-ste100 skill missing invariant: {token}")
 
 
 def validate_claude() -> None:
@@ -133,12 +151,23 @@ def validate_claude() -> None:
                 fail(f"Claude {name} missing slash invocation text")
         elif fm.get("disable-model-invocation"):
             fail(f"Claude {name} must remain model-invocable")
+        for token in ("## Response style (ASD-STE100)", "the subagent prompt", "Never remove required report fields"):
+            if token not in body:
+                fail(f"Claude {name} missing response style invariant: {token}")
+
+    _, style_body = frontmatter(root / "asd-ste100" / "SKILL.md")
+    for token in ("the `AskUserQuestion` tool", "**No arguments:**", "`help`", "`off`", "`status`", "`replies`", "`docs`"):
+        if token not in style_body:
+            fail(f"Claude asd-ste100 missing invariant: {token}")
+    if "the environment's question tool" in style_body:
+        fail("Claude asd-ste100 kept the canonical tool placeholder")
 
 
 def validate_agents_md() -> None:
     text = read(ROOT / "AGENTS.md")
     for token in (
         "source/skills/",
+        "source/shared/",
         "./.agents/tmp/",
         "my-grill-to-implementation",
         "my-implement-orchestrator",
@@ -179,6 +208,7 @@ def main() -> int:
     print("OK: canonical source and Claude Code profile validated")
     print(f"- canonical skills: {len(EXPECTED)}")
     print(f"- explicit workflows: {len(MANUAL)}")
+    print("- response style: shared ASD-STE100 block, default level 80")
     print("- runtime state: resumable ledgers under ./.agents/tmp/implementation")
     print("- skill routing: Claude Code native skill discovery; no skills.json registry")
     print("- subagents: no prescribed subagent types; Claude Code chooses autonomously")
