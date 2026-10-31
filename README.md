@@ -123,6 +123,7 @@ Workflows that must only run on explicit request ship as native OpenCode V2 comm
 
 | Command | Purpose |
 | --- | --- |
+| `/asd-ste100` | Set the ASD-STE100 response style for the session: level 80 by default, optional in-chat documents, `help`, `status`, `off` |
 | `/my-grill-to-implementation` | Light path: grill, explore, implement and commit every slice with `tdd`, then a final review with fix/review cycles |
 | `/my-implement-orchestrator` | Implement tracker tickets with `tdd` and per-ticket commits; review a ticket individually only in exceptional high-risk cases, then a final `code-review` with fix/review cycles |
 | `/my-improve-code` | Improve comments and spacing without behavior changes |
@@ -130,6 +131,23 @@ Workflows that must only run on explicit request ship as native OpenCode V2 comm
 | `/my-improve-spacing` | Improve logical blank-line spacing only |
 
 `my-software-design-doc` remains a native skill: model-invokable, and also available as `/my-software-design-doc`.
+
+### Response style
+
+Every command and skill carries the shared ASD-STE100 response style from `source/shared/response-style.md`. Replies are concise and well formatted at level 80 by default. The style applies to chat prose; code, paths, identifiers, report fields, and verdict schemas stay complete.
+
+`/asd-ste100` changes the style for the whole session:
+
+```text
+/asd-ste100                 ask level and scope with the question tool
+/asd-ste100 60 docs         level 60, replies and in-chat documents
+/asd-ste100 replies         replies only, keep the level
+/asd-ste100 help            show the level table
+/asd-ste100 status          show the active level and scope
+/asd-ste100 off             deactivate the style
+```
+
+The parent command writes the active directive into every subagent prompt. Subagent replies use the same style and keep their report schema.
 
 ### OpenCode roles
 
@@ -209,6 +227,7 @@ Workflows never include `./.agents/tmp/` in commits or code reviews. For project
 ```text
 source/commands/<name>.md  canonical user-invoked OpenCode V2 commands
 source/skills/             canonical model-invokable skills
+source/shared/             shared response-style block injected by the build
 scripts/build.py           generates dist/.opencode/ (commands, skills, agents)
 scripts/validate.py        validates source and generated profile
 scripts/test-installer.js  installer tests

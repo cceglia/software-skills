@@ -4,7 +4,8 @@ This file is the maintenance contract for future agents working on `software-ski
 
 ## Architecture
 
-- `source/commands/` holds the five user-invoked workflows (OpenCode commands); `source/skills/` holds the model-invokable skills. Never edit generated files under `dist/` directly.
+- `source/commands/` holds the user-invoked OpenCode commands (five workflows plus `asd-ste100`); `source/skills/` holds the model-invokable skills. Never edit generated files under `dist/` directly.
+- `source/shared/response-style.md` is the single canonical source of the ASD-STE100 response style (default level 80). `scripts/build.py` injects it into every generated command and skill; do not repeat its rules in individual files.
 - `scripts/build.py` generates the single OpenCode V2 profile in `dist/.opencode/` (`commands/`, `skills/` and `agents/`).
 - `bin/software-skills.js` installs that profile into project `.opencode/` or global `~/.config/opencode` (`$OPENCODE_CONFIG_DIR`, else `$XDG_CONFIG_HOME/opencode`), asking interactively when `--scope` is missing.
 - Prefer composition over reimplementation. Matt Pocock skills own their domain behavior; our skills add orchestration, resumability, and stronger acceptance loops.

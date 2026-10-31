@@ -40,6 +40,7 @@ function expectFailure(args, message, options) {
   const target = tempDir();
   const home = tempDir();
   run(['--scope', 'project', '--target', target, '--git-exclude', 'no'], { home });
+  assert(exists(target, '.opencode/commands/asd-ste100.md'));
   assert(exists(target, '.opencode/commands/my-grill-to-implementation.md'));
   assert(exists(target, '.opencode/commands/my-implement-orchestrator.md'));
   assert(exists(target, '.opencode/commands/my-improve-code.md'));
@@ -48,6 +49,12 @@ function expectFailure(args, message, options) {
   assert(exists(target, '.opencode/skills/my-software-design-doc/SKILL.md'));
   assert(exists(target, '.opencode/skills/my-software-design-doc/references/design-doc-template.md'));
   assert(!exists(target, '.opencode/skills/my-improve-code'));
+  const styleCommand = fs.readFileSync(path.join(target, '.opencode/commands/asd-ste100.md'), 'utf8');
+  assert(styleCommand.includes('## Response style (ASD-STE100)'));
+  assert(styleCommand.includes('the `question` tool'));
+  assert(!styleCommand.includes("the environment's question tool"));
+  const styleSkill = fs.readFileSync(path.join(target, '.opencode/skills/my-software-design-doc/SKILL.md'), 'utf8');
+  assert(styleSkill.includes('## Response style (ASD-STE100)'));
   assert(exists(target, '.opencode/agents/develop.md'));
   assert(exists(target, '.opencode/agents/review.md'));
   assert(!exists(target, '.agents'));

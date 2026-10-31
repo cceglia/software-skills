@@ -1,5 +1,9 @@
 # Changelog — my-software-design-doc
 
+## 4.1.0 — 2026-10-31
+
+- Responses now follow the shared ASD-STE100 response style at default level 80; the document content is unchanged.
+
 ## 3.1.0 — 2026-10-06
 
 - Package version synchronized with the exceptional-review change; no skill-specific behavior change.

@@ -1,17 +1,27 @@
 {
-  "version": "4.0.0",
+  "version": "4.1.0",
   "canonical_skills": 1,
-  "canonical_commands": 5,
+  "canonical_commands": 6,
   "model_invokable_skills": [
     "my-software-design-doc"
   ],
   "user_invoked_commands": [
+    "asd-ste100",
     "my-grill-to-implementation",
     "my-implement-orchestrator",
     "my-improve-code",
     "my-improve-comments",
     "my-improve-spacing"
   ],
+  "response_style": {
+    "source": "source/shared/response-style.md",
+    "standard": "ASD-STE100",
+    "default_level": 80,
+    "default_scope": "replies",
+    "parameters": ["help", "status", "off", "replies", "docs"],
+    "question_tool": "question",
+    "subagents": "the parent writes the active directive into every subagent prompt"
+  },
   "runtime_state": {
     "root": "./.agents/tmp/",
     "implementation": "./.agents/tmp/implementation/<slug>.md"

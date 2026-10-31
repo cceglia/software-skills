@@ -9,10 +9,12 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "source"
 SKILLS = SRC / "skills"
 COMMANDS = SRC / "commands"
+SHARED = SRC / "shared"
 DIST = ROOT / "dist"
-VERSION = "4.0.0"
+VERSION = "4.1.0"
 EXPECTED_SKILLS = {"my-software-design-doc"}
 EXPECTED_COMMANDS = {
+    "asd-ste100",
     "my-grill-to-implementation",
     "my-implement-orchestrator",
     "my-improve-code",
@@ -116,6 +118,18 @@ def validate_source() -> None:
     check_skill_dir(SKILLS, EXPECTED_SKILLS)
     check_command_dir(COMMANDS, EXPECTED_COMMANDS, built=False)
 
+    style = read(SHARED / "response-style.md")
+    for token in (
+        "## Response style (ASD-STE100)",
+        "**Level:** 80",
+        "**Scope:** replies only",
+        "`docs`",
+        "the subagent prompt",
+        "Never remove required report fields",
+    ):
+        if token not in style:
+            fail(f"shared response style missing invariant: {token}")
+
     for name in EXPECTED_SKILLS:
         if read(SKILLS / name / "VERSION").strip() != VERSION:
             fail(f"source VERSION mismatch for {name}")
@@ -125,7 +139,7 @@ def validate_source() -> None:
     if (COMMANDS / "my-software-design-doc.md").exists():
         fail("my-software-design-doc must remain a skill, not a command")
 
-    files = list(SKILLS.glob("*/SKILL.md")) + list(COMMANDS.glob("*.md"))
+    files = list(SKILLS.glob("*/SKILL.md")) + list(COMMANDS.glob("*.md")) + [SHARED / "response-style.md"]
     text = "\n".join(p.read_text(encoding="utf-8") for p in files)
     for forbidden in FORBIDDEN:
         if forbidden in text:
@@ -141,6 +155,10 @@ def validate_source() -> None:
     for token in ("`tdd`", "`code-review`", "develop(tdd) -> validation green -> commit", "Do not review tickets individually by default", "new `code-review`", "MAX_REVIEW_CYCLES", "never create worktrees", "pull requests", "starting revision", "Run subagents sequentially", "different repositories"):
         if token not in orchestrator:
             fail(f"my-implement-orchestrator missing flow invariant: {token}")
+    style_command = read(COMMANDS / "asd-ste100.md")
+    for token in ("the environment's question tool", "**No arguments:**", "`help`", "`off`", "`status`", "`replies`", "`docs`", "subagent prompt", "1-100"):
+        if token not in style_command:
+            fail(f"asd-ste100 command missing invariant: {token}")
 
 
 def validate_opencode() -> None:
@@ -161,12 +179,26 @@ def validate_opencode() -> None:
         if fm.get("mode") != "subagent":
             fail(f"OpenCode {agent} missing mode: subagent")
 
+    for path in list((root / "commands").glob("*.md")) + list((root / "skills").glob("*/SKILL.md")):
+        _, body = frontmatter(path)
+        for token in ("## Response style (ASD-STE100)", "the subagent prompt", "Never remove required report fields"):
+            if token not in body:
+                fail(f"generated {path.relative_to(ROOT)} missing response style invariant: {token}")
+
+    _, style_body = frontmatter(root / "commands" / "asd-ste100.md")
+    for token in ("the `question` tool", "**No arguments:**", "`help`", "`off`", "`status`", "`replies`", "`docs`"):
+        if token not in style_body:
+            fail(f"generated asd-ste100 command missing invariant: {token}")
+    if "the environment's question tool" in style_body:
+        fail("generated asd-ste100 command kept the canonical tool placeholder")
+
 
 def validate_agents_md() -> None:
     text = read(ROOT / "AGENTS.md")
     for token in (
         "source/commands/",
         "source/skills/",
+        "source/shared/",
         "./.agents/tmp/",
         "my-grill-to-implementation",
         "my-implement-orchestrator",
@@ -204,6 +236,7 @@ def main() -> int:
     print("OK: canonical source and OpenCode V2 profile validated")
     print(f"- canonical skills: {len(EXPECTED_SKILLS)}")
     print(f"- user-invoked commands: {len(EXPECTED_COMMANDS)}")
+    print("- response style: shared ASD-STE100 block, default level 80")
     print("- runtime state: resumable ledgers under ./.agents/tmp/implementation")
     print("- discovery: native OpenCode V2 commands and skills; no skills.json registry")
     return 0

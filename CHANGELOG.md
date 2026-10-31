@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.1.0 — 2026-10-31
+
+- Added `/asd-ste100`: sets the ASD-STE100 response style for the session, with level 80 as default, an optional scope for in-chat documents, and `help`, `status`, and `off`. Without arguments it asks level and scope with the native `question` tool; explicit arguments skip the question.
+- Added `source/shared/response-style.md` as the single canonical response-style source. `scripts/build.py` injects it into every generated command and skill at default level 80.
+- Every command and skill now asks the parent to write the active directive into each subagent prompt; subagents reply with the same style and keep their report schema.
+- Reporter/verdict contracts take precedence over style: required fields, evidence, file paths, and schema stay complete.
+
 ## 4.0.0 — 2026-10-24
 
 - The five user-invoked workflows now ship as native OpenCode V2 commands under `commands/` instead of autoinvoke-disabled skills: `my-grill-to-implementation`, `my-implement-orchestrator`, `my-improve-code`, `my-improve-comments`, `my-improve-spacing`. Slash invocation (`/name`) is unchanged; OpenCode no longer exposes them to model skill discovery.

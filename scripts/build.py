@@ -7,12 +7,14 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "source"
 SKILLS = SRC / "skills"
 COMMANDS = SRC / "commands"
+SHARED = SRC / "shared"
 DIST = ROOT / "dist"
-VERSION = "4.0.0"
+VERSION = "4.1.0"
 
 # User-invoked workflows ship as OpenCode commands, not as skills: the model
 # never discovers them, so only an explicit /name invocation runs them.
 COMMAND_NAMES = {
+    "asd-ste100",
     "my-grill-to-implementation",
     "my-implement-orchestrator",
     "my-improve-code",
@@ -68,6 +70,14 @@ def insert_after_h1(body: str, block: str) -> str:
     return body[:pos] + "\n\n" + block.rstrip() + body[pos:]
 
 
+def response_style() -> str:
+    return (SHARED / "response-style.md").read_text(encoding="utf-8").strip()
+
+
+def adapt_tool_names(text: str) -> str:
+    return text.replace("the environment's question tool", "the `question` tool")
+
+
 def invocation_block() -> str:
     return (
         "## Invocation\n\n"
@@ -85,20 +95,23 @@ def mapping_block(name: str) -> str:
 
 
 def adapt_command_body(name: str, body: str) -> str:
+    body = adapt_tool_names(body)
     block = invocation_block()
     roles = mapping_block(name)
     if roles:
         block += "\n\n" + roles
+    block += "\n\n" + response_style()
     return insert_after_h1(body, block)
 
 
 def adapt_skill_body(name: str, body: str) -> str:
+    body = adapt_tool_names(body)
     if name == "my-software-design-doc":
         body = body.replace(
             "Use the harness-mapped read-only `explore` role for broad codebase discovery.",
             "Use the built-in OpenCode V2 `explore` subagent for broad codebase discovery.",
         )
-    return body
+    return insert_after_h1(body, response_style())
 
 
 def load_skills():
