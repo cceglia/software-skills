@@ -7,7 +7,7 @@ disable-model-invocation: true
 user-invocable: true
 argument-hint: "[scope]"
 metadata:
-  version: "4.7.0"
+  version: "4.8.0"
 ---
 
 # my-improve-comments

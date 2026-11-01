@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "source" / "skills"
 SHARED = ROOT / "source" / "shared"
 DIST = ROOT / "dist"
-VERSION = "4.7.0"
+VERSION = "4.8.0"
 EXPECTED = {
     "asd-ste100",
     "my-grill-to-implementation",
@@ -17,6 +17,7 @@ EXPECTED = {
     "my-improve-code",
     "my-improve-comments",
     "my-improve-spacing",
+    "my-golang-codebase-design",
     "my-software-design-doc",
 }
 MANUAL = EXPECTED - {"my-software-design-doc"}
@@ -131,6 +132,24 @@ def validate_source() -> None:
     for token in ("the environment's question tool", "**No arguments:**", "`help`", "`off`", "`status`", "`replies`", "`docs`", "subagent prompt", "1-100"):
         if token not in style_skill:
             fail(f"asd-ste100 skill missing invariant: {token}")
+    golang = read(SRC / "my-golang-codebase-design" / "SKILL.md")
+    for token in (
+        "`codebase-design`",
+        "facade",
+        "`internal/<domain>`",
+        "`errors.Is`/`errors.As`",
+        "`cmd/*`",
+        "allowlist",
+        "`Package layout`",
+        "`CODING_STANDARDS.md`",
+        "`go build ./...`",
+        "`go vet ./...`",
+        "./.agents/tmp/implementation/",
+        "one package at a time",
+        "Do not create an interface where only one implementation exists",
+    ):
+        if token not in golang:
+            fail(f"my-golang-codebase-design missing invariant: {token}")
 
 
 def validate_claude() -> None:

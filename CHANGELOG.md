@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.8.0 — 2026-11-01 (`claude` branch)
+
+- Added `/my-golang-codebase-design`: reshapes Go packages into deep modules with Matt Pocock's `codebase-design` skill (mandatory; `BLOCKED` when missing) plus the available Go skills. Every package gets a narrow facade and an `internal/<domain>`; the skill migrates one package at a time in dependency order, preserves behavior and public contracts, validates with `go build`, `go vet`, tests and the Makefile allowlist gate, and records the decision with a new ADR plus a `Package layout` section in `CODING_STANDARDS.md`. `cmd/*` is excluded.
+- The skill is explicit-only, like the other improvement workflows, and does not review or commit.
+
 ## 4.7.0 — 2026-10-31 (`claude` branch)
 
 - `my-grill-to-implementation`: `codebase-design` is now mandatory, like `tdd`, in every slice and fix pass; a missing mandatory skill blocks the slice, while a missing language/tool skill does not. The workflow diagrams and the `AGENTS.md` contract now read `develop(tdd+codebase-design)`.

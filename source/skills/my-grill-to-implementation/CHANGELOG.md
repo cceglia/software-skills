@@ -1,5 +1,9 @@
 # Changelog — my-grill-to-implementation
 
+## 4.8.0 — 2026-11-01
+
+- Package version synchronized with the new `my-golang-codebase-design` skill; no skill-specific behavior change.
+
 ## 4.7.0 — 2026-10-31
 
 - `codebase-design` is mandatory with `tdd` in every slice and fix pass; a missing mandatory skill blocks the slice. The diagram now reads `develop(tdd+codebase-design)`.

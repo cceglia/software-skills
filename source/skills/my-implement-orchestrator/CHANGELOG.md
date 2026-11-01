@@ -1,5 +1,9 @@
 # Changelog — my-implement-orchestrator
 
+## 4.8.0 — 2026-11-01
+
+- Package version synchronized with the new `my-golang-codebase-design` skill; no skill-specific behavior change.
+
 ## 4.7.0 — 2026-10-31
 
 - The diagram now names `codebase-design`, and the review loop requires the fix pass to load the mandatory `tdd` and `codebase-design` skills.

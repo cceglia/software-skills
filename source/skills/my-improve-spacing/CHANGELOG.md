@@ -1,5 +1,9 @@
 # Changelog — my-improve-spacing
 
+## 4.8.0 — 2026-11-01
+
+- Package version synchronized with the new `my-golang-codebase-design` skill; no skill-specific behavior change.
+
 ## 4.7.0 — 2026-10-31
 
 - Package version synchronized with the mandatory `codebase-design` change; no skill-specific behavior change.

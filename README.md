@@ -128,6 +128,7 @@ The installer only writes skill files. It never deletes anything; if it finds sk
 | `my-improve-code` | `/my-improve-code` | Improve comments and spacing without behavior changes |
 | `my-improve-comments` | `/my-improve-comments` | Improve comments/documentation only |
 | `my-improve-spacing` | `/my-improve-spacing` | Improve logical blank-line spacing only |
+| `my-golang-codebase-design` | `/my-golang-codebase-design` | Improve Go packages into deep modules: a narrow facade over `internal` domains, one package at a time, behind an allowlist gate |
 | `my-software-design-doc` | automatic or `/my-software-design-doc` | Create or review software design documents |
 
 Every workflow except `my-software-design-doc` is explicit-only (`disable-model-invocation: true`).
