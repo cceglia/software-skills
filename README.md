@@ -129,6 +129,7 @@ Workflows that must only run on explicit request ship as native OpenCode V2 comm
 | `/my-improve-code` | Improve comments and spacing without behavior changes |
 | `/my-improve-comments` | Improve comments/documentation only |
 | `/my-improve-spacing` | Improve logical blank-line spacing only |
+| `/my-golang-codebase-design` | Improve Go packages into deep modules: a narrow facade over `internal` domains, one package at a time, behind an allowlist gate |
 
 `my-software-design-doc` remains a native skill: model-invokable, and also available as `/my-software-design-doc`.
 

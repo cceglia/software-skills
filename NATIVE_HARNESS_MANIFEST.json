@@ -1,7 +1,7 @@
 {
-  "version": "4.2.0",
+  "version": "4.3.0",
   "canonical_skills": 1,
-  "canonical_commands": 6,
+  "canonical_commands": 7,
   "model_invokable_skills": [
     "my-software-design-doc"
   ],
@@ -11,7 +11,8 @@
     "my-implement-orchestrator",
     "my-improve-code",
     "my-improve-comments",
-    "my-improve-spacing"
+    "my-improve-spacing",
+    "my-golang-codebase-design"
   ],
   "response_style": {
     "source": "source/shared/response-style.md",

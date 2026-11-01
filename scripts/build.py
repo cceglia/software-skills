@@ -9,7 +9,7 @@ SKILLS = SRC / "skills"
 COMMANDS = SRC / "commands"
 SHARED = SRC / "shared"
 DIST = ROOT / "dist"
-VERSION = "4.2.0"
+VERSION = "4.3.0"
 
 # User-invoked workflows ship as OpenCode commands, not as skills: the model
 # never discovers them, so only an explicit /name invocation runs them.
@@ -20,6 +20,7 @@ COMMAND_NAMES = {
     "my-improve-code",
     "my-improve-comments",
     "my-improve-spacing",
+    "my-golang-codebase-design",
 }
 
 SKILL_NAMES = {"my-software-design-doc"}
@@ -30,6 +31,7 @@ ROLES = {
     "my-improve-code": ("explore", "develop"),
     "my-improve-comments": ("explore", "develop"),
     "my-improve-spacing": ("explore", "develop"),
+    "my-golang-codebase-design": ("explore", "develop"),
 }
 
 

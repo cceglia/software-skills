@@ -1,5 +1,9 @@
 # Changelog — my-software-design-doc
 
+## 4.3.0 — 2026-11-01
+
+- Package version synchronized with `my-golang-codebase-design`; no skill-specific behavior change.
+
 ## 4.2.0 — 2026-10-31
 
 - Package version synchronized with the mandatory `codebase-design` change; no skill-specific behavior change.
