@@ -11,7 +11,7 @@ SKILLS = SRC / "skills"
 COMMANDS = SRC / "commands"
 SHARED = SRC / "shared"
 DIST = ROOT / "dist"
-VERSION = "4.3.0"
+VERSION = "4.4.0"
 EXPECTED_SKILLS = {"my-software-design-doc"}
 EXPECTED_COMMANDS = {
     "asd-ste100",
@@ -21,6 +21,7 @@ EXPECTED_COMMANDS = {
     "my-improve-comments",
     "my-improve-spacing",
     "my-golang-codebase-design",
+    "my-spec-review",
 }
 
 try:
@@ -160,6 +161,10 @@ def validate_source() -> None:
     for token in ("the environment's question tool", "**No arguments:**", "`help`", "`off`", "`status`", "`replies`", "`docs`", "subagent prompt", "1-100"):
         if token not in style_command:
             fail(f"asd-ste100 command missing invariant: {token}")
+    spec_review = read(COMMANDS / "my-spec-review.md")
+    for token in ("fresh read-only subagent", "MAX_REVIEW_CYCLES", "docs/agents/issue-tracker.md", "A fix always requires a new fresh verification", "CHANGES_REQUIRED"):
+        if token not in spec_review:
+            fail(f"my-spec-review missing invariant: {token}")
     golang = read(COMMANDS / "my-golang-codebase-design.md")
     for token in (
         "`codebase-design`",
@@ -190,6 +195,7 @@ def validate_opencode() -> None:
         "my-grill-to-implementation": "`explore`, `develop`, `review`",
         "my-implement-orchestrator": "`develop`",
         "my-golang-codebase-design": "`explore`, `develop`",
+        "my-spec-review": "`review`, `develop`",
     }.items():
         _, body = frontmatter(root / "commands" / f"{name}.md")
         if f"Use OpenCode V2 child-session roles: {roles}." not in body:
