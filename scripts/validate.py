@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "source" / "skills"
 SHARED = ROOT / "source" / "shared"
 DIST = ROOT / "dist"
-VERSION = "4.9.0"
+VERSION = "4.9.1"
 EXPECTED = {
     "asd-ste100",
     "my-grill-to-implementation",

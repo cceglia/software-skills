@@ -4,7 +4,7 @@ description: Improve comments and documentation without changing runtime behavio
 license: MIT
 compatibility: Canonical Claude Code source; use scripts/build.py to generate the installable profile.
 metadata:
-  version: "4.9.0"
+  version: "4.9.1"
 ---
 
 # my-improve-comments
