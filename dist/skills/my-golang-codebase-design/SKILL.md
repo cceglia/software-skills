@@ -7,7 +7,7 @@ disable-model-invocation: true
 user-invocable: true
 argument-hint: "[package | packages | directory]"
 metadata:
-  version: "4.8.0"
+  version: "4.9.0"
 ---
 
 # my-golang-codebase-design

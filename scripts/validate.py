@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "source" / "skills"
 SHARED = ROOT / "source" / "shared"
 DIST = ROOT / "dist"
-VERSION = "4.8.0"
+VERSION = "4.9.0"
 EXPECTED = {
     "asd-ste100",
     "my-grill-to-implementation",
@@ -18,6 +18,7 @@ EXPECTED = {
     "my-improve-comments",
     "my-improve-spacing",
     "my-golang-codebase-design",
+    "my-spec-review",
     "my-software-design-doc",
 }
 MANUAL = EXPECTED - {"my-software-design-doc"}
@@ -132,6 +133,10 @@ def validate_source() -> None:
     for token in ("the environment's question tool", "**No arguments:**", "`help`", "`off`", "`status`", "`replies`", "`docs`", "subagent prompt", "1-100"):
         if token not in style_skill:
             fail(f"asd-ste100 skill missing invariant: {token}")
+    spec_review = read(SRC / "my-spec-review" / "SKILL.md")
+    for token in ("fresh read-only subagent", "MAX_REVIEW_CYCLES", "docs/agents/issue-tracker.md", "A fix always requires a new fresh verification", "CHANGES_REQUIRED"):
+        if token not in spec_review:
+            fail(f"my-spec-review missing invariant: {token}")
     golang = read(SRC / "my-golang-codebase-design" / "SKILL.md")
     for token in (
         "`codebase-design`",

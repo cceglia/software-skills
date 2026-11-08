@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "source" / "skills"
 SHARED = ROOT / "source" / "shared"
 DIST = ROOT / "dist"
-VERSION = "4.8.0"
+VERSION = "4.9.0"
 
 MANUAL = {
     "asd-ste100",
@@ -18,6 +18,7 @@ MANUAL = {
     "my-improve-comments",
     "my-improve-spacing",
     "my-golang-codebase-design",
+    "my-spec-review",
 }
 
 # Skills that delegate work to subagents. They describe responsibilities, never subagent types.
@@ -28,6 +29,7 @@ DELEGATING = {
     "my-improve-comments",
     "my-improve-spacing",
     "my-golang-codebase-design",
+    "my-spec-review",
     "my-software-design-doc",
 }
 
@@ -39,6 +41,7 @@ ARG_HINT = {
     "my-improve-comments": "[scope]",
     "my-improve-spacing": "[scope]",
     "my-golang-codebase-design": "[package | packages | directory]",
+    "my-spec-review": "[spec | spec and issues]",
 }
 
 SUBAGENTS_BLOCK = (
