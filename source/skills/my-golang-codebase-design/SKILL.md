@@ -4,7 +4,7 @@ description: Improve Go packages into deep modules with a narrow facade over int
 license: MIT
 compatibility: Canonical Claude Code source; use scripts/build.py to generate the installable profile.
 metadata:
-  version: "4.9.1"
+  version: "4.10.0"
 ---
 
 # my-golang-codebase-design
