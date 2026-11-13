@@ -4,7 +4,7 @@ description: Loop an independent fresh review of a spec and its issues, fix the 
 license: MIT
 compatibility: Canonical Claude Code source; use scripts/build.py to generate the installable profile.
 metadata:
-  version: "4.10.0"
+  version: "4.11.0"
 ---
 
 # my-spec-review

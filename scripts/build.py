@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "source" / "skills"
 SHARED = ROOT / "source" / "shared"
 DIST = ROOT / "dist"
-VERSION = "4.10.0"
+VERSION = "4.11.0"
 
 MANUAL = {
     "asd-ste100",
@@ -17,7 +17,6 @@ MANUAL = {
     "my-improve-code",
     "my-improve-comments",
     "my-improve-spacing",
-    "my-golang-codebase-design",
     "my-spec-review",
 }
 
@@ -28,7 +27,6 @@ DELEGATING = {
     "my-improve-code",
     "my-improve-comments",
     "my-improve-spacing",
-    "my-golang-codebase-design",
     "my-spec-review",
     "my-software-design-doc",
 }
@@ -40,7 +38,6 @@ ARG_HINT = {
     "my-improve-code": "[scope]",
     "my-improve-comments": "[scope]",
     "my-improve-spacing": "[scope]",
-    "my-golang-codebase-design": "[package | packages | directory]",
     "my-spec-review": "[spec | spec and issues]",
 }
 

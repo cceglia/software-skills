@@ -122,6 +122,9 @@ function expectFailure(args, message, options) {
   const oldSkill = path.join(target, '.claude/skills/my-review-changes/SKILL.md');
   fs.mkdirSync(path.dirname(oldSkill), { recursive: true });
   fs.writeFileSync(oldSkill, '---\nname: my-review-changes\n---\n');
+  const oldGolang = path.join(target, '.claude/skills/my-golang-codebase-design/SKILL.md');
+  fs.mkdirSync(path.dirname(oldGolang), { recursive: true });
+  fs.writeFileSync(oldGolang, '---\nname: my-golang-codebase-design\n---\n');
   const legacy = path.join(target, '.claude/agents/review.md');
   fs.mkdirSync(path.dirname(legacy), { recursive: true });
   fs.writeFileSync(legacy, '---\nname: review\ndescription: Independent read-only reviewer for software-skills workflows.\n---\n');
@@ -131,6 +134,8 @@ function expectFailure(args, message, options) {
   assert(out.includes(path.dirname(oldSkill)));
   assert(fs.existsSync(legacy));
   assert(fs.existsSync(oldSkill));
+  assert(out.includes(path.dirname(oldGolang)));
+  assert(fs.existsSync(oldGolang));
 }
 
 // Git exclude targets only ephemeral .agents/tmp state, and only for project installs.

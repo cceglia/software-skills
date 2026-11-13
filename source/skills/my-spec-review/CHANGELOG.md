@@ -1,5 +1,9 @@
 # Changelog — my-spec-review
 
+## 4.11.0 — 2026-11-13
+
+- Package version synchronized with the removal of `my-golang-codebase-design`; no skill-specific behavior change.
+
 ## 4.10.0 — 2026-11-13
 
 - `/my-spec-review`: asks for `FIX_SCOPE` before the first cycle: `BLOCKING_ONLY` (previous behavior), `ALL` (fix blocking and non-blocking problems until a fresh review finds none), or `BLOCKING_THEN_ALL` (clear blocking problems first, then fix the accumulated non-blocking notes and loop until none remain).

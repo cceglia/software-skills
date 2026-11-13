@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "source" / "skills"
 SHARED = ROOT / "source" / "shared"
 DIST = ROOT / "dist"
-VERSION = "4.10.0"
+VERSION = "4.11.0"
 EXPECTED = {
     "asd-ste100",
     "my-grill-to-implementation",
@@ -17,7 +17,6 @@ EXPECTED = {
     "my-improve-code",
     "my-improve-comments",
     "my-improve-spacing",
-    "my-golang-codebase-design",
     "my-spec-review",
     "my-software-design-doc",
 }
@@ -137,24 +136,6 @@ def validate_source() -> None:
     for token in ("fresh read-only subagent", "MAX_REVIEW_CYCLES", "docs/agents/issue-tracker.md", "A fix always requires a new fresh verification", "CHANGES_REQUIRED"):
         if token not in spec_review:
             fail(f"my-spec-review missing invariant: {token}")
-    golang = read(SRC / "my-golang-codebase-design" / "SKILL.md")
-    for token in (
-        "`codebase-design`",
-        "facade",
-        "`internal/<domain>`",
-        "`errors.Is`/`errors.As`",
-        "`cmd/*`",
-        "allowlist",
-        "`Package layout`",
-        "`CODING_STANDARDS.md`",
-        "`go build ./...`",
-        "`go vet ./...`",
-        "./.agents/tmp/implementation/",
-        "one package at a time",
-        "Do not create an interface where only one implementation exists",
-    ):
-        if token not in golang:
-            fail(f"my-golang-codebase-design missing invariant: {token}")
 
 
 def validate_claude() -> None:
