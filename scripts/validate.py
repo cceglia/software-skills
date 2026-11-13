@@ -11,7 +11,7 @@ SKILLS = SRC / "skills"
 COMMANDS = SRC / "commands"
 SHARED = SRC / "shared"
 DIST = ROOT / "dist"
-VERSION = "4.4.1"
+VERSION = "4.5.0"
 EXPECTED_SKILLS = {"my-software-design-doc"}
 EXPECTED_COMMANDS = {
     "asd-ste100",

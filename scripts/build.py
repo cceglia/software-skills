@@ -9,7 +9,7 @@ SKILLS = SRC / "skills"
 COMMANDS = SRC / "commands"
 SHARED = SRC / "shared"
 DIST = ROOT / "dist"
-VERSION = "4.4.1"
+VERSION = "4.5.0"
 
 # User-invoked workflows ship as OpenCode commands, not as skills: the model
 # never discovers them, so only an explicit /name invocation runs them.
