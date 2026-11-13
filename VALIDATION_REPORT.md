@@ -13,7 +13,6 @@ Validated on 2026-11-01.
 - every command and skill writes the active directive into subagent prompts, and report/verdict contracts keep precedence over style;
 - `my-grill-to-implementation` maps `explore`, `develop`, and `review`, commits per slice, loads `tdd` and `codebase-design` in every develop/fix pass, and gates the change with a final fresh review;
 - `my-implement-orchestrator` maps `develop`, commits per ticket, loads `tdd` and `codebase-design` in every develop/fix pass including review fixes, reviews only important tickets individually, and gates tracker finalization with a final `code-review`;
-- `my-golang-codebase-design` maps `explore` and `develop`, requires `codebase-design`, migrates one Go package at a time to a facade over `internal/<domain>`, keeps `cmd/*` out, validates with build/vet/tests and the Makefile allowlist gate, and records the ADR plus the `Package layout` section;
 - no generated `skills.json`; runtime state stays under `./.agents/tmp/implementation`;
 - installer tests passed;
 - `npm pack --dry-run` includes `AGENTS.md` and the hidden `dist/.opencode/` directory.

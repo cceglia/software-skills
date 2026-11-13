@@ -51,6 +51,7 @@ Do not reintroduce these unless the architecture is intentionally changed:
 - `my-update-skills-list` and `skills.json`: native skill discovery is the source of truth.
 - `my-grill-to-plan` and `my-plan-to-spec`: superseded, then removed.
 - Removed in 3.0.0: `my-grill-to-spec` (use `grill-with-docs` + `to-spec`), `my-spec-to-tickets` (`to-tickets`), `my-review-changes` (`code-review`), and `my-git-commit`.
+- Removed in 4.6.0: `my-golang-codebase-design`.
 - Codex, Claude Code, and Antigravity profiles and the shared `.agents/skills` layout: removed from this branch (`claude` holds the Claude Code edition).
 
 ## Upstream Matt Pocock constraints

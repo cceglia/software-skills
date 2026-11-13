@@ -23,6 +23,8 @@ const REMOVED_SKILLS = [
   'my-improve-comments',
   'my-improve-spacing',
 ];
+// Commands removed from the package are reported, never deleted.
+const REMOVED_COMMANDS = ['my-golang-codebase-design'];
 
 function usage() {
   return `software-skills ${VERSION}\n\n` +
@@ -211,7 +213,10 @@ function execute(allOps, opts, base, excludeOp) {
 function leftovers(installRoot) {
   return REMOVED_SKILLS
     .map(name => path.join(installRoot, 'skills', name))
-    .filter(p => fs.existsSync(path.join(p, 'SKILL.md')));
+    .filter(p => fs.existsSync(path.join(p, 'SKILL.md')))
+    .concat(REMOVED_COMMANDS
+      .map(name => path.join(installRoot, 'commands', `${name}.md`))
+      .filter(p => fs.existsSync(p)));
 }
 
 function printSummary(opts, installRoot, ops) {

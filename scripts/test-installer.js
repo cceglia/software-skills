@@ -150,12 +150,17 @@ function expectFailure(args, message, options) {
   fs.writeFileSync(oldSkill, '---\nname: my-review-changes\n---\n');
   fs.mkdirSync(path.dirname(converted), { recursive: true });
   fs.writeFileSync(converted, '---\nname: my-improve-code\n---\n');
+  const oldCommand = path.join(target, '.opencode/commands/my-golang-codebase-design.md');
+  fs.mkdirSync(path.dirname(oldCommand), { recursive: true });
+  fs.writeFileSync(oldCommand, '---\ndescription: old\n---\n');
   const out = run(['--scope', 'project', '--target', target, '--git-exclude', 'no']);
   assert(out.includes('no longer shipped in that form and can be removed'));
   assert(out.includes(path.dirname(oldSkill)));
   assert(out.includes(path.dirname(converted)));
   assert(fs.existsSync(oldSkill));
   assert(fs.existsSync(converted));
+  assert(out.includes(oldCommand));
+  assert(fs.existsSync(oldCommand));
 }
 
 // Git exclude targets only ephemeral .agents/tmp state, and only for project installs.
